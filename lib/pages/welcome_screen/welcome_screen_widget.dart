@@ -32,17 +32,7 @@ class _WelcomeScreenWidgetState extends State<WelcomeScreenWidget> {
     super.initState();
     _model = createModel(context, () => WelcomeScreenModel());
 
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      GoRouter.of(context).prepareAuthEvent();
-      final user = await authManager.signInAnonymously(context);
-      if (user == null) {
-        return;
-      }
 
-      context.goNamedAuth(LearningPathWidget.routeName, context.mounted);
-    });
-  }
 
   @override
   void dispose() {
@@ -389,9 +379,12 @@ class _WelcomeScreenWidgetState extends State<WelcomeScreenWidget> {
                                         hoverColor: Colors.transparent,
                                         highlightColor: Colors.transparent,
                                         onTap: () async {
-                                          context.goNamed(
-                                              DailySajuChallengeWidget
-                                                  .routeName);
+                                          GoRouter.of(context).prepareAuthEvent();
+                                          final user = await authManager.signInAnonymously(context);
+                                          if (user == null) {
+                                            return;
+                                          }
+                                          context.goNamedAuth(DailySajuChallengeWidget.routeName, context.mounted);
                                         },
                                         child: wrapWithModel(
                                           model: _model.buttonModel,
