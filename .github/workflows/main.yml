@@ -20,7 +20,8 @@ jobs:
           channel: 'stable'
 
       - run: flutter pub get
-      - run: flutter build web --release --base-href /saju-quiz/ --web-renderer html
+      - run: flutter build web --release --base-href /saju-quiz/ --renderer html
+
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
