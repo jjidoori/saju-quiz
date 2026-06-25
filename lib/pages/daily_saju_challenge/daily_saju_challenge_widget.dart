@@ -591,10 +591,8 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
                                           ),
                                         ),
                                       ),
-                                      Expanded(
-                                        child:
-                                            StreamBuilder<DailyChallengeRecord>(
-                                          stream: DailyChallengeRecord.getDocument(
+                                      StreamBuilder<DailyChallengeRecord>(
+                                      stream: DailyChallengeRecord.getDocument(
                                               dailySajuChallengeDailyChallengeRecord!
                                                   .reference),
                                           builder: (context, snapshot) {
