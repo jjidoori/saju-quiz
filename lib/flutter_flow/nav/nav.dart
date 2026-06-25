@@ -74,9 +74,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
-      errorBuilder: (context, state) => appStateNotifier.loggedIn
-          ? LearningPathWidget()
-          : WelcomeScreenWidget(),
+      errorBuilder: (context, state) => WelcomeScreenWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
