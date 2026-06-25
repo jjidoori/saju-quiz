@@ -81,9 +81,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => appStateNotifier.loggedIn
-              ? LearningPathWidget()
-              : WelcomeScreenWidget(),
+          builder: (context, _) => WelcomeScreenWidget(),
         ),
         FFRoute(
           name: DailySajuChallengeWidget.routeName,
