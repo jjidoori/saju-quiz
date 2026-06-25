@@ -31,8 +31,7 @@ class _WelcomeScreenWidgetState extends State<WelcomeScreenWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => WelcomeScreenModel());
-
-
+  }
 
   @override
   void dispose() {
