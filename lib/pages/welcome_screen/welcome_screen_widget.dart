@@ -50,8 +50,8 @@ class _WelcomeScreenWidgetState extends State<WelcomeScreenWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        body: Container(
-          child: Column(
+        body: SingleChildScrollView(
+  child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
@@ -174,21 +174,20 @@ class _WelcomeScreenWidgetState extends State<WelcomeScreenWidget> {
                           updateCallback: () => safeSetState(() {}),
                           child: MotifDividerWidget(),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: AlignmentDirectional(0.0, 0.0),
-                            child: Container(
-                              width: 220.0,
-                              height: 220.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(9999.0),
-                                shape: BoxShape.rectangle,
-                                border: Border.all(
-                                  color: FlutterFlowTheme.of(context).primary20,
-                                  width: 1.0,
-                                ),
-                              ),
+Container(
+  child: Container(
+    alignment: AlignmentDirectional(0.0, 0.0),
+    child: Container(
+      width: 220.0,
+      height: 220.0,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(9999.0),
+        shape: BoxShape.rectangle,
+        border: Border.all(
+          color: FlutterFlowTheme.of(context).primary20,
+          width: 1.0,
+        ),
+      ),
                               child: Padding(
                                 padding: EdgeInsets.all(16.0),
                                 child: Container(
