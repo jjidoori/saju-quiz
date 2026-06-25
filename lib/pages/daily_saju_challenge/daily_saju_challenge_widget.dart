@@ -613,12 +613,49 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
                                             final listViewDailyChallengeRecord =
                                                 snapshot.data!;
 
-                                            return ListView(
-                                              padding: EdgeInsets.zero,
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.vertical,
-                                              children: [],
-                                            );
+                                            return ListView.builder(
+  padding: EdgeInsets.zero,
+  shrinkWrap: true,
+  scrollDirection: Axis.vertical,
+  itemCount: listViewDailyChallengeRecord.options.length,
+  itemBuilder: (context, index) {
+    return Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+      child: InkWell(
+        onTap: () {
+          safeSetState(() {
+            _model.selectedIndex = index;
+          });
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: _model.selectedIndex == index
+                ? FlutterFlowTheme.of(context).primary
+                : FlutterFlowTheme.of(context).secondaryBackground,
+            borderRadius: BorderRadius.circular(12.0),
+            border: Border.all(
+              color: FlutterFlowTheme.of(context).alternate,
+              width: 1.0,
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              listViewDailyChallengeRecord.options[index],
+              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                font: GoogleFonts.inter(),
+                color: _model.selectedIndex == index
+                    ? FlutterFlowTheme.of(context).primaryBackground
+                    : FlutterFlowTheme.of(context).primaryText,
+                letterSpacing: 0.0,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  },
+);
                                           },
                                         ),
                                       ),
