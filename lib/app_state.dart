@@ -68,4 +68,30 @@ class FFAppState extends ChangeNotifier {
   set todayQuestionIds(List<String> value) {
     _todayQuestionIds = value;
   }
+
+  // 완료된 카테고리 목록
+  List<String> _completedCategories = [];
+  List<String> get completedCategories => _completedCategories;
+  set completedCategories(List<String> value) {
+    _completedCategories = value;
+  }
+
+  void completeCategory(String category) {
+    if (!_completedCategories.contains(category)) {
+      _completedCategories = [..._completedCategories, category];
+      notifyListeners();
+    }
+  }
+
+  bool isCategoryCompleted(String category) {
+    return _completedCategories.contains(category);
+  }
+
+  bool isCategoryUnlocked(String category) {
+    const order = ['음양', '오행', '천간', '지지', '십이운성', '합/충/형/해/파', '지장간', '십성', '납음오행'];
+    final idx = order.indexOf(category);
+    if (idx == 0) return true;
+    if (idx < 0) return false;
+    return _completedCategories.contains(order[idx - 1]);
+  }
 }
