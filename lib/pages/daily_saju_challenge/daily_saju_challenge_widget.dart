@@ -99,31 +99,75 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 64.0, 24.0, 0.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      wrapWithModel(
-                        model: _model.reminderCardModel,
-                        updateCallback: () => safeSetState(() {}),
-                        child: ReminderCardWidget(),
-                      ),
-                      FlutterFlowIconButton(
-                        borderRadius: 8.0,
-                        buttonSize: 40.0,
-                        fillColor: Colors.transparent,
-                        icon: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: FlutterFlowTheme.of(context).primary,
-                          size: 20.0,
-                        ),
-                        onPressed: () async {
-                          context.pop();
-                        },
-                      ),
+  child: Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(24.0, 64.0, 24.0, 0.0),
+    child: Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        FlutterFlowIconButton(
+          borderRadius: 8.0,
+          buttonSize: 40.0,
+          fillColor: Colors.transparent,
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: FlutterFlowTheme.of(context).primary,
+            size: 20.0,
+          ),
+          onPressed: () async {
+            context.pop();
+          },
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Daily Challenge',
+              style: FlutterFlowTheme.of(context)
+                  .titleMedium
+                  .override(
+                    font: GoogleFonts.inter(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    color: FlutterFlowTheme.of(context).primaryText,
+                    letterSpacing: 0.0,
+                    fontWeight: FontWeight.bold,
+                    lineHeight: 1.4,
+                  ),
+            ),
+            Text(
+              '음양오행 기초',
+              style: FlutterFlowTheme.of(context)
+                  .labelSmall
+                  .override(
+                    font: GoogleFonts.inter(),
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                    letterSpacing: 0.0,
+                    lineHeight: 1.2,
+                  ),
+            ),
+          ],
+        ),
+        FlutterFlowIconButton(
+          borderRadius: 8.0,
+          buttonSize: 40.0,
+          fillColor: Colors.transparent,
+          icon: Icon(
+            Icons.info_outline_rounded,
+            color: FlutterFlowTheme.of(context).primary,
+            size: 20.0,
+          ),
+          onPressed: () {
+            print('IconButton pressed ...');
+          },
+        ),
+      ],
+    ),
+  ),
+),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
