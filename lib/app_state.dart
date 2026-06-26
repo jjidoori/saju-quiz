@@ -63,8 +63,13 @@ class FFAppState extends ChangeNotifier {
   }
 
   String _dictionaryFilter = 'All';
-  String get dictionaryFilter => _dictionaryFilter;
-  set dictionaryFilter(String value) {
-    _dictionaryFilter = value;
-  }
+String get dictionaryFilter => _dictionaryFilter;
+set dictionaryFilter(String value) {
+  _dictionaryFilter = value;
+}
+
+List<String> _todayQuestionIds = [];
+List<String> get todayQuestionIds => _todayQuestionIds;
+set todayQuestionIds(List<String> value) {
+  _todayQuestionIds = value;
 }
