@@ -378,6 +378,10 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
                                         _model.selectedIndex == _model.correctIndex,
                                         ParamType.bool,
                                       ),
+                                      'explanationText': serializeParam(
+  dailySajuChallengeDailyChallengeRecord?.explanationText ?? '',
+  ParamType.String,
+),
                                     }.withoutNulls,
                                   );
                                 },
