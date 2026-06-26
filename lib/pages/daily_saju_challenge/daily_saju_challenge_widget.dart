@@ -253,7 +253,14 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
                               );
                             }
                             final record = snapshot.data!;
-                            return ListView.builder(
+WidgetsBinding.instance.addPostFrameCallback((_) {
+  if (_model.correctIndex != record.correctIndex) {
+    safeSetState(() {
+      _model.correctIndex = record.correctIndex;
+    });
+  }
+});
+return ListView.builder(
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
