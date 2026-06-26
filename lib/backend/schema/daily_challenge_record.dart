@@ -41,12 +41,24 @@ class DailyChallengeRecord extends FirestoreRecord {
   int get correctIndex => _correctIndex ?? 0;
   bool hasCorrectIndex() => _correctIndex != null;
 
+  // "category" field.
+  String? _category;
+  String get category => _category ?? '';
+  bool hasCategory() => _category != null;
+
+  // "subCategory" field.
+  String? _subCategory;
+  String get subCategory => _subCategory ?? '';
+  bool hasSubCategory() => _subCategory != null;
+
   void _initializeFields() {
     _questionText = snapshotData['questionText'] as String?;
     _options = getDataList(snapshotData['options']);
     _explanationText = snapshotData['explanationText'] as String?;
     _energyTheme = snapshotData['energyTheme'] as String?;
     _correctIndex = castToType<int>(snapshotData['correctIndex']);
+    _category = snapshotData['category'] as String?;
+    _subCategory = snapshotData['subCategory'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -88,6 +100,8 @@ Map<String, dynamic> createDailyChallengeRecordData({
   String? explanationText,
   String? energyTheme,
   int? correctIndex,
+  String? category,
+  String? subCategory,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -95,6 +109,8 @@ Map<String, dynamic> createDailyChallengeRecordData({
       'explanationText': explanationText,
       'energyTheme': energyTheme,
       'correctIndex': correctIndex,
+      'category': category,
+      'subCategory': subCategory,
     }.withoutNulls,
   );
 
@@ -112,7 +128,9 @@ class DailyChallengeRecordDocumentEquality
         listEquality.equals(e1?.options, e2?.options) &&
         e1?.explanationText == e2?.explanationText &&
         e1?.energyTheme == e2?.energyTheme &&
-        e1?.correctIndex == e2?.correctIndex;
+        e1?.correctIndex == e2?.correctIndex &&
+        e1?.category == e2?.category &&
+        e1?.subCategory == e2?.subCategory;
   }
 
   @override
@@ -121,7 +139,9 @@ class DailyChallengeRecordDocumentEquality
         e?.options,
         e?.explanationText,
         e?.energyTheme,
-        e?.correctIndex
+        e?.correctIndex,
+        e?.category,
+        e?.subCategory,
       ]);
 
   @override
