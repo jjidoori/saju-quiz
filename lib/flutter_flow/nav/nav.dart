@@ -104,16 +104,15 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: QuizInterfaceWidget.routePath,
           builder: (context, params) => QuizInterfaceWidget(),
         ),
-       FFRoute(
-  name: ResultExplanationWidget.routeName,
-  path: ResultExplanationWidget.routePath,
-  builder: (context, params) => ResultExplanationWidget(
-  questionId: params.getParam('questionId', ParamType.String),
-  isCorrect: params.getParam('isCorrect', ParamType.bool),
-  explanationText: params.getParam('explanationText', ParamType.String),
-  questionNumber: params.getParam('questionNumber', ParamType.int),
-  answeredCorrect: params.getParam('answeredCorrect', ParamType.int),
-),
+      FFRoute(
+          name: ResultExplanationWidget.routeName,
+          path: ResultExplanationWidget.routePath,
+          builder: (context, params) => ResultExplanationWidget(
+            questionId: params.getParam('questionId', ParamType.String),
+            isCorrect: params.getParam('isCorrect', ParamType.bool),
+            explanationText: params.getParam('explanationText', ParamType.String),
+            questionNumber: params.getParam('questionNumber', ParamType.int),
+            answeredCorrect: params.getParam('answeredCorrect', ParamType.int),
           ),
         ),
         FFRoute(
