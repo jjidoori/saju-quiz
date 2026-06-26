@@ -40,6 +40,7 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
   late int _currentQuestion;
 late int _correctCount;
 List<String> _generatedIds = [];
+List<String> _shuffledOptions = [];
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -307,7 +308,7 @@ safeSetState(() {
                               child: Padding(
                                 padding: EdgeInsets.all(16.0),
                                 child: Text(
-                                  _randomQuestion!.options[index],
+                                  _shuffledOptions.isNotEmpty ? _shuffledOptions[index] : _randomQuestion!.options[index],
                                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                                     font: GoogleFonts.inter(),
                                     color: _model.selectedIndex == index
