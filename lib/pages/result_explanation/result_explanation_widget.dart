@@ -249,6 +249,10 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
       ParamType.String,
       isList: true,
     ),
+    'category': serializeParam(
+      widget.category ?? '음양',
+      ParamType.String,
+    ),
   }.withoutNulls,
 );
                                 }
