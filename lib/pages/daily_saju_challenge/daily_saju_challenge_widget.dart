@@ -51,24 +51,25 @@ List<String> _generatedIds = [];
    SchedulerBinding.instance.addPostFrameCallback((_) async {
   final questions = await queryDailyChallengeRecordOnce();
   if (questions.isNotEmpty) {
-    DailyChallengeRecord? target;
-    if (widget.questionIds != null && widget.questionIds!.isNotEmpty) {
-      final id = widget.questionIds![_currentQuestion - 1];
-      target = questions.firstWhere(
-        (q) => q.reference.id == id,
-        orElse: () => questions.first,
-      );
-    } else {
+    final appState = FFAppState();
+    
+    // 첫 문제일 때만 questionIds 생성
+    if (_currentQuestion == 1 || appState.todayQuestionIds.isEmpty) {
       final today = DateTime.now();
       final seed = today.year * 10000 + today.month * 100 + today.day;
       questions.shuffle(Random(seed));
-      // 첫 문제일 때 questionIds 생성해서 저장
-      _generatedIds = questions.take(5).map((q) => q.reference.id).toList();
-      target = questions.first;
+      appState.todayQuestionIds = questions.take(5).map((q) => q.reference.id).toList();
     }
+    
+    final id = appState.todayQuestionIds[_currentQuestion - 1];
+    final target = questions.firstWhere(
+      (q) => q.reference.id == id,
+      orElse: () => questions.first,
+    );
+    
     safeSetState(() {
       _randomQuestion = target;
-      _model.correctIndex = target!.correctIndex;
+      _model.correctIndex = target.correctIndex;
       _isLoading = false;
     });
   }
