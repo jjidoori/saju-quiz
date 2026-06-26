@@ -10,20 +10,24 @@ export 'result_explanation_model.dart';
 
 class ResultExplanationWidget extends StatefulWidget {
   const ResultExplanationWidget({
-    super.key,
-    this.questionId,
-    required this.isCorrect,
-    this.explanationText,
-    this.questionNumber,
-    this.answeredCorrect,
-  });
+  super.key,
+  this.questionId,
+  required this.isCorrect,
+  this.explanationText,
+  this.questionNumber,
+  this.answeredCorrect,
+  this.questionIds,
+});
 
   final String? questionId;
   final bool? isCorrect;
   final String? explanationText;
   final int? questionNumber;
   final int? answeredCorrect;
+final List<String>? questionIds;
 
+
+  
   static String routeName = 'ResultExplanation';
   static String routePath = '/resultExplanation';
 
@@ -230,18 +234,23 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                 } else {
                                   // 다음 문제로
                                   context.pushNamed(
-                                    DailySajuChallengeWidget.routeName,
-                                    queryParameters: {
-                                      'questionNumber': serializeParam(
-                                        currentQuestion + 1,
-                                        ParamType.int,
-                                      ),
-                                      'answeredCorrect': serializeParam(
-                                        correctCount,
-                                        ParamType.int,
-                                      ),
-                                    }.withoutNulls,
-                                  );
+  DailySajuChallengeWidget.routeName,
+  queryParameters: {
+    'questionNumber': serializeParam(
+      currentQuestion + 1,
+      ParamType.int,
+    ),
+    'answeredCorrect': serializeParam(
+      correctCount,
+      ParamType.int,
+    ),
+    'questionIds': serializeParam(
+      widget.questionIds ?? [],
+      ParamType.String,
+      isList: true,
+    ),
+  }.withoutNulls,
+);
                                 }
                               },
                               child: wrapWithModel(
