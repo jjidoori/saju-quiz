@@ -386,7 +386,7 @@ Container(
   DailySajuChallengeWidget.routeName,
   context.mounted,
   queryParameters: {
-    'category': serializeParam('음양' as String, ParamType.String),
+    'category': '음양',
   },
 );
                                         },
