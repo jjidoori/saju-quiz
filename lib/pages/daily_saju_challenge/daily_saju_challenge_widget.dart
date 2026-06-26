@@ -41,7 +41,6 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
 late int _correctCount;
 List<String> _generatedIds = [];
 List<String> _shuffledOptions = [];
-List<String> _shuffledOptions = [];
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
