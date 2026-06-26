@@ -88,6 +88,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
   questionNumber: params.getParam('questionNumber', ParamType.int),
   answeredCorrect: params.getParam('answeredCorrect', ParamType.int),
   questionIds: params.getParam<String>('questionIds', ParamType.String, isList: true),
+  category: params.getParam('category', ParamType.String),
 ),
         ),
         FFRoute(
