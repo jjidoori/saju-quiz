@@ -60,8 +60,7 @@ List<String> _generatedIds = [];
   appState.todayQuestionIds = [];
 }
 if (_currentQuestion == 1 || appState.todayQuestionIds.isEmpty) {
-  final today = DateTime.now();
-  final seed = today.year * 10000 + today.month * 100 + today.day;
+  final seed = DateTime.now().millisecondsSinceEpoch;
   final filtered = widget.category != null
       ? questions.where((q) => q.category == widget.category).toList()
       : questions;
