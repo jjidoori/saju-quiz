@@ -10,28 +10,24 @@ export 'result_explanation_model.dart';
 
 class ResultExplanationWidget extends StatefulWidget {
   const ResultExplanationWidget({
-  super.key,
-  this.questionId,
-  required this.isCorrect,
-  this.explanationText,
-  this.questionNumber,
-  this.answeredCorrect,
-  this.questionIds,
-  this.category,
-});
+    super.key,
+    this.questionId,
+    required this.isCorrect,
+    this.explanationText,
+    this.questionNumber,
+    this.answeredCorrect,
+    this.questionIds,
+    this.category,
+  });
 
-final List<String>? questionIds;
-final String? category;
-  
   final String? questionId;
   final bool? isCorrect;
   final String? explanationText;
   final int? questionNumber;
   final int? answeredCorrect;
-final List<String>? questionIds;
+  final List<String>? questionIds;
+  final String? category;
 
-
-  
   static String routeName = 'ResultExplanation';
   static String routePath = '/resultExplanation';
 
@@ -82,7 +78,6 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: 60.0),
-                    // 진행바
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -231,34 +226,30 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                             child: InkWell(
                               onTap: () async {
                                 if (isLastQuestion) {
-                                  // 5문제 완료 - 결과 화면으로
-                                  context.goNamed(
-                                    LearningPathWidget.routeName,
-                                  );
+                                  context.goNamed(LearningPathWidget.routeName);
                                 } else {
-                                  // 다음 문제로
                                   context.pushNamed(
-  DailySajuChallengeWidget.routeName,
-  queryParameters: {
-    'questionNumber': serializeParam(
-      currentQuestion + 1,
-      ParamType.int,
-    ),
-    'answeredCorrect': serializeParam(
-      correctCount,
-      ParamType.int,
-    ),
-    'questionIds': serializeParam(
-      widget.questionIds ?? [],
-      ParamType.String,
-      isList: true,
-    ),
-    'category': serializeParam(
-      widget.category ?? '음양',
-      ParamType.String,
-    ),
-  }.withoutNulls,
-);
+                                    DailySajuChallengeWidget.routeName,
+                                    queryParameters: {
+                                      'questionNumber': serializeParam(
+                                        currentQuestion + 1,
+                                        ParamType.int,
+                                      ),
+                                      'answeredCorrect': serializeParam(
+                                        correctCount,
+                                        ParamType.int,
+                                      ),
+                                      'questionIds': serializeParam(
+                                        widget.questionIds ?? [],
+                                        ParamType.String,
+                                        isList: true,
+                                      ),
+                                      'category': serializeParam(
+                                        widget.category ?? '음양',
+                                        ParamType.String,
+                                      ),
+                                    }.withoutNulls,
+                                  );
                                 }
                               },
                               child: wrapWithModel(
