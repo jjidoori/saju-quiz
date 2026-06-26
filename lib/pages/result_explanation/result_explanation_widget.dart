@@ -2,6 +2,7 @@ import '/components/button/button_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'result_explanation_model.dart';
@@ -13,11 +14,15 @@ class ResultExplanationWidget extends StatefulWidget {
     this.questionId,
     required this.isCorrect,
     this.explanationText,
+    this.questionNumber,
+    this.answeredCorrect,
   });
 
   final String? questionId;
   final bool? isCorrect;
   final String? explanationText;
+  final int? questionNumber;
+  final int? answeredCorrect;
 
   static String routeName = 'ResultExplanation';
   static String routePath = '/resultExplanation';
@@ -46,6 +51,10 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final currentQuestion = widget.questionNumber ?? 1;
+    final correctCount = widget.answeredCorrect ?? 0;
+    final isLastQuestion = currentQuestion >= 5;
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -65,6 +74,31 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: 60.0),
+                    // 진행바
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '$currentQuestion / 5 문제',
+                          style: FlutterFlowTheme.of(context).labelSmall.override(
+                            font: GoogleFonts.inter(),
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                            letterSpacing: 0.0,
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        LinearProgressIndicator(
+                          value: currentQuestion / 5,
+                          backgroundColor: FlutterFlowTheme.of(context).alternate,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            FlutterFlowTheme.of(context).primary,
+                          ),
+                          borderRadius: BorderRadius.circular(4.0),
+                          minHeight: 8.0,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 24.0),
                     Container(
                       decoration: BoxDecoration(
                         color: widget.isCorrect == true
@@ -97,29 +131,21 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    widget.isCorrect == true
-                                        ? '정답입니다!'
-                                        : '틀렸습니다',
-                                    style: FlutterFlowTheme.of(context)
-                                        .titleLarge
-                                        .override(
-                                          font: GoogleFonts.roboto(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.bold,
-                                          lineHeight: 1.4,
-                                        ),
+                                    widget.isCorrect == true ? '정답입니다!' : '틀렸습니다',
+                                    style: FlutterFlowTheme.of(context).titleLarge.override(
+                                      font: GoogleFonts.roboto(fontWeight: FontWeight.bold),
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.bold,
+                                      lineHeight: 1.4,
+                                    ),
                                   ),
                                   Text(
                                     '아래 해설을 확인하세요.',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodySmall
-                                        .override(
-                                          font: GoogleFonts.inter(),
-                                          letterSpacing: 0.0,
-                                          lineHeight: 1.5,
-                                        ),
+                                    style: FlutterFlowTheme.of(context).bodySmall.override(
+                                      font: GoogleFonts.inter(),
+                                      letterSpacing: 0.0,
+                                      lineHeight: 1.5,
+                                    ),
                                   ),
                                 ].divide(SizedBox(height: 4.0)),
                               ),
@@ -153,16 +179,12 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                 SizedBox(width: 8.0),
                                 Text(
                                   '해설',
-                                  style: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .override(
-                                        font: GoogleFonts.inter(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FontWeight.bold,
-                                        lineHeight: 1.4,
-                                      ),
+                                  style: FlutterFlowTheme.of(context).titleMedium.override(
+                                    font: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.bold,
+                                    lineHeight: 1.4,
+                                  ),
                                 ),
                               ],
                             ),
@@ -173,13 +195,11 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                             ),
                             Text(
                               widget.explanationText ?? '해설을 불러올 수 없습니다.',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    font: GoogleFonts.inter(),
-                                    letterSpacing: 0.0,
-                                    lineHeight: 1.5,
-                                  ),
+                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                font: GoogleFonts.inter(),
+                                letterSpacing: 0.0,
+                                lineHeight: 1.5,
+                              ),
                             ),
                           ].divide(SizedBox(height: 16.0)),
                         ),
@@ -194,10 +214,7 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                 ),
                 child: Column(
                   children: [
-                    Container(
-                      height: 1.0,
-                      color: FlutterFlowTheme.of(context).alternate,
-                    ),
+                    Container(height: 1.0, color: FlutterFlowTheme.of(context).alternate),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(24.0, 32.0, 24.0, 32.0),
                       child: Row(
@@ -205,7 +222,27 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                           Expanded(
                             child: InkWell(
                               onTap: () async {
-                                context.pop();
+                                if (isLastQuestion) {
+                                  // 5문제 완료 - 결과 화면으로
+                                  context.goNamed(
+                                    LearningPathWidget.routeName,
+                                  );
+                                } else {
+                                  // 다음 문제로
+                                  context.pushNamed(
+                                    DailySajuChallengeWidget.routeName,
+                                    queryParameters: {
+                                      'questionNumber': serializeParam(
+                                        currentQuestion + 1,
+                                        ParamType.int,
+                                      ),
+                                      'answeredCorrect': serializeParam(
+                                        correctCount,
+                                        ParamType.int,
+                                      ),
+                                    }.withoutNulls,
+                                  );
+                                }
                               },
                               child: wrapWithModel(
                                 model: _model.buttonModel,
@@ -213,7 +250,7 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                 child: ButtonWidget(
                                   iconPresent: false,
                                   iconEndPresent: false,
-                                  content: '다음 문제',
+                                  content: isLastQuestion ? '결과 보기' : '다음 문제',
                                   variant: 'primary',
                                   size: 'large',
                                   fullWidth: true,
