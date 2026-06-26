@@ -84,7 +84,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: DailySajuChallengeWidget.routeName,
           path: DailySajuChallengeWidget.routePath,
-          builder: (context, params) => DailySajuChallengeWidget(),
+          builder: (context, params) => DailySajuChallengeWidget(
+  questionNumber: params.getParam('questionNumber', ParamType.int),
+  answeredCorrect: params.getParam('answeredCorrect', ParamType.int),
+),
         ),
         FFRoute(
           name: ElementDictionaryWidget.routeName,
