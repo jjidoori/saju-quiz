@@ -87,15 +87,22 @@ if (_currentQuestion == 1 || appState.todayQuestionIds.isEmpty) {
     
     final id = appState.todayQuestionIds[_currentQuestion - 1];
     final target = questions.firstWhere(
-      (q) => q.reference.id == id,
-      orElse: () => questions.first,
-    );
-    
-    safeSetState(() {
-      _randomQuestion = target;
-      _model.correctIndex = target.correctIndex;
-      _isLoading = false;
-    });
+  (q) => q.reference.id == id,
+  orElse: () => questions.first,
+);
+
+// 보기 순서 랜덤 섞기
+final opts = [...target.options];
+final correctAnswer = opts[target.correctIndex];
+opts.shuffle(Random(DateTime.now().millisecondsSinceEpoch));
+final newCorrectIndex = opts.indexOf(correctAnswer);
+
+safeSetState(() {
+  _randomQuestion = target;
+  _model.correctIndex = newCorrectIndex;
+  _shuffledOptions = opts;
+  _isLoading = false;
+});
   }
 });
   }
