@@ -382,7 +382,13 @@ Container(
                                           if (user == null) {
                                             return;
                                           }
-                                          context.goNamedAuth(DailySajuChallengeWidget.routeName, context.mounted);
+                                         context.goNamedAuth(
+  DailySajuChallengeWidget.routeName,
+  context.mounted,
+  queryParameters: {
+    'category': serializeParam('음양', ParamType.String),
+  },
+);
                                         },
                                         child: wrapWithModel(
                                           model: _model.buttonModel,
