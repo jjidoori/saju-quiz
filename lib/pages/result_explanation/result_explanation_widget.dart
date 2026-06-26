@@ -1,39 +1,40 @@
+import '/backend/backend.dart';
 import '/components/button/button_widget.dart';
+import '/components/reminder_card/reminder_card_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'result_explanation_model.dart';
-export 'result_explanation_model.dart';
+import 'daily_saju_challenge_model.dart';
+export 'daily_saju_challenge_model.dart';
 
-class ResultExplanationWidget extends StatefulWidget {
-  const ResultExplanationWidget({
-    super.key,
-    this.questionId,
-    required this.isCorrect,
-  });
+class DailySajuChallengeWidget extends StatefulWidget {
+  const DailySajuChallengeWidget({super.key});
 
-  final String? questionId;
-  final bool? isCorrect;
-
-  static String routeName = 'ResultExplanation';
-  static String routePath = '/resultExplanation';
+  static String routeName = 'DailySajuChallenge';
+  static String routePath = '/dailySajuChallenge';
 
   @override
-  State<ResultExplanationWidget> createState() =>
-      _ResultExplanationWidgetState();
+  State<DailySajuChallengeWidget> createState() =>
+      _DailySajuChallengeWidgetState();
 }
 
-class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
-  late ResultExplanationModel _model;
+class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
+  late DailySajuChallengeModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => ResultExplanationModel());
+    _model = createModel(context, () => DailySajuChallengeModel());
+
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.dailyQuestions = await queryDailyChallengeRecordOnce();
+    });
   }
 
   @override
@@ -44,190 +45,130 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(height: 60.0),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: widget.isCorrect == true
-                            ? FlutterFlowTheme.of(context).success.withOpacity(0.1)
-                            : FlutterFlowTheme.of(context).error.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12.0),
-                        border: Border.all(
-                          color: widget.isCorrect == true
-                              ? FlutterFlowTheme.of(context).success
-                              : FlutterFlowTheme.of(context).error,
-                          width: 1.0,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(24.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              widget.isCorrect == true
-                                  ? Icons.check_circle_rounded
-                                  : Icons.cancel_rounded,
-                              color: widget.isCorrect == true
-                                  ? FlutterFlowTheme.of(context).success
-                                  : FlutterFlowTheme.of(context).error,
-                              size: 32.0,
-                            ),
-                            SizedBox(width: 16.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.isCorrect == true
-                                      ? 'Correct Answer!'
-                                      : 'Incorrect Answer',
-                                  style: FlutterFlowTheme.of(context)
-                                      .titleLarge
-                                      .override(
-                                        font: GoogleFonts.roboto(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FontWeight.bold,
-                                        lineHeight: 1.4,
-                                      ),
-                                ),
-                                Text(
-                                  'Check the educational notes below.',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodySmall
-                                      .override(
-                                        font: GoogleFonts.inter(),
-                                        letterSpacing: 0.0,
-                                        lineHeight: 1.5,
-                                      ),
-                                ),
-                              ].divide(SizedBox(height: 4.0)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 32.0),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 1.0,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(24.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.menu_book_rounded,
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  size: 20.0,
-                                ),
-                                SizedBox(width: 8.0),
-                                Text(
-                                  'Educational Notes',
-                                  style: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .override(
-                                        font: GoogleFonts.inter(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        letterSpacing: 0.0,
-                                        fontWeight: FontWeight.bold,
-                                        lineHeight: 1.4,
-                                      ),
-                                ),
-                              ],
-                            ),
-                            Divider(
-                              height: 16.0,
-                              thickness: 1.0,
-                              color: FlutterFlowTheme.of(context).alternate,
-                            ),
-                            Text(
-                              '甲木 (Gap Mok) is the first of the Ten Heavenly Stems. It represents Yang Wood energy — strong, upward-growing, like a great tree reaching toward the sky.',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    font: GoogleFonts.inter(),
-                                    letterSpacing: 0.0,
-                                    lineHeight: 1.5,
-                                  ),
-                            ),
-                          ].divide(SizedBox(height: 16.0)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+    return StreamBuilder<List<DailyChallengeRecord>>(
+      stream: queryDailyChallengeRecord(
+        singleRecord: true,
+      ),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Scaffold(
+            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+            body: Center(
+              child: SizedBox(
+                width: 50,
+                height: 50,
+                child: CircularProgressIndicator(),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: FlutterFlowTheme.of(context).secondaryBackground,
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 1.0,
-                      color: FlutterFlowTheme.of(context).alternate,
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(24.0, 32.0, 24.0, 32.0),
+            ),
+          );
+        }
+        List<DailyChallengeRecord> dailySajuChallengeDailyChallengeRecordList =
+            snapshot.data!;
+        if (snapshot.data!.isEmpty) {
+          return Container();
+        }
+        final dailySajuChallengeDailyChallengeRecord =
+            dailySajuChallengeDailyChallengeRecordList.isNotEmpty
+                ? dailySajuChallengeDailyChallengeRecordList.first
+                : null;
+
+        return GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: Scaffold(
+            key: scaffoldKey,
+            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+            body: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(24.0, 64.0, 24.0, 0.0),
                       child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: InkWell(
-                              onTap: () async {
-                                context.pop();
-                              },
-                              child: wrapWithModel(
-                                model: _model.buttonModel,
-                                updateCallback: () => safeSetState(() {}),
-                                child: ButtonWidget(
-                                  iconPresent: false,
-                                  iconEndPresent: false,
-                                  content: 'Next Quiz',
-                                  variant: 'primary',
-                                  size: 'large',
-                                  fullWidth: true,
-                                  loading: false,
-                                  disabled: false,
-                                ),
-                              ),
-                            ),
+                          wrapWithModel(
+                            model: _model.reminderCardModel,
+                            updateCallback: () => safeSetState(() {}),
+                            child: ReminderCardWidget(),
                           ),
-                          SizedBox(width: 16.0),
                           FlutterFlowIconButton(
                             borderRadius: 8.0,
-                            buttonSize: 44.0,
-                            fillColor: FlutterFlowTheme.of(context).secondaryBackground,
+                            buttonSize: 40.0,
+                            fillColor: Colors.transparent,
                             icon: Icon(
-                              Icons.share_rounded,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 28.0,
+                              Icons.arrow_back_ios_new_rounded,
+                              color: FlutterFlowTheme.of(context).primary,
+                              size: 20.0,
+                            ),
+                            onPressed: () async {
+                              context.pop();
+                            },
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Daily Challenge',
+                                style: FlutterFlowTheme.of(context)
+                                    .titleMedium
+                                    .override(
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FontWeight.bold,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .titleMedium
+                                            .fontStyle,
+                                      ),
+                                      color: FlutterFlowTheme.of(context).primaryText,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .titleMedium
+                                          .fontStyle,
+                                      lineHeight: 1.4,
+                                    ),
+                              ),
+                              Text(
+                                'Current Energy: Wood & Fire',
+                                style: FlutterFlowTheme.of(context)
+                                    .labelSmall
+                                    .override(
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelSmall
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelSmall
+                                            .fontStyle,
+                                      ),
+                                      color: FlutterFlowTheme.of(context).secondaryText,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelSmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelSmall
+                                          .fontStyle,
+                                      lineHeight: 1.2,
+                                    ),
+                              ),
+                            ],
+                          ),
+                          FlutterFlowIconButton(
+                            borderRadius: 8.0,
+                            buttonSize: 40.0,
+                            fillColor: Colors.transparent,
+                            icon: Icon(
+                              Icons.info_outline_rounded,
+                              color: FlutterFlowTheme.of(context).primary,
+                              size: 20.0,
                             ),
                             onPressed: () {
                               print('IconButton pressed ...');
@@ -236,13 +177,241 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 32.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'QUESTION 4 OF 10',
+                                style: FlutterFlowTheme.of(context)
+                                    .labelLarge
+                                    .override(
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FontWeight.bold,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelLarge
+                                            .fontStyle,
+                                      ),
+                                      color: FlutterFlowTheme.of(context).primary,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelLarge
+                                          .fontStyle,
+                                      lineHeight: 1.3,
+                                    ),
+                              ),
+                              Text(
+                                dailySajuChallengeDailyChallengeRecord?.questionText ?? '',
+                                style: FlutterFlowTheme.of(context)
+                                    .headlineSmall
+                                    .override(
+                                      font: GoogleFonts.roboto(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .headlineSmall
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .headlineSmall
+                                            .fontStyle,
+                                      ),
+                                      color: FlutterFlowTheme.of(context).primaryText,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .headlineSmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .headlineSmall
+                                          .fontStyle,
+                                      lineHeight: 1.4,
+                                    ),
+                              ),
+                            ].divide(SizedBox(height: 16.0)),
+                          ),
+                        ),
+                        StreamBuilder<DailyChallengeRecord>(
+                          stream: DailyChallengeRecord.getDocument(
+                              dailySajuChallengeDailyChallengeRecord!.reference),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }
+                            final record = snapshot.data!;
+                            return ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemCount: record.options.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      safeSetState(() {
+                                        _model.selectedIndex = index;
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: _model.selectedIndex == index
+                                            ? FlutterFlowTheme.of(context).primary
+                                            : FlutterFlowTheme.of(context).secondaryBackground,
+                                        borderRadius: BorderRadius.circular(12.0),
+                                        border: Border.all(
+                                          color: FlutterFlowTheme.of(context).alternate,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(16.0),
+                                        child: Text(
+                                          record.options[index],
+                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                            font: GoogleFonts.inter(),
+                                            color: _model.selectedIndex == index
+                                                ? FlutterFlowTheme.of(context).primaryBackground
+                                                : FlutterFlowTheme.of(context).primaryText,
+                                            letterSpacing: 0.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                      shape: BoxShape.rectangle,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          height: 1.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context).alternate,
+                            shape: BoxShape.rectangle,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(24.0, 32.0, 24.0, 32.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.local_fire_department_rounded,
+                                    color: FlutterFlowTheme.of(context).warning,
+                                    size: 18.0,
+                                  ),
+                                  Text(
+                                    '5 Day Streak - Keep it up!',
+                                    style: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .override(
+                                          font: GoogleFonts.inter(
+                                            fontWeight: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .fontWeight,
+                                            fontStyle: FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .fontStyle,
+                                          ),
+                                          color: FlutterFlowTheme.of(context).secondaryText,
+                                          letterSpacing: 0.0,
+                                          fontWeight: FlutterFlowTheme.of(context)
+                                              .labelMedium
+                                              .fontWeight,
+                                          fontStyle: FlutterFlowTheme.of(context)
+                                              .labelMedium
+                                              .fontStyle,
+                                          lineHeight: 1.3,
+                                        ),
+                                  ),
+                                ].divide(SizedBox(width: 4.0)),
+                              ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  context.pushNamed(
+                                    ResultExplanationWidget.routeName,
+                                    queryParameters: {
+                                      'questionId': serializeParam(
+  dailySajuChallengeDailyChallengeRecord?.reference.id ?? '',
+  ParamType.String,
+),
+                                      'isCorrect': serializeParam(
+                                        _model.selectedIndex == _model.correctIndex,
+                                        ParamType.bool,
+                                      ),
+                                      'explanationText': serializeParam(
+  dailySajuChallengeDailyChallengeRecord?.explanationText ?? '',
+  ParamType.String,
+),
+                                    }.withoutNulls,
+                                  );
+                                },
+                                child: wrapWithModel(
+                                  model: _model.buttonModel,
+                                  updateCallback: () => safeSetState(() {}),
+                                  child: ButtonWidget(
+                                    iconPresent: false,
+                                    iconEndPresent: false,
+                                    content: 'Submit Answer',
+                                    variant: 'primary',
+                                    size: 'large',
+                                    fullWidth: true,
+                                    loading: false,
+                                    disabled: false,
+                                  ),
+                                ),
+                              ),
+                            ].divide(SizedBox(height: 16.0)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
