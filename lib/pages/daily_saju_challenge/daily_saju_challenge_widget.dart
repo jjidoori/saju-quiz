@@ -13,13 +13,15 @@ export 'daily_saju_challenge_model.dart';
 
 class DailySajuChallengeWidget extends StatefulWidget {
   const DailySajuChallengeWidget({
-    super.key,
-    this.questionNumber,
-    this.answeredCorrect,
-  });
+  super.key,
+  this.questionNumber,
+  this.answeredCorrect,
+  this.questionIds,
+});
 
-  final int? questionNumber;
-  final int? answeredCorrect;
+final int? questionNumber;
+final int? answeredCorrect;
+final List<String>? questionIds;
 
   static String routeName = 'DailySajuChallenge';
   static String routePath = '/dailySajuChallenge';
@@ -34,7 +36,8 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
   DailyChallengeRecord? _randomQuestion;
   bool _isLoading = true;
   late int _currentQuestion;
-  late int _correctCount;
+late int _correctCount;
+List<String> _generatedIds = [];
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -46,19 +49,30 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
     _correctCount = widget.answeredCorrect ?? 0;
 
    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      final questions = await queryDailyChallengeRecordOnce();
-      if (questions.isNotEmpty) {
-        final today = DateTime.now();
-        final seed = today.year * 10000 + today.month * 100 + today.day;
-        questions.shuffle(Random(seed));
-        final index = (_currentQuestion - 1) % questions.length;
-        safeSetState(() {
-          _randomQuestion = questions[index];
-          _model.correctIndex = questions[index].correctIndex;
-          _isLoading = false;
-        });
-      }
+  final questions = await queryDailyChallengeRecordOnce();
+  if (questions.isNotEmpty) {
+    DailyChallengeRecord? target;
+    if (widget.questionIds != null && widget.questionIds!.isNotEmpty) {
+      final id = widget.questionIds![_currentQuestion - 1];
+      target = questions.firstWhere(
+        (q) => q.reference.id == id,
+        orElse: () => questions.first,
+      );
+    } else {
+      final today = DateTime.now();
+      final seed = today.year * 10000 + today.month * 100 + today.day;
+      questions.shuffle(Random(seed));
+      // 첫 문제일 때 questionIds 생성해서 저장
+      _generatedIds = questions.take(5).map((q) => q.reference.id).toList();
+      target = questions.first;
+    }
+    safeSetState(() {
+      _randomQuestion = target;
+      _model.correctIndex = target!.correctIndex;
+      _isLoading = false;
     });
+  }
+});
   }
 
   @override
@@ -306,10 +320,11 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
                           context.pushNamed(
                             ResultExplanationWidget.routeName,
                             queryParameters: {
-                              'questionId': serializeParam(
-                                _randomQuestion?.reference.id ?? '',
-                                ParamType.String,
-                              ),
+                              'questionIds': serializeParam(
+  widget.questionIds ?? _generatedIds,
+  ParamType.String,
+  isList: true,
+),
                               'isCorrect': serializeParam(
                                 isCorrect,
                                 ParamType.bool,
