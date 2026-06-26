@@ -366,10 +366,7 @@ safeSetState(() {
                                 isCorrect,
                                 ParamType.bool,
                               ),
-                              'explanationText': serializeParam(
-                                _randomQuestion?.explanationText ?? '',
-                                ParamType.String,
-                              ),
+                          
                               'questionNumber': serializeParam(
                                 _currentQuestion,
                                 ParamType.int,
