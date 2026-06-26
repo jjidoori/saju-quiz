@@ -17,11 +17,13 @@ class DailySajuChallengeWidget extends StatefulWidget {
   this.questionNumber,
   this.answeredCorrect,
   this.questionIds,
+  this.category,
 });
 
 final int? questionNumber;
 final int? answeredCorrect;
 final List<String>? questionIds;
+final String? category;
 
   static String routeName = 'DailySajuChallenge';
   static String routePath = '/dailySajuChallenge';
@@ -55,11 +57,14 @@ List<String> _generatedIds = [];
     
     // 첫 문제일 때만 questionIds 생성
     if (_currentQuestion == 1 || appState.todayQuestionIds.isEmpty) {
-      final today = DateTime.now();
-      final seed = today.year * 10000 + today.month * 100 + today.day;
-      questions.shuffle(Random(seed));
-      appState.todayQuestionIds = questions.take(5).map((q) => q.reference.id).toList();
-    }
+  final today = DateTime.now();
+  final seed = today.year * 10000 + today.month * 100 + today.day;
+  final filtered = widget.category != null
+      ? questions.where((q) => q.category == widget.category).toList()
+      : questions;
+  filtered.shuffle(Random(seed));
+  appState.todayQuestionIds = filtered.take(5).map((q) => q.reference.id).toList();
+}
     
     final id = appState.todayQuestionIds[_currentQuestion - 1];
     final target = questions.firstWhere(
@@ -157,7 +162,7 @@ List<String> _generatedIds = [];
                               ),
                         ),
                         Text(
-                          '음양오행 기초',
+  widget.category ?? '음양오행 기초',
                           style: FlutterFlowTheme.of(context)
                               .labelSmall
                               .override(
@@ -325,6 +330,10 @@ List<String> _generatedIds = [];
   widget.questionIds ?? _generatedIds,
   ParamType.String,
   isList: true,
+),
+'category': serializeParam(
+  widget.category ?? '음양',
+  ParamType.String,
 ),
                               'isCorrect': serializeParam(
                                 isCorrect,
