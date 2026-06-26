@@ -1,3 +1,4 @@
+import 'dart:math';
 import '/backend/backend.dart';
 import '/components/button/button_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -44,13 +45,16 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
     _currentQuestion = widget.questionNumber ?? 1;
     _correctCount = widget.answeredCorrect ?? 0;
 
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
+   SchedulerBinding.instance.addPostFrameCallback((_) async {
       final questions = await queryDailyChallengeRecordOnce();
       if (questions.isNotEmpty) {
-        questions.shuffle();
+        final today = DateTime.now();
+        final seed = today.year * 10000 + today.month * 100 + today.day;
+        questions.shuffle(Random(seed));
+        final index = (_currentQuestion - 1) % questions.length;
         safeSetState(() {
-          _randomQuestion = questions.first;
-          _model.correctIndex = questions.first.correctIndex;
+          _randomQuestion = questions[index];
+          _model.correctIndex = questions[index].correctIndex;
           _isLoading = false;
         });
       }
