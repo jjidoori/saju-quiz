@@ -10,7 +10,7 @@ class DailySajuChallengeModel
     extends FlutterFlowModel<DailySajuChallengeWidget> {
   ///  Local state fields for this page.
 
-  int? selectedIndex = 2;
+  int? selectedIndex;
 
   int? correctIndex = 0;
 
