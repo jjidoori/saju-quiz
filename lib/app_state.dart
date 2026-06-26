@@ -2,19 +2,14 @@ import 'package:flutter/material.dart';
 
 class FFAppState extends ChangeNotifier {
   static FFAppState _instance = FFAppState._internal();
-
   factory FFAppState() {
     return _instance;
   }
-
   FFAppState._internal();
-
   static void reset() {
     _instance = FFAppState._internal();
   }
-
   Future initializePersistedState() async {}
-
   void update(VoidCallback callback) {
     callback();
     notifyListeners();
@@ -63,13 +58,14 @@ class FFAppState extends ChangeNotifier {
   }
 
   String _dictionaryFilter = 'All';
-String get dictionaryFilter => _dictionaryFilter;
-set dictionaryFilter(String value) {
-  _dictionaryFilter = value;
-}
+  String get dictionaryFilter => _dictionaryFilter;
+  set dictionaryFilter(String value) {
+    _dictionaryFilter = value;
+  }
 
-List<String> _todayQuestionIds = [];
-List<String> get todayQuestionIds => _todayQuestionIds;
-set todayQuestionIds(List<String> value) {
-  _todayQuestionIds = value;
+  List<String> _todayQuestionIds = [];
+  List<String> get todayQuestionIds => _todayQuestionIds;
+  set todayQuestionIds(List<String> value) {
+    _todayQuestionIds = value;
+  }
 }
