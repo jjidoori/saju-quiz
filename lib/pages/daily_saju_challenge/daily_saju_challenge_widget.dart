@@ -371,9 +371,9 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
                                     ResultExplanationWidget.routeName,
                                     queryParameters: {
                                       'questionId': serializeParam(
-                                        '',
-                                        ParamType.String,
-                                      ),
+  dailySajuChallengeDailyChallengeRecord?.reference.id ?? '',
+  ParamType.String,
+),
                                       'isCorrect': serializeParam(
                                         _model.selectedIndex == _model.correctIndex,
                                         ParamType.bool,
