@@ -56,7 +56,10 @@ List<String> _generatedIds = [];
     final appState = FFAppState();
     
     // 첫 문제일 때만 questionIds 생성
-    if (_currentQuestion == 1 || appState.todayQuestionIds.isEmpty) {
+    if (_currentQuestion == 1) {
+  appState.todayQuestionIds = [];
+}
+if (_currentQuestion == 1 || appState.todayQuestionIds.isEmpty) {
   final today = DateTime.now();
   final seed = today.year * 10000 + today.month * 100 + today.day;
   final filtered = widget.category != null
