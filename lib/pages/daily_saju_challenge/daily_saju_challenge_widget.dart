@@ -1,6 +1,5 @@
 import '/backend/backend.dart';
 import '/components/button/button_widget.dart';
-import '/components/reminder_card/reminder_card_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -98,125 +97,76 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
-  child: Padding(
-    padding: EdgeInsetsDirectional.fromSTEB(24.0, 64.0, 24.0, 0.0),
-    child: Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        FlutterFlowIconButton(
-          borderRadius: 8.0,
-          buttonSize: 40.0,
-          fillColor: Colors.transparent,
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: FlutterFlowTheme.of(context).primary,
-            size: 20.0,
-          ),
-          onPressed: () async {
-            context.pop();
-          },
-        ),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Daily Challenge',
-              style: FlutterFlowTheme.of(context)
-                  .titleMedium
-                  .override(
-                    font: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold,
+              // 헤더
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(24.0, 64.0, 24.0, 0.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    FlutterFlowIconButton(
+                      borderRadius: 8.0,
+                      buttonSize: 40.0,
+                      fillColor: Colors.transparent,
+                      icon: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: FlutterFlowTheme.of(context).primary,
+                        size: 20.0,
+                      ),
+                      onPressed: () async {
+                        context.pop();
+                      },
                     ),
-                    color: FlutterFlowTheme.of(context).primaryText,
-                    letterSpacing: 0.0,
-                    fontWeight: FontWeight.bold,
-                    lineHeight: 1.4,
-                  ),
-            ),
-            Text(
-              '음양오행 기초',
-              style: FlutterFlowTheme.of(context)
-                  .labelSmall
-                  .override(
-                    font: GoogleFonts.inter(),
-                    color: FlutterFlowTheme.of(context).secondaryText,
-                    letterSpacing: 0.0,
-                    lineHeight: 1.2,
-                  ),
-            ),
-          ],
-        ),
-        FlutterFlowIconButton(
-          borderRadius: 8.0,
-          buttonSize: 40.0,
-          fillColor: Colors.transparent,
-          icon: Icon(
-            Icons.info_outline_rounded,
-            color: FlutterFlowTheme.of(context).primary,
-            size: 20.0,
-          ),
-          onPressed: () {
-            print('IconButton pressed ...');
-          },
-        ),
-      ],
-    ),
-  ),
-),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Daily Challenge',
-                            style: FlutterFlowTheme.of(context)
-                                .titleMedium
-                                .override(
-                                  font: GoogleFonts.inter(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  color: FlutterFlowTheme.of(context).primaryText,
-                                  letterSpacing: 0.0,
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Daily Challenge',
+                          style: FlutterFlowTheme.of(context)
+                              .titleMedium
+                              .override(
+                                font: GoogleFonts.inter(
                                   fontWeight: FontWeight.bold,
-                                  lineHeight: 1.4,
                                 ),
-                          ),
-                          Text(
-                            '음양오행 기초',
-                            style: FlutterFlowTheme.of(context)
-                                .labelSmall
-                                .override(
-                                  font: GoogleFonts.inter(),
-                                  color: FlutterFlowTheme.of(context).secondaryText,
-                                  letterSpacing: 0.0,
-                                  lineHeight: 1.2,
-                                ),
-                          ),
-                        ],
-                      ),
-                      FlutterFlowIconButton(
-                        borderRadius: 8.0,
-                        buttonSize: 40.0,
-                        fillColor: Colors.transparent,
-                        icon: Icon(
-                          Icons.info_outline_rounded,
-                          color: FlutterFlowTheme.of(context).primary,
-                          size: 20.0,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.bold,
+                                lineHeight: 1.4,
+                              ),
                         ),
-                        onPressed: () {
-                          print('IconButton pressed ...');
-                        },
+                        Text(
+                          '음양오행 기초',
+                          style: FlutterFlowTheme.of(context)
+                              .labelSmall
+                              .override(
+                                font: GoogleFonts.inter(),
+                                color: FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                                lineHeight: 1.2,
+                              ),
+                        ),
+                      ],
+                    ),
+                    FlutterFlowIconButton(
+                      borderRadius: 8.0,
+                      buttonSize: 40.0,
+                      fillColor: Colors.transparent,
+                      icon: Icon(
+                        Icons.info_outline_rounded,
+                        color: FlutterFlowTheme.of(context).primary,
+                        size: 20.0,
                       ),
-                    ],
-                  ),
+                      onPressed: () {
+                        print('IconButton pressed ...');
+                      },
+                    ),
+                  ],
                 ),
               ),
+              // 본문
               Padding(
                 padding: EdgeInsets.all(24.0),
                 child: Column(
@@ -325,6 +275,7 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
                   ],
                 ),
               ),
+              // 하단 버튼
               Container(
                 decoration: BoxDecoration(
                   color: FlutterFlowTheme.of(context).secondaryBackground,
@@ -339,62 +290,55 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
                     ),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(24.0, 32.0, 24.0, 32.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            splashColor: Colors.transparent,
-                            focusColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () async {
-                              final isCorrect = _model.selectedIndex == _model.correctIndex;
-                              final newCorrectCount = _correctCount + (isCorrect ? 1 : 0);
+                      child: InkWell(
+                        splashColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onTap: () async {
+                          final isCorrect = _model.selectedIndex == _model.correctIndex;
+                          final newCorrectCount = _correctCount + (isCorrect ? 1 : 0);
 
-                              context.pushNamed(
-                                ResultExplanationWidget.routeName,
-                                queryParameters: {
-                                  'questionId': serializeParam(
-                                    _randomQuestion?.reference.id ?? '',
-                                    ParamType.String,
-                                  ),
-                                  'isCorrect': serializeParam(
-                                    isCorrect,
-                                    ParamType.bool,
-                                  ),
-                                  'explanationText': serializeParam(
-                                    _randomQuestion?.explanationText ?? '',
-                                    ParamType.String,
-                                  ),
-                                  'questionNumber': serializeParam(
-                                    _currentQuestion,
-                                    ParamType.int,
-                                  ),
-                                  'answeredCorrect': serializeParam(
-                                    newCorrectCount,
-                                    ParamType.int,
-                                  ),
-                                }.withoutNulls,
-                              );
-                            },
-                            child: wrapWithModel(
-                              model: _model.buttonModel,
-                              updateCallback: () => safeSetState(() {}),
-                              child: ButtonWidget(
-                                iconPresent: false,
-                                iconEndPresent: false,
-                                content: '정답 제출',
-                                variant: 'primary',
-                                size: 'large',
-                                fullWidth: true,
-                                loading: false,
-                                disabled: false,
+                          context.pushNamed(
+                            ResultExplanationWidget.routeName,
+                            queryParameters: {
+                              'questionId': serializeParam(
+                                _randomQuestion?.reference.id ?? '',
+                                ParamType.String,
                               ),
-                            ),
+                              'isCorrect': serializeParam(
+                                isCorrect,
+                                ParamType.bool,
+                              ),
+                              'explanationText': serializeParam(
+                                _randomQuestion?.explanationText ?? '',
+                                ParamType.String,
+                              ),
+                              'questionNumber': serializeParam(
+                                _currentQuestion,
+                                ParamType.int,
+                              ),
+                              'answeredCorrect': serializeParam(
+                                newCorrectCount,
+                                ParamType.int,
+                              ),
+                            }.withoutNulls,
+                          );
+                        },
+                        child: wrapWithModel(
+                          model: _model.buttonModel,
+                          updateCallback: () => safeSetState(() {}),
+                          child: ButtonWidget(
+                            iconPresent: false,
+                            iconEndPresent: false,
+                            content: '정답 제출',
+                            variant: 'primary',
+                            size: 'large',
+                            fullWidth: true,
+                            loading: false,
+                            disabled: false,
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
