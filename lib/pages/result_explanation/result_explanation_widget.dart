@@ -17,8 +17,12 @@ class ResultExplanationWidget extends StatefulWidget {
   this.questionNumber,
   this.answeredCorrect,
   this.questionIds,
+  this.category,
 });
 
+final List<String>? questionIds;
+final String? category;
+  
   final String? questionId;
   final bool? isCorrect;
   final String? explanationText;
