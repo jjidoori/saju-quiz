@@ -107,10 +107,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
   builder: (context, params) => ResultExplanationWidget(
     questionId: params.getParam('questionId', ParamType.String),
     isCorrect: params.getParam('isCorrect', ParamType.bool),
-    explanationText: params.getParam('explanationText', ParamType.String),
-  ),
-),
-            explanationText: params.getParam(
+                explanationText: params.getParam(
   'explanationText',
   ParamType.String,
 ),
