@@ -46,9 +46,7 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<DailyChallengeRecord>>(
-      stream: queryDailyChallengeRecord(
-        singleRecord: true,
-      ),
+      stream: queryDailyChallengeRecord(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Scaffold(
