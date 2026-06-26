@@ -30,7 +30,6 @@ class _BottomNav2WidgetState extends State<BottomNav2Widget> {
   @override
   void dispose() {
     _model.maybeDispose();
-
     super.dispose();
   }
 
@@ -47,77 +46,68 @@ class _BottomNav2WidgetState extends State<BottomNav2Widget> {
       ),
       child: Padding(
         padding: EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 8.0),
-        child: Container(
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  wrapWithModel(
-                    model: _model.navItemModel1,
-                    updateCallback: () => safeSetState(() {}),
-                    child: NavItemWidget(
-                      label: 'Home',
-                      icon: Icon(
-                        Icons.home_rounded,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 24.0,
-                      ),
-                      target: 'home',
-                      selected: false,
-                    ),
-                  ),
-                  wrapWithModel(
-                    model: _model.navItemModel2,
-                    updateCallback: () => safeSetState(() {}),
-                    child: NavItemWidget(
-                      label: 'Journey',
-                      icon: Icon(
-                        Icons.map_rounded,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 24.0,
-                      ),
-                      target: 'learning_path',
-                      selected: true,
-                    ),
-                  ),
-                  wrapWithModel(
-                    model: _model.navItemModel3,
-                    updateCallback: () => safeSetState(() {}),
-                    child: NavItemWidget(
-                      label: 'Practice',
-                      icon: Icon(
-                        Icons.quiz_rounded,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 24.0,
-                      ),
-                      target: 'quiz',
-                      selected: false,
-                    ),
-                  ),
-                  wrapWithModel(
-                    model: _model.navItemModel4,
-                    updateCallback: () => safeSetState(() {}),
-                    child: NavItemWidget(
-                      label: 'Mastery',
-                      icon: Icon(
-                        Icons.person_rounded,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 24.0,
-                      ),
-                      target: 'profile',
-                      selected: false,
-                    ),
-                  ),
-                ],
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            wrapWithModel(
+              model: _model.navItemModel1,
+              updateCallback: () => safeSetState(() {}),
+              child: NavItemWidget(
+                label: 'Home',
+                icon: Icon(
+                  Icons.home_rounded,
+                  color: FlutterFlowTheme.of(context).primaryText,
+                  size: 24.0,
+                ),
+                target: 'home',
+                selected: false,
               ),
-            ],
-          ),
+            ),
+            wrapWithModel(
+              model: _model.navItemModel2,
+              updateCallback: () => safeSetState(() {}),
+              child: NavItemWidget(
+                label: 'Journey',
+                icon: Icon(
+                  Icons.map_rounded,
+                  color: FlutterFlowTheme.of(context).primaryText,
+                  size: 24.0,
+                ),
+                target: 'learning_path',
+                selected: true,
+              ),
+            ),
+            wrapWithModel(
+              model: _model.navItemModel3,
+              updateCallback: () => safeSetState(() {}),
+              child: NavItemWidget(
+                label: 'Practice',
+                icon: Icon(
+                  Icons.quiz_rounded,
+                  color: FlutterFlowTheme.of(context).primaryText,
+                  size: 24.0,
+                ),
+                target: 'quiz',
+                selected: false,
+              ),
+            ),
+            wrapWithModel(
+              model: _model.navItemModel4,
+              updateCallback: () => safeSetState(() {}),
+              child: NavItemWidget(
+                label: 'Mastery',
+                icon: Icon(
+                  Icons.person_rounded,
+                  color: FlutterFlowTheme.of(context).primaryText,
+                  size: 24.0,
+                ),
+                target: 'profile',
+                selected: false,
+              ),
+            ),
+          ],
         ),
       ),
     );
