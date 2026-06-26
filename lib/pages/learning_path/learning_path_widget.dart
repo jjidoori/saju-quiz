@@ -152,7 +152,7 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: 8.0),
+                      SizedBox(height: 24.0),
                       ...List.generate(_categories.length, (i) {
                         final cat = _categories[i];
                         final category = cat['category'] as String;
