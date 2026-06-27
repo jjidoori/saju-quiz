@@ -269,7 +269,6 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                                 ),
                               ),
                             ),
-                            // 오행 하위 카테고리 아코디언
                             if (hasSubcategories && _ohangExpanded && isUnlocked)
                               Padding(
                                 padding: EdgeInsets.only(left: 24.0, top: 4.0),
@@ -279,9 +278,9 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                                     final subCategory = sub['subCategory'] as String;
                                     final subKey = '오행_$subCategory';
                                     final isSubCompleted = appState.isCategoryCompleted(subKey);
-                                   final prevSubCategory = _ohangSubcategories[j-1]['subCategory'] as String;
-final prevKey = prevSubCategory == '오행기초' ? '오행_오행기초' : '오행_$prevSubCategory';
-final isSubUnlocked = j == 0 || appState.isCategoryCompleted(prevKey);']}');
+                                    final isSubUnlocked = j == 0
+                                        ? true
+                                        : appState.isCategoryCompleted('오행_${_ohangSubcategories[j-1]['subCategory']}');
 
                                     return Column(
                                       children: [
@@ -294,9 +293,9 @@ final isSubUnlocked = j == 0 || appState.isCategoryCompleted(prevKey);']}');
                                               DailySajuChallengeWidget.routeName,
                                               queryParameters: {
                                                 'category': '오행',
-                                              'subCategory': subCategory == '오행기초' ? null : subCategory,
-'questionNumber': '1',
-'answeredCorrect': '0',
+                                                'subCategory': subCategory == '오행기초' ? null : subCategory,
+                                                'questionNumber': '1',
+                                                'answeredCorrect': '0',
                                               },
                                             );
                                           } : null,
