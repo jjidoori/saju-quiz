@@ -13,17 +13,17 @@ export 'daily_saju_challenge_model.dart';
 
 class DailySajuChallengeWidget extends StatefulWidget {
   const DailySajuChallengeWidget({
-  super.key,
-  this.questionNumber,
-  this.answeredCorrect,
-  this.questionIds,
-  this.category,
-});
+    super.key,
+    this.questionNumber,
+    this.answeredCorrect,
+    this.questionIds,
+    this.category,
+  });
 
-final int? questionNumber;
-final int? answeredCorrect;
-final List<String>? questionIds;
-final String? category;
+  final int? questionNumber;
+  final int? answeredCorrect;
+  final List<String>? questionIds;
+  final String? category;
 
   static String routeName = 'DailySajuChallenge';
   static String routePath = '/dailySajuChallenge';
@@ -38,9 +38,9 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
   DailyChallengeRecord? _randomQuestion;
   bool _isLoading = true;
   late int _currentQuestion;
-late int _correctCount;
-List<String> _generatedIds = [];
-List<String> _shuffledOptions = [];
+  late int _correctCount;
+  List<String> _generatedIds = [];
+  List<String> _shuffledOptions = [];
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -51,61 +51,58 @@ List<String> _shuffledOptions = [];
     _currentQuestion = widget.questionNumber ?? 1;
     _correctCount = widget.answeredCorrect ?? 0;
 
-   SchedulerBinding.instance.addPostFrameCallback((_) async {
-  final questions = await queryDailyChallengeRecordOnce();
-  if (questions.isNotEmpty) {
-    final appState = FFAppState();
-    
-    // 첫 문제일 때만 questionIds 생성
-    if (_currentQuestion == 1) {
-  appState.todayQuestionIds = [];
-}
-if (_currentQuestion == 1 || appState.todayQuestionIds.isEmpty) {
-  final seed = DateTime.now().millisecondsSinceEpoch;
-  final filtered = widget.category != null
-      ? questions.where((q) => q.category == widget.category).toList()
-      : questions;
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      final questions = await queryDailyChallengeRecordOnce();
+      if (questions.isNotEmpty) {
+        final appState = FFAppState();
 
-  List<String> selectedIds = [];
+        if (_currentQuestion == 1) {
+          appState.todayQuestionIds = [];
+        }
+        if (_currentQuestion == 1 || appState.todayQuestionIds.isEmpty) {
+          final seed = DateTime.now().millisecondsSinceEpoch;
+          final filtered = widget.category != null
+              ? questions.where((q) => q.category == widget.category).toList()
+              : questions;
 
-  if (widget.category == '오행') {
-    // 목/화/토/금/수 각 1문제씩
-    final subCategories = ['목', '화', '토', '금', '수'];
-    for (final sub in subCategories) {
-      final subList = filtered.where((q) => q.subCategory == sub).toList();
-      subList.shuffle(Random(seed));
-      if (subList.isNotEmpty) {
-        selectedIds.add(subList.first.reference.id);
+          List<String> selectedIds = [];
+
+          if (widget.category == '오행') {
+            final subCategories = ['목', '화', '토', '금', '수'];
+            for (final sub in subCategories) {
+              final subList = filtered.where((q) => q.subCategory == sub).toList();
+              subList.shuffle(Random(seed));
+              if (subList.isNotEmpty) {
+                selectedIds.add(subList.first.reference.id);
+              }
+            }
+          } else {
+            filtered.shuffle(Random(seed));
+            selectedIds = filtered.take(5).map((q) => q.reference.id).toList();
+          }
+
+          appState.todayQuestionIds = selectedIds;
+        }
+
+        final id = appState.todayQuestionIds[_currentQuestion - 1];
+        final target = questions.firstWhere(
+          (q) => q.reference.id == id,
+          orElse: () => questions.first,
+        );
+
+        final opts = [...target.options];
+        final correctAnswer = opts[target.correctIndex];
+        opts.shuffle(Random(DateTime.now().millisecondsSinceEpoch));
+        final newCorrectIndex = opts.indexOf(correctAnswer);
+
+        safeSetState(() {
+          _randomQuestion = target;
+          _model.correctIndex = newCorrectIndex;
+          _shuffledOptions = opts;
+          _isLoading = false;
+        });
       }
-    }
-  } else {
-    filtered.shuffle(Random(seed));
-    selectedIds = filtered.take(5).map((q) => q.reference.id).toList();
-  }
-
-  appState.todayQuestionIds = selectedIds;
-}
-    
-    final id = appState.todayQuestionIds[_currentQuestion - 1];
-    final target = questions.firstWhere(
-  (q) => q.reference.id == id,
-  orElse: () => questions.first,
-);
-
-// 보기 순서 랜덤 섞기
-final opts = [...target.options];
-final correctAnswer = opts[target.correctIndex];
-opts.shuffle(Random(DateTime.now().millisecondsSinceEpoch));
-final newCorrectIndex = opts.indexOf(correctAnswer);
-
-safeSetState(() {
-  _randomQuestion = target;
-  _model.correctIndex = newCorrectIndex;
-  _shuffledOptions = opts;
-  _isLoading = false;
-});
-  }
-});
+    });
   }
 
   @override
@@ -148,7 +145,6 @@ safeSetState(() {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              // 헤더
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(24.0, 64.0, 24.0, 0.0),
                 child: Row(
@@ -176,28 +172,22 @@ safeSetState(() {
                       children: [
                         Text(
                           'Daily Challenge',
-                          style: FlutterFlowTheme.of(context)
-                              .titleMedium
-                              .override(
-                                font: GoogleFonts.inter(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.bold,
-                                lineHeight: 1.4,
-                              ),
+                          style: FlutterFlowTheme.of(context).titleMedium.override(
+                            font: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            letterSpacing: 0.0,
+                            fontWeight: FontWeight.bold,
+                            lineHeight: 1.4,
+                          ),
                         ),
                         Text(
-  widget.category ?? '음양오행 기초',
-                          style: FlutterFlowTheme.of(context)
-                              .labelSmall
-                              .override(
-                                font: GoogleFonts.inter(),
-                                color: FlutterFlowTheme.of(context).secondaryText,
-                                letterSpacing: 0.0,
-                                lineHeight: 1.2,
-                              ),
+                          widget.category ?? '음양오행 기초',
+                          style: FlutterFlowTheme.of(context).labelSmall.override(
+                            font: GoogleFonts.inter(),
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                            letterSpacing: 0.0,
+                            lineHeight: 1.2,
+                          ),
                         ),
                       ],
                     ),
@@ -217,7 +207,6 @@ safeSetState(() {
                   ],
                 ),
               ),
-              // 본문
               Padding(
                 padding: EdgeInsets.all(24.0),
                 child: Column(
@@ -225,7 +214,6 @@ safeSetState(() {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // 진행바
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -326,7 +314,6 @@ safeSetState(() {
                   ],
                 ),
               ),
-              // 하단 버튼
               Container(
                 decoration: BoxDecoration(
                   color: FlutterFlowTheme.of(context).secondaryBackground,
@@ -351,27 +338,25 @@ safeSetState(() {
                           final newCorrectCount = _correctCount + (isCorrect ? 1 : 0);
 
                           context.pushNamed(
-                            context.pushNamed(
-  ResultExplanationWidget.routeName,
-  queryParameters: {
-    'questionIds': serializeParam(
-      widget.questionIds ?? _generatedIds,
-      ParamType.String,
-      isList: true,
-    ),
-    'category': serializeParam(
-      widget.category ?? '음양',
-      ParamType.String,
-    ),
-    'questionId': serializeParam(
-  _randomQuestion?.reference.id ?? '',
-  ParamType.String,
-),
-'isCorrect': serializeParam(
-  isCorrect,
-  ParamType.bool,
-),
-                          
+                            ResultExplanationWidget.routeName,
+                            queryParameters: {
+                              'questionId': serializeParam(
+                                _randomQuestion?.reference.id ?? '',
+                                ParamType.String,
+                              ),
+                              'questionIds': serializeParam(
+                                widget.questionIds ?? _generatedIds,
+                                ParamType.String,
+                                isList: true,
+                              ),
+                              'category': serializeParam(
+                                widget.category ?? '음양',
+                                ParamType.String,
+                              ),
+                              'isCorrect': serializeParam(
+                                isCorrect,
+                                ParamType.bool,
+                              ),
                               'questionNumber': serializeParam(
                                 _currentQuestion,
                                 ParamType.int,
