@@ -139,9 +139,10 @@ FFRoute(
   name: QuizResultWidget.routeName,
   path: QuizResultWidget.routePath,
   builder: (context, params) => QuizResultWidget(
-    category: params.getParam('category', ParamType.String),
-    correctCount: params.getParam('correctCount', ParamType.int),
-  ),
+  category: params.getParam('category', ParamType.String),
+  correctCount: params.getParam('correctCount', ParamType.int),
+  subCategory: params.getParam('subCategory', ParamType.String),
+),
 ),
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
