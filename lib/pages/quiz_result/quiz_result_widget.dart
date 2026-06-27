@@ -107,9 +107,12 @@ class _QuizResultWidgetState extends State<QuizResultWidget> {
               // 버튼
               InkWell(
                 onTap: () async {
-                  if (isPassed) {
-                    FFAppState().completeCategory(category);
-                    context.goNamed(LearningPathWidget.routeName);
+                if (isPassed) {
+  final completeKey = (widget.subCategory != null && widget.subCategory!.isNotEmpty)
+      ? '오행_${widget.subCategory}'
+      : category;
+  FFAppState().completeCategory(completeKey);
+  context.goNamed(LearningPathWidget.routeName);
                   } else {
                     FFAppState().update(() {
                       FFAppState().todayQuestionIds = [];
