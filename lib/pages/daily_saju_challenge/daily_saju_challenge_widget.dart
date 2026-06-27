@@ -12,18 +12,20 @@ import 'daily_saju_challenge_model.dart';
 export 'daily_saju_challenge_model.dart';
 
 class DailySajuChallengeWidget extends StatefulWidget {
-  const DailySajuChallengeWidget({
+ const DailySajuChallengeWidget({
     super.key,
     this.questionNumber,
     this.answeredCorrect,
     this.questionIds,
     this.category,
+    this.subCategory,
   });
 
   final int? questionNumber;
   final int? answeredCorrect;
   final List<String>? questionIds;
   final String? category;
+  final String? subCategory;
 
   static String routeName = 'DailySajuChallenge';
   static String routePath = '/dailySajuChallenge';
@@ -67,19 +69,25 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
 
           List<String> selectedIds = [];
 
-          if (widget.category == '오행') {
-            final subCategories = ['목', '화', '토', '금', '수'];
-            for (final sub in subCategories) {
-              final subList = filtered.where((q) => q.subCategory == sub).toList();
-              subList.shuffle(Random(seed));
-              if (subList.isNotEmpty) {
-                selectedIds.add(subList.first.reference.id);
-              }
-            }
-          } else {
-            filtered.shuffle(Random(seed));
-            selectedIds = filtered.take(5).map((q) => q.reference.id).toList();
-          }
+         if (widget.category == '오행' && widget.subCategory != null) {
+  // 오행 하위카테고리 (상생, 상극 등) - 해당 subCategory에서 5문제
+  final subList = filtered.where((q) => q.subCategory == widget.subCategory).toList();
+  subList.shuffle(Random(seed));
+  selectedIds = subList.take(5).map((q) => q.reference.id).toList();
+} else if (widget.category == '오행') {
+  // 오행 기초 - 목/화/토/금/수 각 1문제
+  final subCategories = ['목', '화', '토', '금', '수'];
+  for (final sub in subCategories) {
+    final subList = filtered.where((q) => q.subCategory == sub).toList();
+    subList.shuffle(Random(seed));
+    if (subList.isNotEmpty) {
+      selectedIds.add(subList.first.reference.id);
+    }
+  }
+} else {
+  filtered.shuffle(Random(seed));
+  selectedIds = filtered.take(5).map((q) => q.reference.id).toList();
+}
 
           appState.todayQuestionIds = selectedIds;
         }
@@ -181,7 +189,7 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
                           ),
                         ),
                         Text(
-                          widget.category ?? '음양오행 기초',
+                         widget.subCategory != null ? '오행 ${widget.subCategory}' : (widget.category ?? '음양오행 기초'),
                           style: FlutterFlowTheme.of(context).labelSmall.override(
                             font: GoogleFonts.inter(),
                             color: FlutterFlowTheme.of(context).secondaryText,
@@ -349,10 +357,14 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
                                 ParamType.String,
                                 isList: true,
                               ),
-                              'category': serializeParam(
-                                widget.category ?? '음양',
-                                ParamType.String,
-                              ),
+                             'category': serializeParam(
+  widget.category ?? '음양',
+  ParamType.String,
+),
+'subCategory': serializeParam(
+  widget.subCategory ?? '',
+  ParamType.String,
+),
                               'isCorrect': serializeParam(
                                 isCorrect,
                                 ParamType.bool,
