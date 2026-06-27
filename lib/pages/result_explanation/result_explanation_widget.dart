@@ -51,13 +51,14 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (widget.questionId != null && widget.questionId!.isNotEmpty) {
         try {
-          final doc = await DailyChallengeRecord.getDocumentOnce(
-            DailyChallengeRecord.collection.doc(widget.questionId),
-          );
-          safeSetState(() {
-            _explanationText = doc.explanationText;
-            _isLoading = false;
-          });
+          final docRef = DailyChallengeRecord.collection.doc(widget.questionId);
+final doc = await DailyChallengeRecord.getDocumentOnce(docRef);
+safeSetState(() {
+  _explanationText = doc.explanationText.isNotEmpty 
+      ? doc.explanationText 
+      : '해설을 불러올 수 없습니다.';
+  _isLoading = false;
+});
         } catch (e) {
           safeSetState(() {
             _explanationText = '해설을 불러올 수 없습니다.';
