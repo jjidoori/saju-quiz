@@ -9,13 +9,15 @@ export 'quiz_result_model.dart';
 
 class QuizResultWidget extends StatefulWidget {
   const QuizResultWidget({
-    super.key,
-    this.category,
-    this.correctCount,
-  });
+  super.key,
+  this.category,
+  this.correctCount,
+  this.subCategory,
+});
 
-  final String? category;
-  final int? correctCount;
+final String? category;
+final int? correctCount;
+final String? subCategory;
 
   static String routeName = 'QuizResult';
   static String routePath = '/quizResult';
@@ -117,7 +119,8 @@ class _QuizResultWidgetState extends State<QuizResultWidget> {
                       queryParameters: {
                         'questionNumber': serializeParam(1, ParamType.int),
                         'answeredCorrect': serializeParam(0, ParamType.int),
-                        'category': serializeParam(category, ParamType.String),
+                       'category': serializeParam(category, ParamType.String),
+'subCategory': serializeParam(widget.subCategory ?? '', ParamType.String),
                       }.withoutNulls,
                     );
                   }
