@@ -292,9 +292,9 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                                               DailySajuChallengeWidget.routeName,
                                               queryParameters: {
                                                 'category': '오행',
-                                                'subCategory': subCategory,
-                                                'questionNumber': '1',
-                                                'answeredCorrect': '0',
+                                              'subCategory': subCategory == '오행기초' ? null : subCategory,
+'questionNumber': '1',
+'answeredCorrect': '0',
                                               },
                                             );
                                           } : null,
