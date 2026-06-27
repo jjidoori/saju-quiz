@@ -82,7 +82,11 @@ bool isCategoryUnlocked(String category) {
     if (idx == 0) return true;
     if (idx < 0) return false;
     if (order[idx - 1] == '오행') {
-      return _completedCategories.contains('오행_부족');
+      return _completedCategories.contains('오행_기초') ||
+             _completedCategories.contains('오행_상생') ||
+             _completedCategories.contains('오행_상극') ||
+             _completedCategories.contains('오행_과다') ||
+             _completedCategories.contains('오행_부족');
     }
     return _completedCategories.contains(order[idx - 1]);
   }
