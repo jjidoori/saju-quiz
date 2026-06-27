@@ -351,21 +351,26 @@ safeSetState(() {
                           final newCorrectCount = _correctCount + (isCorrect ? 1 : 0);
 
                           context.pushNamed(
-                            ResultExplanationWidget.routeName,
-                            queryParameters: {
-                              'questionIds': serializeParam(
-  widget.questionIds ?? _generatedIds,
+                            context.pushNamed(
+  ResultExplanationWidget.routeName,
+  queryParameters: {
+    'questionIds': serializeParam(
+      widget.questionIds ?? _generatedIds,
+      ParamType.String,
+      isList: true,
+    ),
+    'category': serializeParam(
+      widget.category ?? '음양',
+      ParamType.String,
+    ),
+    'questionId': serializeParam(
+  _randomQuestion?.reference.id ?? '',
   ParamType.String,
-  isList: true,
 ),
-'category': serializeParam(
-  widget.category ?? '음양',
-  ParamType.String,
+'isCorrect': serializeParam(
+  isCorrect,
+  ParamType.bool,
 ),
-                              'isCorrect': serializeParam(
-                                isCorrect,
-                                ParamType.bool,
-                              ),
                           
                               'questionNumber': serializeParam(
                                 _currentQuestion,
