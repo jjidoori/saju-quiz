@@ -129,10 +129,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => UserProfileProgressWidget(),
         ),
         FFRoute(
-          name: WelcomeScreenWidget.routeName,
-          path: WelcomeScreenWidget.routePath,
-          builder: (context, params) => WelcomeScreenWidget(),
-        )
+  name: WelcomeScreenWidget.routeName,
+  path: WelcomeScreenWidget.routePath,
+  builder: (context, params) => WelcomeScreenWidget(),
+),
+FFRoute(
+  name: QuizResultWidget.routeName,
+  path: QuizResultWidget.routePath,
+  builder: (context, params) => QuizResultWidget(
+    category: params.getParam('category', ParamType.String),
+    correctCount: params.getParam('correctCount', ParamType.int),
+  ),
+),
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
 
