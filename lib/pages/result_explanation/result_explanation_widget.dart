@@ -1,9 +1,11 @@
+import '/backend/backend.dart';
 import '/components/button/button_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'result_explanation_model.dart';
 export 'result_explanation_model.dart';
@@ -13,7 +15,6 @@ class ResultExplanationWidget extends StatefulWidget {
     super.key,
     this.questionId,
     required this.isCorrect,
-    this.explanationText,
     this.questionNumber,
     this.answeredCorrect,
     this.questionIds,
@@ -22,7 +23,6 @@ class ResultExplanationWidget extends StatefulWidget {
 
   final String? questionId;
   final bool? isCorrect;
-  final String? explanationText;
   final int? questionNumber;
   final int? answeredCorrect;
   final List<String>? questionIds;
@@ -38,6 +38,8 @@ class ResultExplanationWidget extends StatefulWidget {
 
 class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
   late ResultExplanationModel _model;
+  String? _explanationText;
+  bool _isLoading = true;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -45,6 +47,30 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ResultExplanationModel());
+
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (widget.questionId != null && widget.questionId!.isNotEmpty) {
+        try {
+          final doc = await DailyChallengeRecord.getDocumentOnce(
+            DailyChallengeRecord.collection.doc(widget.questionId),
+          );
+          safeSetState(() {
+            _explanationText = doc.explanationText;
+            _isLoading = false;
+          });
+        } catch (e) {
+          safeSetState(() {
+            _explanationText = '해설을 불러올 수 없습니다.';
+            _isLoading = false;
+          });
+        }
+      } else {
+        safeSetState(() {
+          _explanationText = '해설을 불러올 수 없습니다.';
+          _isLoading = false;
+        });
+      }
+    });
   }
 
   @override
@@ -196,14 +222,16 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                               thickness: 1.0,
                               color: FlutterFlowTheme.of(context).alternate,
                             ),
-                            Text(
-                              widget.explanationText ?? '해설을 불러올 수 없습니다.',
-                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                font: GoogleFonts.inter(),
-                                letterSpacing: 0.0,
-                                lineHeight: 1.5,
-                              ),
-                            ),
+                            _isLoading
+                                ? CircularProgressIndicator()
+                                : Text(
+                                    _explanationText ?? '해설을 불러올 수 없습니다.',
+                                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                      font: GoogleFonts.inter(),
+                                      letterSpacing: 0.0,
+                                      lineHeight: 1.5,
+                                    ),
+                                  ),
                           ].divide(SizedBox(height: 16.0)),
                         ),
                       ),
