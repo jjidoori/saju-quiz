@@ -260,18 +260,15 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                   context.pushNamed(
                                     QuizResultWidget.routeName,
                                     queryParameters: {
-                                      'category': serializeParam(
-                                        widget.category ?? '음양',
-                                        ParamType.String,
-                                      ),
-                                      'subCategory': serializeParam(
-                                        widget.subCategory ?? '',
-                                        ParamType.String,
-                                      ),
-                                      'correctCount': serializeParam(
-                                        correctCount,
-                                        ParamType.int,
-                                      ),
+                                    'category': serializeParam(
+  widget.category ?? '음양',
+  ParamType.String,
+),
+'subCategory': serializeParam(
+  widget.subCategory,
+  ParamType.String,
+),
+}.withoutNulls,
                                     }.withoutNulls,
                                   );
                                 } else {
@@ -291,15 +288,15 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                         ParamType.String,
                                         isList: true,
                                       ),
-                                      'category': serializeParam(
-                                        widget.category ?? '음양',
-                                        ParamType.String,
-                                      ),
-                                      'subCategory': serializeParam(
-                                        widget.subCategory ?? '',
-                                        ParamType.String,
-                                      ),
-                                    }.withoutNulls,
+                                  'category': serializeParam(
+  widget.category ?? '음양',
+  ParamType.String,
+),
+'subCategory': serializeParam(
+  widget.subCategory,
+  ParamType.String,
+),
+}.withoutNulls,
                                   );
                                 }
                               },
