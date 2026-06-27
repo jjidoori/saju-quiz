@@ -13,3 +13,5 @@ export '/pages/user_profile_progress/user_profile_progress_widget.dart'
     show UserProfileProgressWidget;
 export '/pages/welcome_screen/welcome_screen_widget.dart'
     show WelcomeScreenWidget;
+export '/pages/quiz_result/quiz_result_widget.dart'
+    show QuizResultWidget;
