@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FFAppState extends ChangeNotifier {
   static FFAppState _instance = FFAppState._internal();
@@ -9,7 +10,12 @@ class FFAppState extends ChangeNotifier {
   static void reset() {
     _instance = FFAppState._internal();
   }
-  Future initializePersistedState() async {}
+
+  Future initializePersistedState() async {
+    final prefs = await SharedPreferences.getInstance();
+    _completedCategories = prefs.getStringList('completedCategories') ?? [];
+  }
+
   void update(VoidCallback callback) {
     callback();
     notifyListeners();
@@ -69,16 +75,17 @@ class FFAppState extends ChangeNotifier {
     _todayQuestionIds = value;
   }
 
-  // 완료된 카테고리 목록
   List<String> _completedCategories = [];
   List<String> get completedCategories => _completedCategories;
   set completedCategories(List<String> value) {
     _completedCategories = value;
   }
 
-  void completeCategory(String category) {
+  void completeCategory(String category) async {
     if (!_completedCategories.contains(category)) {
       _completedCategories = [..._completedCategories, category];
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setStringList('completedCategories', _completedCategories);
       notifyListeners();
     }
   }
