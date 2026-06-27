@@ -256,27 +256,21 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                           Expanded(
                             child: InkWell(
                               onTap: () async {
-                                if (isLastQuestion) {
-                                  // 5문제 완료 - 정답률 체크
-                                  final category = widget.category ?? '음양';
-                                  if (isPassed) {
-                                    // 4개 이상 맞으면 완료 처리
-                                    FFAppState().completeCategory(category);
-                                    context.goNamed(LearningPathWidget.routeName);
-                                  } else {
-                                    // 4개 미만이면 다시 도전
-                                    FFAppState().update(() {
-                                      FFAppState().todayQuestionIds = [];
-                                    });
-                                    context.pushNamed(
-                                      DailySajuChallengeWidget.routeName,
-                                      queryParameters: {
-                                        'questionNumber': serializeParam(1, ParamType.int),
-                                        'answeredCorrect': serializeParam(0, ParamType.int),
-                                        'category': serializeParam(category, ParamType.String),
-                                      }.withoutNulls,
-                                    );
-                                  }
+                               if (isLastQuestion) {
+  context.pushNamed(
+    QuizResultWidget.routeName,
+    queryParameters: {
+      'category': serializeParam(
+        widget.category ?? '음양',
+        ParamType.String,
+      ),
+      'correctCount': serializeParam(
+        correctCount,
+        ParamType.int,
+      ),
+    }.withoutNulls,
+  );
+}
                                 } else {
                                   context.pushNamed(
                                     DailySajuChallengeWidget.routeName,
