@@ -12,14 +12,18 @@ export 'result_explanation_model.dart';
 
 class ResultExplanationWidget extends StatefulWidget {
   const ResultExplanationWidget({
-    super.key,
-    this.questionId,
-    required this.isCorrect,
-    this.questionNumber,
-    this.answeredCorrect,
-    this.questionIds,
-    this.category,
-  });
+  super.key,
+  this.questionId,
+  required this.isCorrect,
+  this.questionNumber,
+  this.answeredCorrect,
+  this.questionIds,
+  this.category,
+  this.subCategory,
+});
+
+final String? category;
+final String? subCategory;
 
   final String? questionId;
   final bool? isCorrect;
@@ -258,10 +262,14 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                   context.pushNamed(
                                     QuizResultWidget.routeName,
                                     queryParameters: {
-                                      'category': serializeParam(
-                                        widget.category ?? '음양',
-                                        ParamType.String,
-                                      ),
+                                     'category': serializeParam(
+  widget.category ?? '음양',
+  ParamType.String,
+),
+'subCategory': serializeParam(
+  widget.subCategory ?? '',
+  ParamType.String,
+),
                                       'correctCount': serializeParam(
                                         correctCount,
                                         ParamType.int,
