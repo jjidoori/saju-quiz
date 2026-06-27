@@ -21,10 +21,11 @@ class LearningPathWidget extends StatefulWidget {
 class _LearningPathWidgetState extends State<LearningPathWidget> {
   late LearningPathModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _ohangExpanded = false;
 
   final List<Map<String, dynamic>> _categories = [
     {'category': '음양', 'title': '음양 (陰陽)', 'subtitle': '음과 양의 원리와 자연 현상', 'icon': Icons.brightness_4_rounded},
-    {'category': '오행', 'title': '오행 (五行)', 'subtitle': '목·화·토·금·수의 상생과 상극', 'icon': Icons.local_fire_department_rounded},
+    {'category': '오행', 'title': '오행 (五行)', 'subtitle': '목·화·토·금·수의 상생과 상극', 'icon': Icons.local_fire_department_rounded, 'hasSubcategories': true},
     {'category': '천간', 'title': '천간 (天干)', 'subtitle': '갑·을·병·정·무·기·경·신·임·계', 'icon': Icons.wb_sunny_rounded},
     {'category': '지지', 'title': '지지 (地支)', 'subtitle': '자·축·인·묘·진·사·오·미·신·유·술·해', 'icon': Icons.pets_rounded},
     {'category': '십이운성', 'title': '십이운성 (十二運星)', 'subtitle': '장생·목욕·관대·건록·제왕·쇠·병·사·묘·절·태·양', 'icon': Icons.loop_rounded},
@@ -32,6 +33,14 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
     {'category': '지장간', 'title': '지장간 (地藏干)', 'subtitle': '지지 속에 숨어있는 천간', 'icon': Icons.layers_rounded},
     {'category': '십성', 'title': '십성 (十星)', 'subtitle': '비겁·식상·재성·관성·인성의 원리', 'icon': Icons.stars_rounded},
     {'category': '납음오행', 'title': '납음오행 (納音五行)', 'subtitle': '60갑자의 소리와 오행의 관계', 'icon': Icons.music_note_rounded},
+  ];
+
+  final List<Map<String, dynamic>> _ohangSubcategories = [
+    {'subCategory': '오행기초', 'title': '오행 기초', 'subtitle': '목·화·토·금·수의 특성'},
+    {'subCategory': '상생', 'title': '오행 상생', 'subtitle': '수생목·목생화·화생토·토생금·금생수'},
+    {'subCategory': '상극', 'title': '오행 상극', 'subtitle': '목극토·토극수·수극화·화극금·금극목'},
+    {'subCategory': '과다', 'title': '오행 과다', 'subtitle': '특정 오행이 지나치게 강할 때'},
+    {'subCategory': '부족', 'title': '오행 부족', 'subtitle': '특정 오행이 부족할 때'},
   ];
 
   @override
@@ -159,22 +168,29 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                         final isCompleted = appState.isCategoryCompleted(category);
                         final isUnlocked = appState.isCategoryUnlocked(category);
                         final isCurrent = isUnlocked && !isCompleted;
+                        final hasSubcategories = cat['hasSubcategories'] == true;
 
                         return Column(
                           children: [
                             InkWell(
                               onTap: isUnlocked ? () {
-                                appState.update(() {
-                                  appState.todayQuestionIds = [];
-                                });
-                                context.pushNamed(
-                                  DailySajuChallengeWidget.routeName,
-                                  queryParameters: {
-                                    'category': category,
-                                    'questionNumber': '1',
-                                    'answeredCorrect': '0',
-                                  },
-                                );
+                                if (hasSubcategories) {
+                                  safeSetState(() {
+                                    _ohangExpanded = !_ohangExpanded;
+                                  });
+                                } else {
+                                  appState.update(() {
+                                    appState.todayQuestionIds = [];
+                                  });
+                                  context.pushNamed(
+                                    DailySajuChallengeWidget.routeName,
+                                    queryParameters: {
+                                      'category': category,
+                                      'questionNumber': '1',
+                                      'answeredCorrect': '0',
+                                    },
+                                  );
+                                }
                               } : null,
                               child: Container(
                                 decoration: BoxDecoration(
@@ -239,7 +255,13 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                                           ].divide(SizedBox(height: 4.0)),
                                         ),
                                       ),
-                                      if (isCompleted)
+                                      if (hasSubcategories && isUnlocked)
+                                        Icon(
+                                          _ohangExpanded ? Icons.expand_less : Icons.expand_more,
+                                          color: FlutterFlowTheme.of(context).primary,
+                                          size: 24.0,
+                                        ),
+                                      if (isCompleted && !hasSubcategories)
                                         Icon(Icons.check_circle_rounded,
                                             color: FlutterFlowTheme.of(context).success, size: 24.0),
                                     ],
@@ -247,6 +269,118 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                                 ),
                               ),
                             ),
+                            // 오행 하위 카테고리 아코디언
+                            if (hasSubcategories && _ohangExpanded && isUnlocked)
+                              Padding(
+                                padding: EdgeInsets.only(left: 24.0, top: 4.0),
+                                child: Column(
+                                  children: List.generate(_ohangSubcategories.length, (j) {
+                                    final sub = _ohangSubcategories[j];
+                                    final subCategory = sub['subCategory'] as String;
+                                    final subKey = '오행_$subCategory';
+                                    final isSubCompleted = appState.isCategoryCompleted(subKey);
+                                    final isSubUnlocked = j == 0 || appState.isCategoryCompleted('오행_${_ohangSubcategories[j-1]['subCategory']}');
+
+                                    return Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: isSubUnlocked ? () {
+                                            appState.update(() {
+                                              appState.todayQuestionIds = [];
+                                            });
+                                            context.pushNamed(
+                                              DailySajuChallengeWidget.routeName,
+                                              queryParameters: {
+                                                'category': '오행',
+                                                'subCategory': subCategory,
+                                                'questionNumber': '1',
+                                                'answeredCorrect': '0',
+                                              },
+                                            );
+                                          } : null,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: isSubUnlocked && !isSubCompleted
+                                                  ? FlutterFlowTheme.of(context).primary5
+                                                  : FlutterFlowTheme.of(context).secondaryBackground,
+                                              borderRadius: BorderRadius.circular(12.0),
+                                              border: Border.all(
+                                                color: isSubUnlocked && !isSubCompleted
+                                                    ? FlutterFlowTheme.of(context).primary
+                                                    : FlutterFlowTheme.of(context).alternate,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding: EdgeInsets.all(14.0),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    width: 36.0,
+                                                    height: 36.0,
+                                                    decoration: BoxDecoration(
+                                                      color: isSubUnlocked
+                                                          ? FlutterFlowTheme.of(context).primary20
+                                                          : FlutterFlowTheme.of(context).alternate,
+                                                      borderRadius: BorderRadius.circular(9999.0),
+                                                    ),
+                                                    child: Icon(
+                                                      isSubUnlocked ? Icons.menu_book_rounded : Icons.lock_rounded,
+                                                      color: isSubUnlocked
+                                                          ? FlutterFlowTheme.of(context).primary
+                                                          : FlutterFlowTheme.of(context).secondaryText,
+                                                      size: 16.0,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 12.0),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          sub['title'] as String,
+                                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                            font: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                                                            color: isSubUnlocked
+                                                                ? FlutterFlowTheme.of(context).primaryText
+                                                                : FlutterFlowTheme.of(context).secondaryText,
+                                                            letterSpacing: 0.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          sub['subtitle'] as String,
+                                                          style: FlutterFlowTheme.of(context).labelSmall.override(
+                                                            font: GoogleFonts.inter(),
+                                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                        ),
+                                                      ].divide(SizedBox(height: 2.0)),
+                                                    ),
+                                                  ),
+                                                  if (isSubCompleted)
+                                                    Icon(Icons.check_circle_rounded,
+                                                        color: FlutterFlowTheme.of(context).success, size: 20.0),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        if (j < _ohangSubcategories.length - 1)
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(vertical: 3.0),
+                                            child: Container(
+                                              width: 2.0,
+                                              height: 16.0,
+                                              color: FlutterFlowTheme.of(context).alternate,
+                                            ),
+                                          ),
+                                      ],
+                                    );
+                                  }),
+                                ),
+                              ),
                             if (i < _categories.length - 1)
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 4.0),
