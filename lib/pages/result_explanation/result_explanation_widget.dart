@@ -7,6 +7,7 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'result_explanation_model.dart';
 export 'result_explanation_model.dart';
 
@@ -52,13 +53,13 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
       if (widget.questionId != null && widget.questionId!.isNotEmpty) {
         try {
           final docRef = DailyChallengeRecord.collection.doc(widget.questionId);
-final doc = await DailyChallengeRecord.getDocumentOnce(docRef);
-safeSetState(() {
-  _explanationText = doc.explanationText.isNotEmpty 
-      ? doc.explanationText 
-      : '해설을 불러올 수 없습니다.';
-  _isLoading = false;
-});
+          final doc = await DailyChallengeRecord.getDocumentOnce(docRef);
+          safeSetState(() {
+            _explanationText = doc.explanationText.isNotEmpty
+                ? doc.explanationText
+                : '해설을 불러올 수 없습니다.';
+            _isLoading = false;
+          });
         } catch (e) {
           safeSetState(() {
             _explanationText = '해설을 불러올 수 없습니다.';
@@ -85,6 +86,7 @@ safeSetState(() {
     final currentQuestion = widget.questionNumber ?? 1;
     final correctCount = widget.answeredCorrect ?? 0;
     final isLastQuestion = currentQuestion >= 5;
+    final isPassed = correctCount >= 4;
 
     return GestureDetector(
       onTap: () {
@@ -255,7 +257,26 @@ safeSetState(() {
                             child: InkWell(
                               onTap: () async {
                                 if (isLastQuestion) {
-                                  context.goNamed(LearningPathWidget.routeName);
+                                  // 5문제 완료 - 정답률 체크
+                                  final category = widget.category ?? '음양';
+                                  if (isPassed) {
+                                    // 4개 이상 맞으면 완료 처리
+                                    FFAppState().completeCategory(category);
+                                    context.goNamed(LearningPathWidget.routeName);
+                                  } else {
+                                    // 4개 미만이면 다시 도전
+                                    FFAppState().update(() {
+                                      FFAppState().todayQuestionIds = [];
+                                    });
+                                    context.pushNamed(
+                                      DailySajuChallengeWidget.routeName,
+                                      queryParameters: {
+                                        'questionNumber': serializeParam(1, ParamType.int),
+                                        'answeredCorrect': serializeParam(0, ParamType.int),
+                                        'category': serializeParam(category, ParamType.String),
+                                      }.withoutNulls,
+                                    );
+                                  }
                                 } else {
                                   context.pushNamed(
                                     DailySajuChallengeWidget.routeName,
@@ -287,7 +308,9 @@ safeSetState(() {
                                 child: ButtonWidget(
                                   iconPresent: false,
                                   iconEndPresent: false,
-                                  content: isLastQuestion ? '결과 보기' : '다음 문제',
+                                  content: isLastQuestion
+                                      ? (isPassed ? '다음 단계로' : '다시 도전!')
+                                      : '다음 문제',
                                   variant: 'primary',
                                   size: 'large',
                                   fullWidth: true,
