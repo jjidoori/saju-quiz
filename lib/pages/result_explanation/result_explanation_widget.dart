@@ -7,7 +7,6 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'result_explanation_model.dart';
 export 'result_explanation_model.dart';
 
@@ -86,7 +85,6 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
     final currentQuestion = widget.questionNumber ?? 1;
     final correctCount = widget.answeredCorrect ?? 0;
     final isLastQuestion = currentQuestion >= 5;
-    final isPassed = correctCount >= 4;
 
     return GestureDetector(
       onTap: () {
@@ -256,21 +254,20 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                           Expanded(
                             child: InkWell(
                               onTap: () async {
-                               if (isLastQuestion) {
-  context.pushNamed(
-    QuizResultWidget.routeName,
-    queryParameters: {
-      'category': serializeParam(
-        widget.category ?? '음양',
-        ParamType.String,
-      ),
-      'correctCount': serializeParam(
-        correctCount,
-        ParamType.int,
-      ),
-    }.withoutNulls,
-  );
-}
+                                if (isLastQuestion) {
+                                  context.pushNamed(
+                                    QuizResultWidget.routeName,
+                                    queryParameters: {
+                                      'category': serializeParam(
+                                        widget.category ?? '음양',
+                                        ParamType.String,
+                                      ),
+                                      'correctCount': serializeParam(
+                                        correctCount,
+                                        ParamType.int,
+                                      ),
+                                    }.withoutNulls,
+                                  );
                                 } else {
                                   context.pushNamed(
                                     DailySajuChallengeWidget.routeName,
@@ -302,9 +299,7 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                 child: ButtonWidget(
                                   iconPresent: false,
                                   iconEndPresent: false,
-                                  content: isLastQuestion
-                                      ? (isPassed ? '다음 단계로' : '다시 도전!')
-                                      : '다음 문제',
+                                  content: isLastQuestion ? '결과 보기' : '다음 문제',
                                   variant: 'primary',
                                   size: 'large',
                                   fullWidth: true,
