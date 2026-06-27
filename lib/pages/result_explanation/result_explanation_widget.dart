@@ -265,7 +265,7 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                         ParamType.String,
                                       ),
                                       'subCategory': serializeParam(
-  widget.subCategory ?? '',
+  widget.subCategory ?? '오행기초',
   ParamType.String,
 ),
 'correctCount': serializeParam(
