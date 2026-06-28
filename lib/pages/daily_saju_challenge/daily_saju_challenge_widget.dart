@@ -100,11 +100,11 @@ final subCategories = ['목', '화', '토', '금', '수'];
           orElse: () => questions.first,
         );
 
-        final opts = [...target.options];
-        final correctAnswer = opts[target.correctIndex];
-        opts.shuffle(Random(DateTime.now().millisecondsSinceEpoch));
-        final newCorrectIndex = opts.indexOf(correctAnswer);
-
+       final opts = [...target.options];
+final correctAnswer = opts[target.correctIndex];
+final rng = Random();
+opts.shuffle(rng);
+final newCorrectIndex = opts.indexOf(correctAnswer);
         safeSetState(() {
           _randomQuestion = target;
           _model.correctIndex = newCorrectIndex;
