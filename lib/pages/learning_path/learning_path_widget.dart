@@ -278,9 +278,12 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                                     final subCategory = sub['subCategory'] as String;
                                     final subKey = '오행_$subCategory';
                                     final isSubCompleted = appState.isCategoryCompleted(subKey);
-                                    final isSubUnlocked = j == 0
-                                        ? true
-                                        : appState.isCategoryCompleted('오행_${_ohangSubcategories[j-1]['subCategory']}');
+                                    String getPrevKey(String sub) {
+  return sub == '오행기초' ? '오행_오행기초' : '오행_$sub';
+}
+final isSubUnlocked = j == 0
+    ? true
+    : appState.isCategoryCompleted(getPrevKey(_ohangSubcategories[j-1]['subCategory'] as String));
 
                                     return Column(
                                       children: [
