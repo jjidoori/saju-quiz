@@ -76,10 +76,12 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
   selectedIds = subList.take(5).map((q) => q.reference.id).toList();
 } else if (widget.category == '오행') {
   // 오행 기초 - 목/화/토/금/수 각 1문제
- final subCategories = ['목', '화', '토', '금', '수'];
+final subCategories = ['목', '화', '토', '금', '수'];
+  int seedOffset = 0;
   for (final sub in subCategories) {
     final subList = filtered.where((q) => q.subCategory == sub).toList();
-    subList.shuffle(Random(DateTime.now().microsecondsSinceEpoch));
+    subList.shuffle(Random(DateTime.now().microsecondsSinceEpoch + seedOffset));
+    seedOffset += 99999;
     if (subList.isNotEmpty) {
       selectedIds.add(subList.first.reference.id);
     }
