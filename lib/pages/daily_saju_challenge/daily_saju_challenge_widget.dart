@@ -195,7 +195,7 @@ final newCorrectIndex = opts.indexOf(correctAnswer);
                           ),
                         ),
                         Text(
-                         widget.subCategory != null ? '오행 ${widget.subCategory}' : (widget.category ?? '음양오행 기초'),
+                        widget.category == '오행' && widget.subCategory != null && widget.subCategory!.isNotEmpty ? '오행 ${widget.subCategory}' : (widget.category ?? '음양'),
                           style: FlutterFlowTheme.of(context).labelSmall.override(
                             font: GoogleFonts.inter(),
                             color: FlutterFlowTheme.of(context).secondaryText,
