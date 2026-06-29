@@ -110,8 +110,10 @@ class _QuizResultWidgetState extends State<QuizResultWidget> {
               if (isPassed) {
   final sub = widget.subCategory;
   String completeKey;
-  if (category == '오행') {
+if (category == '오행') {
     completeKey = (sub != null && sub.isNotEmpty) ? '오행_$sub' : '오행_오행기초';
+  } else if (category == '음양' && sub != null && sub.isNotEmpty) {
+    completeKey = '음양_$sub';
   } else {
     completeKey = category;
   }
