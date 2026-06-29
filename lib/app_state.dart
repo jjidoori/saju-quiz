@@ -81,9 +81,6 @@ bool isCategoryUnlocked(String category) {
     final idx = order.indexOf(category);
     if (idx == 0) return true;
     if (idx < 0) return false;
-    if (order[idx - 1] == '음양') {
-      return _completedCategories.contains('음양_심화');
-    }
 if (order[idx - 1] == '음양') {
       return _completedCategories.contains('음양_음양심화');
     }
