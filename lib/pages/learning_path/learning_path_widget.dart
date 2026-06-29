@@ -25,8 +25,8 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
   bool _eumyangExpanded = false;
 
   final List<Map<String, dynamic>> _eumyangSubcategories = [
-    {'subCategory': '음양일반', 'title': '음양 일반', 'subtitle': '음과 양의 기초 개념과 자연 현상'},
-    {'subCategory': '음양심화', 'title': '음양 심화', 'subtitle': '사주·한의학·역학에 적용되는 음양 원리'},
+{'subCategory': '음양_일반', 'title': '음양 일반', 'subtitle': '음과 양의 기초 개념과 자연 현상'},
+    {'subCategory': '음양_심화', 'title': '음양 심화', 'subtitle': '사주·한의학·역학에 적용되는 음양 원리'},
   ];
 
   final List<Map<String, dynamic>> _categories = [
