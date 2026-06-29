@@ -270,7 +270,7 @@ final newCorrectIndex = opts.indexOf(correctAnswer);
                             ),
                           ),
                           Text(
-                            _randomQuestion!.questionText,
+                            _randomQuestion!.question.isNotEmpty ? _randomQuestion!.question : _randomQuestion!.questionText,
                             style: FlutterFlowTheme.of(context).headlineSmall.override(
                               font: GoogleFonts.roboto(),
                               color: FlutterFlowTheme.of(context).primaryText,
