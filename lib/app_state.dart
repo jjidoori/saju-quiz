@@ -83,7 +83,8 @@ bool isCategoryUnlocked(String category) {
     if (idx < 0) return false;
 if (order[idx - 1] == '음양') {
       return _completedCategories.contains('음양_심화');
-if (order[idx - 1] == '오행') {
+    }
+    if (order[idx - 1] == '오행') {
       return _completedCategories.contains('오행_부족');
     }
     return _completedCategories.contains(order[idx - 1]);
