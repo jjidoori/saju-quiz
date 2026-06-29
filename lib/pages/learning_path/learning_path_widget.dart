@@ -21,10 +21,16 @@ class LearningPathWidget extends StatefulWidget {
 class _LearningPathWidgetState extends State<LearningPathWidget> {
   late LearningPathModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  bool _ohangExpanded = false;
+ bool _ohangExpanded = false;
+  bool _eumyangExpanded = false;
+
+  final List<Map<String, dynamic>> _eumyangSubcategories = [
+    {'subCategory': '음양일반', 'title': '음양 일반', 'subtitle': '음과 양의 기초 개념과 자연 현상'},
+    {'subCategory': '음양심화', 'title': '음양 심화', 'subtitle': '사주·한의학·역학에 적용되는 음양 원리'},
+  ];
 
   final List<Map<String, dynamic>> _categories = [
-    {'category': '음양', 'title': '음양 (陰陽)', 'subtitle': '음과 양의 원리와 자연 현상', 'icon': Icons.brightness_4_rounded},
+    {'category': '음양', 'title': '음양 (陰陽)', 'subtitle': '음과 양의 원리와 자연 현상', 'icon': Icons.brightness_4_rounded, 'hasSubcategories': true},
     {'category': '오행', 'title': '오행 (五行)', 'subtitle': '목·화·토·금·수의 상생과 상극', 'icon': Icons.local_fire_department_rounded, 'hasSubcategories': true},
     {'category': '천간', 'title': '천간 (天干)', 'subtitle': '갑·을·병·정·무·기·경·신·임·계', 'icon': Icons.wb_sunny_rounded},
     {'category': '지지', 'title': '지지 (地支)', 'subtitle': '자·축·인·묘·진·사·오·미·신·유·술·해', 'icon': Icons.pets_rounded},
@@ -173,8 +179,12 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                         return Column(
                           children: [
                             InkWell(
-                              onTap: isUnlocked ? () {
-                                if (hasSubcategories) {
+                          onTap: isUnlocked ? () {
+                                if (hasSubcategories && category == '음양') {
+                                  safeSetState(() {
+                                    _eumyangExpanded = !_eumyangExpanded;
+                                  });
+                                } else if (hasSubcategories) {
                                   safeSetState(() {
                                     _ohangExpanded = !_ohangExpanded;
                                   });
@@ -255,9 +265,11 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                                           ].divide(SizedBox(height: 4.0)),
                                         ),
                                       ),
-                                      if (hasSubcategories && isUnlocked)
+                                  if (hasSubcategories && isUnlocked)
                                         Icon(
-                                          _ohangExpanded ? Icons.expand_less : Icons.expand_more,
+                                          (category == '음양' ? _eumyangExpanded : _ohangExpanded)
+                                              ? Icons.expand_less
+                                              : Icons.expand_more,
                                           color: FlutterFlowTheme.of(context).primary,
                                           size: 24.0,
                                         ),
@@ -269,7 +281,115 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                                 ),
                               ),
                             ),
-                            if (hasSubcategories && _ohangExpanded && isUnlocked)
+                          if (hasSubcategories && category == '음양' && _eumyangExpanded && isUnlocked)
+                              Padding(
+                                padding: EdgeInsets.only(left: 24.0, top: 4.0),
+                                child: Column(
+                                  children: List.generate(_eumyangSubcategories.length, (j) {
+                                    final sub = _eumyangSubcategories[j];
+                                    final subCategory = sub['subCategory'] as String;
+                                    final subKey = '음양_$subCategory';
+                                    final isSubCompleted = appState.isCategoryCompleted(subKey);
+                                    bool isSubUnlocked;
+                                    if (j == 0) {
+                                      isSubUnlocked = true;
+                                    } else {
+                                      final prevSub = _eumyangSubcategories[j-1]['subCategory'] as String;
+                                      isSubUnlocked = appState.isCategoryCompleted('음양_$prevSub');
+                                    }
+                                    return Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: isSubUnlocked ? () {
+                                            appState.update(() {
+                                              appState.todayQuestionIds = [];
+                                            });
+                                            context.pushNamed(
+                                              DailySajuChallengeWidget.routeName,
+                                              queryParameters: {
+                                                'category': '음양',
+                                                'subCategory': subCategory,
+                                                'questionNumber': '1',
+                                                'answeredCorrect': '0',
+                                              },
+                                            );
+                                          } : null,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: isSubUnlocked && !isSubCompleted
+                                                  ? FlutterFlowTheme.of(context).primary5
+                                                  : FlutterFlowTheme.of(context).secondaryBackground,
+                                              borderRadius: BorderRadius.circular(12.0),
+                                              border: Border.all(
+                                                color: isSubUnlocked && !isSubCompleted
+                                                    ? FlutterFlowTheme.of(context).primary
+                                                    : FlutterFlowTheme.of(context).alternate,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding: EdgeInsets.all(14.0),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    width: 36.0,
+                                                    height: 36.0,
+                                                    decoration: BoxDecoration(
+                                                      color: isSubUnlocked
+                                                          ? FlutterFlowTheme.of(context).primary20
+                                                          : FlutterFlowTheme.of(context).alternate,
+                                                      borderRadius: BorderRadius.circular(9999.0),
+                                                    ),
+                                                    child: Icon(
+                                                      isSubUnlocked ? Icons.menu_book_rounded : Icons.lock_rounded,
+                                                      color: isSubUnlocked
+                                                          ? FlutterFlowTheme.of(context).primary
+                                                          : FlutterFlowTheme.of(context).secondaryText,
+                                                      size: 16.0,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 12.0),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          sub['title'] as String,
+                                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                            font: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                                                            color: isSubUnlocked
+                                                                ? FlutterFlowTheme.of(context).primaryText
+                                                                : FlutterFlowTheme.of(context).secondaryText,
+                                                            letterSpacing: 0.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          sub['subtitle'] as String,
+                                                          style: FlutterFlowTheme.of(context).labelSmall.override(
+                                                            font: GoogleFonts.inter(),
+                                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                        ),
+                                                      ].divide(SizedBox(height: 2.0)),
+                                                    ),
+                                                  ),
+                                                  if (isSubCompleted)
+                                                    Icon(Icons.check_circle_rounded,
+                                                        color: FlutterFlowTheme.of(context).success, size: 20.0),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 6.0),
+                                      ],
+                                    );
+                                  }),
+                                ),
+                              ),
+                            if (hasSubcategories && category == '오행' && _ohangExpanded && isUnlocked)
                               Padding(
                                 padding: EdgeInsets.only(left: 24.0, top: 4.0),
                                 child: Column(
