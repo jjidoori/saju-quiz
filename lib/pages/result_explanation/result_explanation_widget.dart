@@ -56,9 +56,11 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
           final docRef = DailyChallengeRecord.collection.doc(widget.questionId);
           final doc = await DailyChallengeRecord.getDocumentOnce(docRef);
           safeSetState(() {
-            _explanationText = doc.explanationText.isNotEmpty
-                ? doc.explanationText
-                : '해설을 불러올 수 없습니다.';
+          _explanationText = doc.explanation.isNotEmpty
+                ? doc.explanation
+                : doc.explanationText.isNotEmpty
+                    ? doc.explanationText
+                    : '해설을 불러올 수 없습니다.';
             _isLoading = false;
           });
         } catch (e) {
