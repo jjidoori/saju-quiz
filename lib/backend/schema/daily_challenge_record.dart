@@ -16,21 +16,30 @@ class DailyChallengeRecord extends FirestoreRecord {
     _initializeFields();
   }
 
-  // "questionText" field.
+// "questionText" field.
   String? _questionText;
   String get questionText => _questionText ?? '';
   bool hasQuestionText() => _questionText != null;
+
+  // "question" field.
+  String? _question;
+  String get question => _question ?? '';
+  bool hasQuestion() => _question != null;
 
   // "options" field.
   List<String>? _options;
   List<String> get options => _options ?? const [];
   bool hasOptions() => _options != null;
 
-  // "explanationText" field.
+// "explanationText" field.
   String? _explanationText;
   String get explanationText => _explanationText ?? '';
   bool hasExplanationText() => _explanationText != null;
 
+  // "explanation" field.
+  String? _explanation;
+  String get explanation => _explanation ?? '';
+  bool hasExplanation() => _explanation != null;
   // "energyTheme" field.
   String? _energyTheme;
   String get energyTheme => _energyTheme ?? '';
@@ -52,9 +61,11 @@ class DailyChallengeRecord extends FirestoreRecord {
   bool hasSubCategory() => _subCategory != null;
 
   void _initializeFields() {
-    _questionText = snapshotData['questionText'] as String?;
+_questionText = snapshotData['questionText'] as String?;
+    _question = snapshotData['question'] as String?;
     _options = getDataList(snapshotData['options']);
-    _explanationText = snapshotData['explanationText'] as String?;
+   _explanationText = snapshotData['explanationText'] as String?;
+    _explanation = snapshotData['explanation'] as String?;
     _energyTheme = snapshotData['energyTheme'] as String?;
     _correctIndex = castToType<int>(snapshotData['correctIndex']);
     _category = snapshotData['category'] as String?;
