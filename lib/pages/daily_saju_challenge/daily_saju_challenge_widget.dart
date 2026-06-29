@@ -87,11 +87,6 @@ final subCategories = ['목', '화', '토', '금', '수'];
     }
   }
 } else if (widget.subCategory != null && widget.subCategory!.isNotEmpty) {
-  // 음양 일반/심화 등 subCategory가 있는 경우 - 해당 subCategory에서 5문제
-  final subList = filtered.where((q) => q.subCategory == widget.subCategory).toList();
-  subList.shuffle(Random(seed));
-  selectedIds = subList.take(5).map((q) => q.reference.id).toList();
-} else if (widget.subCategory != null && widget.subCategory!.isNotEmpty) {
   final subList = filtered.where((q) => q.subCategory == widget.subCategory).toList();
   subList.shuffle(Random(seed));
   selectedIds = subList.take(5).map((q) => q.reference.id).toList();
