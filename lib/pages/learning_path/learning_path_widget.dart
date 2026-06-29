@@ -288,14 +288,13 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                                   children: List.generate(_eumyangSubcategories.length, (j) {
                                     final sub = _eumyangSubcategories[j];
                                     final subCategory = sub['subCategory'] as String;
-                                    final subKey = '음양_$subCategory';
-                                    final isSubCompleted = appState.isCategoryCompleted(subKey);
+                                    final isSubCompleted = appState.isCategoryCompleted(subCategory);
                                     bool isSubUnlocked;
                                     if (j == 0) {
                                       isSubUnlocked = true;
                                     } else {
                                       final prevSub = _eumyangSubcategories[j-1]['subCategory'] as String;
-                                      isSubUnlocked = appState.isCategoryCompleted('음양_$prevSub');
+                                      isSubUnlocked = appState.isCategoryCompleted(prevSub);
                                     }
                                     return Column(
                                       children: [
