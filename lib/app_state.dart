@@ -76,7 +76,7 @@ class FFAppState extends ChangeNotifier {
     return _completedCategories.contains(category);
   }
 
-bool isCategoryUnlocked(String category) {
+  bool isCategoryUnlocked(String category) {
     const order = ['음양', '오행', '천간', '지지', '십이운성', '합/충/형/해/파', '지장간', '십성', '납음오행'];
     final idx = order.indexOf(category);
     if (idx == 0) return true;
