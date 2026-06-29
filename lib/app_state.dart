@@ -1,4 +1,3 @@
-```
 import 'package:flutter/material.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
@@ -91,4 +90,3 @@ class FFAppState extends ChangeNotifier {
     return _completedCategories.contains(order[idx - 1]);
   }
 }
-```
