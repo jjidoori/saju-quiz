@@ -91,6 +91,10 @@ final subCategories = ['목', '화', '토', '금', '수'];
   final subList = filtered.where((q) => q.subCategory == widget.subCategory).toList();
   subList.shuffle(Random(seed));
   selectedIds = subList.take(5).map((q) => q.reference.id).toList();
+} else if (widget.subCategory != null && widget.subCategory!.isNotEmpty) {
+  final subList = filtered.where((q) => q.subCategory == widget.subCategory).toList();
+  subList.shuffle(Random(seed));
+  selectedIds = subList.take(5).map((q) => q.reference.id).toList();
 } else {
   filtered.shuffle(Random(seed));
   selectedIds = filtered.take(5).map((q) => q.reference.id).toList();
