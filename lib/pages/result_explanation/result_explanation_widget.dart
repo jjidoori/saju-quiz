@@ -90,12 +90,14 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
     final correctCount = widget.answeredCorrect ?? 0;
     final isLastQuestion = currentQuestion >= 5;
 
-    return GestureDetector(
+return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: Scaffold(
+      child: PopScope(
+        canPop: false,
+        child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: SingleChildScrollView(
@@ -340,7 +342,7 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                     ),
                   ],
                 ),
-              ),
+            ),
             ],
           ),
         ),
