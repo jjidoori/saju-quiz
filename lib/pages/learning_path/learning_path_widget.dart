@@ -22,10 +22,7 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
   late LearningPathModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 bool _ohangExpanded = false;
-  bool _eumyangExpanded = false;
-
-  @override
-
+bool _eumyangExpanded = false;
 
   final List<Map<String, dynamic>> _eumyangSubcategories = [
 {'subCategory': '음양_일반', 'title': '음양 일반', 'subtitle': '음과 양의 기초 개념과 자연 현상'},
