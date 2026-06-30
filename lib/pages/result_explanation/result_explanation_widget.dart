@@ -279,7 +279,7 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                       }.withoutNulls,
                                     );
                                   } else {
-                                    context.pushReplacementNamed(
+                                  context.pushNamed(
                                     DailySajuChallengeWidget.routeName,
                                       queryParameters: {
                                         'questionNumber': serializeParam(
