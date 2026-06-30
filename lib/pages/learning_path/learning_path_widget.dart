@@ -23,8 +23,6 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 bool _ohangExpanded = false;
 bool _eumyangExpanded = false;
-bool _prevOhangUnlocked = false;
-bool _prevEumyangUnlocked = true;
 
   final List<Map<String, dynamic>> _eumyangSubcategories = [
 {'subCategory': '음양_일반', 'title': '음양 일반', 'subtitle': '음과 양의 기초 개념과 자연 현상'},
@@ -82,17 +80,7 @@ bool _prevEumyangUnlocked = true;
  context.watch<FFAppState>();
     final appState = FFAppState();
 
-    final ohangUnlocked = appState.isCategoryUnlocked('오행');
-    if (ohangUnlocked && !_prevOhangUnlocked) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        safeSetState(() {
-          _ohangExpanded = false;
-          _prevOhangUnlocked = true;
-        });
-      });
-    }
-
-    return GestureDetector(
+return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
         FocusManager.instance.primaryFocus?.unfocus();
