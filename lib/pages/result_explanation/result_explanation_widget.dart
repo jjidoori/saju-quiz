@@ -261,8 +261,8 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                               child: InkWell(
                                 onTap: () async {
                                   if (isLastQuestion) {
-                                    context.pushNamed(
-                                      QuizResultWidget.routeName,
+                                 context.pushReplacementNamed(
+                                    QuizResultWidget.routeName,
                                       queryParameters: {
                                         'category': serializeParam(
                                           widget.category ?? '음양',
@@ -279,8 +279,8 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                       }.withoutNulls,
                                     );
                                   } else {
-                                    context.pushNamed(
-                                      DailySajuChallengeWidget.routeName,
+                                    context.pushReplacementNamed(
+                                    DailySajuChallengeWidget.routeName,
                                       queryParameters: {
                                         'questionNumber': serializeParam(
                                           currentQuestion + 1,
