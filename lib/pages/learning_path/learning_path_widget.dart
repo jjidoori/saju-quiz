@@ -53,11 +53,23 @@ bool _prevEumyangUnlocked = true;
   ];
 
   @override
-void initState() {
+@override
+  void initState() {
     super.initState();
     _model = createModel(context, () => LearningPathModel());
     _ohangExpanded = false;
     _eumyangExpanded = false;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (mounted) {
+      setState(() {
+        _ohangExpanded = false;
+        _eumyangExpanded = false;
+      });
+    }
   }
   @override
   void dispose() {
