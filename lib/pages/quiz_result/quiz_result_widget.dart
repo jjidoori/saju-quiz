@@ -118,7 +118,7 @@ if (category == '오행') {
     completeKey = category;
   }
   FFAppState().completeCategory(completeKey);
-  context.goNamed(LearningPathWidget.routeName);
+ context.pushReplacementNamed(LearningPathWidget.routeName);
                   } else {
                     FFAppState().update(() {
                       FFAppState().todayQuestionIds = [];
