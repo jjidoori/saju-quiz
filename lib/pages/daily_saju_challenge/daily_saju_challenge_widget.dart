@@ -347,7 +347,8 @@ final newCorrectIndex = opts.indexOf(correctAnswer);
                         focusColor: Colors.transparent,
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
-                        onTap: () async {
+                      onTap: () async {
+                          if (_model.selectedIndex == null) return;
                           final isCorrect = _model.selectedIndex == _model.correctIndex;
                           final newCorrectCount = _correctCount + (isCorrect ? 1 : 0);
 
