@@ -261,7 +261,7 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                               child: InkWell(
                                 onTap: () async {
                                   if (isLastQuestion) {
-                                 context.pushReplacementNamed(
+                                 context.pushNamed(
                                     QuizResultWidget.routeName,
                                       queryParameters: {
                                         'category': serializeParam(
