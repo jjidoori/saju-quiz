@@ -119,7 +119,7 @@ if (category == '오행') {
   }
   FFAppState().completeCategory(completeKey);
 Navigator.of(context).pushNamedAndRemoveUntil(
-  '/${LearningPathWidget.routePath}',
+  '/learningPath',
   (route) => false,
 );
                   } else {
