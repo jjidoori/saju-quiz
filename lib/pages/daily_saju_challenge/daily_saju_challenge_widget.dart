@@ -41,9 +41,8 @@ class _DailySajuChallengeWidgetState extends State<DailySajuChallengeWidget> {
   bool _isLoading = true;
   late int _currentQuestion;
   late int _correctCount;
- List<String> _generatedIds = [];
+List<String> _generatedIds = [];
   List<String> _shuffledOptions = [];
-  bool _submitted = false;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -349,9 +348,7 @@ final newCorrectIndex = opts.indexOf(correctAnswer);
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                       onTap: () async {
-                          if (_model.selectedIndex == null) return;
-                          if (_submitted) return;
-                          _submitted = true;
+                        if (_model.selectedIndex == null) return;
                           final isCorrect = _model.selectedIndex == _model.correctIndex;
                           final newCorrectCount = _correctCount + (isCorrect ? 1 : 0);
 
