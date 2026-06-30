@@ -25,11 +25,7 @@ bool _ohangExpanded = false;
   bool _eumyangExpanded = false;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _ohangExpanded = false;
-    _eumyangExpanded = false;
-  }
+
 
   final List<Map<String, dynamic>> _eumyangSubcategories = [
 {'subCategory': '음양_일반', 'title': '음양 일반', 'subtitle': '음과 양의 기초 개념과 자연 현상'},
@@ -57,11 +53,12 @@ bool _ohangExpanded = false;
   ];
 
   @override
-  void initState() {
+void initState() {
     super.initState();
     _model = createModel(context, () => LearningPathModel());
+    _ohangExpanded = false;
+    _eumyangExpanded = false;
   }
-
   @override
   void dispose() {
     _model.dispose();
