@@ -21,8 +21,7 @@ class LearningPathWidget extends StatefulWidget {
 class _LearningPathWidgetState extends State<LearningPathWidget> {
   late LearningPathModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-bool _ohangExpanded = false;
-bool _eumyangExpanded = false;
+
 
   final List<Map<String, dynamic>> _eumyangSubcategories = [
 {'subCategory': '음양_일반', 'title': '음양 일반', 'subtitle': '음과 양의 기초 개념과 자연 현상'},
@@ -55,8 +54,7 @@ bool _eumyangExpanded = false;
   void initState() {
     super.initState();
     _model = createModel(context, () => LearningPathModel());
-    _ohangExpanded = false;
-    _eumyangExpanded = false;
+
   }
 
   @override
@@ -189,12 +187,12 @@ return GestureDetector(
                             InkWell(
                           onTap: isUnlocked ? () {
                                 if (hasSubcategories && category == '음양') {
-                                  safeSetState(() {
-                                    _eumyangExpanded = !_eumyangExpanded;
+                                  appState.update(() {
+                                    appState.eumyangAccordionExpanded = !appState.eumyangAccordionExpanded;
                                   });
                                 } else if (hasSubcategories) {
-                                  safeSetState(() {
-                                    _ohangExpanded = !_ohangExpanded;
+                                  appState.update(() {
+                                    appState.ohangAccordionExpanded = !appState.ohangAccordionExpanded;
                                   });
                                 } else {
                                   appState.update(() {
@@ -275,7 +273,7 @@ return GestureDetector(
                                       ),
                                   if (hasSubcategories && isUnlocked)
                                         Icon(
-                                          (category == '음양' ? _eumyangExpanded : _ohangExpanded)
+                                          (category == '음양' ? appState.eumyangAccordionExpanded : appState.ohangAccordionExpanded)
                                               ? Icons.expand_less
                                               : Icons.expand_more,
                                           color: FlutterFlowTheme.of(context).primary,
@@ -289,7 +287,7 @@ return GestureDetector(
                                 ),
                               ),
                             ),
-                          if (hasSubcategories && category == '음양' && _eumyangExpanded && isUnlocked)
+                          if (hasSubcategories && category == '음양' && appState.eumyangAccordionExpanded && isUnlocked)
                               Padding(
                                 padding: EdgeInsets.only(left: 24.0, top: 4.0),
                                 child: Column(
@@ -396,7 +394,7 @@ return GestureDetector(
                                   }),
                                 ),
                               ),
-                            if (hasSubcategories && category == '오행' && _ohangExpanded && isUnlocked)
+                            if (hasSubcategories && category == '오행' && appState.ohangAccordionExpanded && isUnlocked)
                               Padding(
                                 padding: EdgeInsets.only(left: 24.0, top: 4.0),
                                 child: Column(
