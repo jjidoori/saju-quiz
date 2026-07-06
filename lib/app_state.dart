@@ -48,6 +48,14 @@ class FFAppState extends ChangeNotifier {
   String get searchQuery => _searchQuery;
   set searchQuery(String value) { _searchQuery = value; }
 
+  bool _ohangAccordionExpanded = false;
+  bool get ohangAccordionExpanded => _ohangAccordionExpanded;
+  set ohangAccordionExpanded(bool value) { _ohangAccordionExpanded = value; }
+
+  bool _eumyangAccordionExpanded = false;
+  bool get eumyangAccordionExpanded => _eumyangAccordionExpanded;
+  set eumyangAccordionExpanded(bool value) { _eumyangAccordionExpanded = value; }
+
   bool _isSearchMode = false;
   bool get isSearchMode => _isSearchMode;
   set isSearchMode(bool value) { _isSearchMode = value; }
