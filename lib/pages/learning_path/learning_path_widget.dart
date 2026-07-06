@@ -425,7 +425,7 @@ if (j == 0) {
                                               DailySajuChallengeWidget.routeName,
                                               queryParameters: {
                                                 'category': '오행',
-                                                'subCategory': subCategory == '오행기초' ? null : subCategory,
+                                                'subCategory': subCategory,
                                                 'questionNumber': '1',
                                                 'answeredCorrect': '0',
                                               },
