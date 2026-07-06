@@ -98,3 +98,4 @@ const order = ['음양', '오행', '천간', '지지', '십이운성', '합/충/
     return _completedCategories.contains(order[idx - 1]);
   }
 }
+
