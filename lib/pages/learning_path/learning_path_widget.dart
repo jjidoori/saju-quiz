@@ -62,12 +62,6 @@ bool _eumyangExpanded = false;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (mounted) {
-      setState(() {
-        _ohangExpanded = false;
-        _eumyangExpanded = false;
-      });
-    }
   }
   @override
   void dispose() {
