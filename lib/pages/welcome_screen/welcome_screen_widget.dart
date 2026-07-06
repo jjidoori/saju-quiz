@@ -387,6 +387,7 @@ Container(
   context.mounted,
   queryParameters: {
     'category': '음양',
+    'subCategory': '음양_일반',
   },
 );
                                         },
