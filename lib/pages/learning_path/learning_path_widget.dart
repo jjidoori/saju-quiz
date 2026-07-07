@@ -2,6 +2,7 @@ import '/components/bottom_nav2/bottom_nav2_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -55,8 +56,9 @@ bool _eumyangExpanded = false;
   void initState() {
     super.initState();
     _model = createModel(context, () => LearningPathModel());
-    _ohangExpanded = false;
-    _eumyangExpanded = false;
+    // localStorage에서 아코디언 상태 불러오기
+    _ohangExpanded = html.window.localStorage['ohangExpanded'] == 'true';
+    _eumyangExpanded = html.window.localStorage['eumyangExpanded'] == 'true';
   }
 
   @override
@@ -191,10 +193,12 @@ return GestureDetector(
                                 if (hasSubcategories && category == '음양') {
                                   safeSetState(() {
                                     _eumyangExpanded = !_eumyangExpanded;
+                                    html.window.localStorage['eumyangExpanded'] = _eumyangExpanded.toString();
                                   });
                                 } else if (hasSubcategories) {
                                   safeSetState(() {
                                     _ohangExpanded = !_ohangExpanded;
+                                    html.window.localStorage['ohangExpanded'] = _ohangExpanded.toString();
                                   });
                                 } else {
                                   appState.update(() {
