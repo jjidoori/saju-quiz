@@ -58,10 +58,11 @@ List<String> _generatedIds = [];
       if (questions.isNotEmpty) {
         final appState = FFAppState();
 
-        if (_currentQuestion == 1) {
-          appState.todayQuestionIds = [];
-        }
-        if (_currentQuestion == 1 || appState.todayQuestionIds.isEmpty) {
+        // category/subCategory가 바뀌었으면 초기화
+        final currentKey = '${widget.category}_${widget.subCategory}';
+        if (_currentQuestion == 1 || appState.todayQuestionIds.isEmpty ||
+            (appState.todayQuestionIds.isNotEmpty && appState.todayQuestionIds.first != currentKey)) {
+          appState.todayQuestionIds = [currentKey];
           final seed = DateTime.now().millisecondsSinceEpoch;
           final filtered = widget.category != null
               ? questions.where((q) => q.category == widget.category).toList()
@@ -107,10 +108,10 @@ final subCategories = ['목', '화', '토', '금', '수'];
   selectedIds = filtered.take(5).map((q) => q.reference.id).toList();
 }
 
-          appState.todayQuestionIds = selectedIds;
+          appState.todayQuestionIds = [currentKey, ...selectedIds];
         }
 
-        final id = appState.todayQuestionIds[_currentQuestion - 1];
+        final id = appState.todayQuestionIds[_currentQuestion];
         final target = questions.firstWhere(
           (q) => q.reference.id == id,
           orElse: () => questions.first,
