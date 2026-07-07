@@ -50,11 +50,16 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
   ];
 
   @override
-@override
+  @override
   void initState() {
     super.initState();
     _model = createModel(context, () => LearningPathModel());
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FFAppState().update(() {
+        FFAppState().ohangAccordionExpanded = false;
+        FFAppState().eumyangAccordionExpanded = false;
+      });
+    });
   }
 
   @override
