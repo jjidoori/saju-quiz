@@ -51,12 +51,23 @@ bool _eumyangExpanded = false;
   ];
 
   @override
-@override
+  @override
   void initState() {
     super.initState();
     _model = createModel(context, () => LearningPathModel());
-    _ohangExpanded = false;
-    _eumyangExpanded = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final appState = FFAppState();
+      // 음양 관련 카테고리가 진행 중이면 음양 아코디언 열기
+      final eumyangInProgress = !appState.isCategoryCompleted('음양_심화') &&
+          appState.isCategoryUnlocked('음양');
+      // 오행 관련 카테고리가 진행 중이면 오행 아코디언 열기
+      final ohangInProgress = appState.isCategoryCompleted('음양_심화') &&
+          !appState.isCategoryCompleted('오행_부족');
+      safeSetState(() {
+        _eumyangExpanded = eumyangInProgress;
+        _ohangExpanded = ohangInProgress;
+      });
+    });
   }
 
   @override
