@@ -9,15 +9,15 @@ export 'quiz_result_model.dart';
 
 class QuizResultWidget extends StatefulWidget {
   const QuizResultWidget({
-  super.key,
-  this.category,
-  this.correctCount,
-  this.subCategory,
-});
+    super.key,
+    this.category,
+    this.correctCount,
+    this.subCategory,
+  });
 
-final String? category;
-final int? correctCount;
-final String? subCategory;
+  final String? category;
+  final int? correctCount;
+  final String? subCategory;
 
   static String routeName = 'QuizResult';
   static String routePath = '/quizResult';
@@ -46,7 +46,12 @@ class _QuizResultWidgetState extends State<QuizResultWidget> {
   Widget build(BuildContext context) {
     final correct = widget.correctCount ?? 0;
     final category = widget.category ?? '음양';
+    final sub = widget.subCategory;
+    final hasSub = sub != null && sub.isNotEmpty;
     final isPassed = correct >= 4;
+
+    // 화면에 보여줄 이름 (예: '오행 기초')
+    final displayName = hasSub ? sub.replaceAll('_', ' ') : category;
 
     return Scaffold(
       key: scaffoldKey,
@@ -60,7 +65,9 @@ class _QuizResultWidgetState extends State<QuizResultWidget> {
             children: [
               // 결과 아이콘
               Icon(
-                isPassed ? Icons.emoji_events_rounded : Icons.sentiment_dissatisfied_rounded,
+                isPassed
+                    ? Icons.emoji_events_rounded
+                    : Icons.sentiment_dissatisfied_rounded,
                 color: isPassed
                     ? FlutterFlowTheme.of(context).success
                     : FlutterFlowTheme.of(context).error,
@@ -93,7 +100,7 @@ class _QuizResultWidgetState extends State<QuizResultWidget> {
               SizedBox(height: 8.0),
               Text(
                 isPassed
-                    ? '$category 마스터 완료!'
+                    ? '$displayName 마스터 완료!'
                     : '4개 이상 맞아야 통과예요.\n다시 한번 도전해보세요!',
                 textAlign: TextAlign.center,
                 style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -107,18 +114,14 @@ class _QuizResultWidgetState extends State<QuizResultWidget> {
               // 버튼
               InkWell(
                 onTap: () async {
-              if (isPassed) {
-  final sub = widget.subCategory;
-  String completeKey;
-if (category == '오행') {
-    completeKey = (sub != null && sub.isNotEmpty) ? '오행_$sub' : '오행_오행기초';
-} else if (category == '음양' && sub != null && sub.isNotEmpty) {
-    completeKey = sub;
-  } else {
-    completeKey = category;
-  }
-  FFAppState().completeCategory(completeKey);
-context.goNamed(LearningPathWidget.routeName);
+                  if (isPassed) {
+                    // subCategory가 있으면 그 값을 그대로 완료 키로 사용
+                    final completeKey = hasSub ? sub : category;
+                    FFAppState().completeCategory(completeKey);
+                    FFAppState().update(() {
+                      FFAppState().todayQuestionIds = [];
+                    });
+                    context.goNamed(LearningPathWidget.routeName);
                   } else {
                     FFAppState().update(() {
                       FFAppState().todayQuestionIds = [];
@@ -128,8 +131,9 @@ context.goNamed(LearningPathWidget.routeName);
                       queryParameters: {
                         'questionNumber': serializeParam(1, ParamType.int),
                         'answeredCorrect': serializeParam(0, ParamType.int),
-                       'category': serializeParam(category, ParamType.String),
-'subCategory': serializeParam(widget.subCategory ?? '', ParamType.String),
+                        'category': serializeParam(category, ParamType.String),
+                        'subCategory':
+                            serializeParam(sub ?? '', ParamType.String),
                       }.withoutNulls,
                     );
                   }
@@ -140,7 +144,8 @@ context.goNamed(LearningPathWidget.routeName);
                   child: ButtonWidget(
                     iconPresent: false,
                     iconEndPresent: false,
-                    content: isPassed ? '$category 완료! 다음 단계로' : '다시 도전!',
+                    content:
+                        isPassed ? '$displayName 완료! 다음 단계로' : '다시 도전!',
                     variant: 'primary',
                     size: 'large',
                     fullWidth: true,
