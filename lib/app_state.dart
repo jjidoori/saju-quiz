@@ -16,6 +16,8 @@ class FFAppState extends ChangeNotifier {
     final saved = html.window.localStorage['completedCategories'];
     if (saved != null && saved.isNotEmpty) {
       _completedCategories = saved.split(',');
+    } else {
+      _completedCategories = [];
     }
   }
 
@@ -80,20 +82,29 @@ class FFAppState extends ChangeNotifier {
     }
   }
 
+  // 진행 상황 전체 초기화 (테스트용)
+  void resetProgress() {
+    _completedCategories = [];
+    _todayQuestionIds = [];
+    html.window.localStorage.remove('completedCategories');
+    notifyListeners();
+  }
+
   bool isCategoryCompleted(String category) {
     return _completedCategories.contains(category);
   }
 
   bool isCategoryUnlocked(String category) {
-const order = ['음양', '오행', '천간', '지지', '십이운성', '합/충/형/해/파', '지장간', '십성', '납음오행', '신살'];
+    const order = ['음양', '오행', '천간', '지지', '십이운성', '합/충/형/해/파', '지장간', '십성', '납음오행', '신살'];
     final idx = order.indexOf(category);
     if (idx == 0) return true;
     if (idx < 0) return false;
+    // 음양·오행은 하위 카테고리의 마지막 단계(응용)를 완료해야 다음이 열림
     if (order[idx - 1] == '음양') {
-      return _completedCategories.contains('음양_심화');
+      return _completedCategories.contains('음양_응용');
     }
     if (order[idx - 1] == '오행') {
-      return _completedCategories.contains('오행_부족');
+      return _completedCategories.contains('오행_응용');
     }
     return _completedCategories.contains(order[idx - 1]);
   }
