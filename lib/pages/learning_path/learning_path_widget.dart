@@ -59,9 +59,9 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => LearningPathModel());
-    // 아코디언은 항상 닫힌 상태로 시작
     _ohangExpanded = false;
     _eumyangExpanded = false;
+    debugPrint('[LP] initState BUILD_TAG=v2 completed=${FFAppState().completedCategories}');
   }
 
   @override
@@ -310,6 +310,7 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                                       final prevSub = _eumyangSubcategories[j-1]['subCategory'] as String;
                                       isSubUnlocked = appState.isCategoryCompleted(prevSub);
                                     }
+                                    debugPrint('[LP] EY j=$j sub=$subCategory completed=$isSubCompleted unlocked=$isSubUnlocked all=${appState.completedCategories}');
                                     return Column(
                                       children: [
                                         InkWell(
@@ -417,6 +418,7 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                                       final prevSub = _ohangSubcategories[j-1]['subCategory'] as String;
                                       isSubUnlocked = appState.isCategoryCompleted(prevSub);
                                     }
+                                    debugPrint('[LP] OH j=$j sub=$subCategory completed=$isSubCompleted unlocked=$isSubUnlocked');
 
                                     return Column(
                                       children: [
