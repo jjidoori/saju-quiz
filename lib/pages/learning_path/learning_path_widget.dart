@@ -2,7 +2,6 @@ import '/components/bottom_nav2/bottom_nav2_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
-import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -22,12 +21,25 @@ class LearningPathWidget extends StatefulWidget {
 class _LearningPathWidgetState extends State<LearningPathWidget> {
   late LearningPathModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-bool _ohangExpanded = false;
-bool _eumyangExpanded = false;
+  bool _ohangExpanded = false;
+  bool _eumyangExpanded = false;
 
   final List<Map<String, dynamic>> _eumyangSubcategories = [
-{'subCategory': '음양_일반', 'title': '음양 일반', 'subtitle': '음과 양의 기초 개념과 자연 현상'},
+    {'subCategory': '음양_기초', 'title': '음양 기초', 'subtitle': '음과 양의 기본 개념'},
+    {'subCategory': '음양_일반', 'title': '음양 일반', 'subtitle': '음과 양의 원리와 자연 현상'},
     {'subCategory': '음양_심화', 'title': '음양 심화', 'subtitle': '사주·한의학·역학에 적용되는 음양 원리'},
+    {'subCategory': '음양_응용', 'title': '음양 응용', 'subtitle': '실전 상담에서의 음양 활용'},
+  ];
+
+  final List<Map<String, dynamic>> _ohangSubcategories = [
+    {'subCategory': '오행_기초', 'title': '오행 기초', 'subtitle': '목·화·토·금·수의 특성'},
+    {'subCategory': '오행_일반', 'title': '오행 일반', 'subtitle': '오행의 기본 원리와 관계'},
+    {'subCategory': '상생', 'title': '오행 상생', 'subtitle': '수생목·목생화·화생토·토생금·금생수'},
+    {'subCategory': '상극', 'title': '오행 상극', 'subtitle': '목극토·토극수·수극화·화극금·금극목'},
+    {'subCategory': '과다', 'title': '오행 과다', 'subtitle': '특정 오행이 지나치게 강할 때'},
+    {'subCategory': '부족', 'title': '오행 부족', 'subtitle': '특정 오행이 부족할 때'},
+    {'subCategory': '오행_심화', 'title': '오행 심화', 'subtitle': '오행의 심화 이론'},
+    {'subCategory': '오행_응용', 'title': '오행 응용', 'subtitle': '실전 상담에서의 오행 활용'},
   ];
 
   final List<Map<String, dynamic>> _categories = [
@@ -39,32 +51,24 @@ bool _eumyangExpanded = false;
     {'category': '합/충/형/해/파', 'title': '합·충·형·해·파', 'subtitle': '천간합, 지지합, 충·형·해·파의 원리', 'icon': Icons.compare_arrows_rounded},
     {'category': '지장간', 'title': '지장간 (地藏干)', 'subtitle': '지지 속에 숨어있는 천간', 'icon': Icons.layers_rounded},
     {'category': '십성', 'title': '십성 (十星)', 'subtitle': '비겁·식상·재성·관성·인성의 원리', 'icon': Icons.stars_rounded},
-   {'category': '납음오행', 'title': '납음오행 (納音五行)', 'subtitle': '60갑자의 소리와 오행의 관계', 'icon': Icons.music_note_rounded},
+    {'category': '납음오행', 'title': '납음오행 (納音五行)', 'subtitle': '60갑자의 소리와 오행의 관계', 'icon': Icons.music_note_rounded},
     {'category': '신살', 'title': '신살 (神殺)', 'subtitle': '사주에서 길신과 흉살의 작용', 'icon': Icons.auto_awesome_rounded},
   ];
 
-  final List<Map<String, dynamic>> _ohangSubcategories = [
-    {'subCategory': '오행기초', 'title': '오행 기초', 'subtitle': '목·화·토·금·수의 특성'},
-    {'subCategory': '상생', 'title': '오행 상생', 'subtitle': '수생목·목생화·화생토·토생금·금생수'},
-    {'subCategory': '상극', 'title': '오행 상극', 'subtitle': '목극토·토극수·수극화·화극금·금극목'},
-    {'subCategory': '과다', 'title': '오행 과다', 'subtitle': '특정 오행이 지나치게 강할 때'},
-    {'subCategory': '부족', 'title': '오행 부족', 'subtitle': '특정 오행이 부족할 때'},
-  ];
-
-  @override
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => LearningPathModel());
-    // localStorage에서 아코디언 상태 불러오기
-    _ohangExpanded = html.window.localStorage['ohangExpanded'] == 'true';
-    _eumyangExpanded = html.window.localStorage['eumyangExpanded'] == 'true';
+    // 아코디언은 항상 닫힌 상태로 시작
+    _ohangExpanded = false;
+    _eumyangExpanded = false;
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
+
   @override
   void dispose() {
     _model.dispose();
@@ -73,10 +77,10 @@ bool _eumyangExpanded = false;
 
   @override
   Widget build(BuildContext context) {
- context.watch<FFAppState>();
+    context.watch<FFAppState>();
     final appState = FFAppState();
 
-return GestureDetector(
+    return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
         FocusManager.instance.primaryFocus?.unfocus();
@@ -189,16 +193,14 @@ return GestureDetector(
                         return Column(
                           children: [
                             InkWell(
-                          onTap: isUnlocked ? () {
+                              onTap: isUnlocked ? () {
                                 if (hasSubcategories && category == '음양') {
                                   safeSetState(() {
                                     _eumyangExpanded = !_eumyangExpanded;
-                                    html.window.localStorage['eumyangExpanded'] = _eumyangExpanded.toString();
                                   });
                                 } else if (hasSubcategories) {
                                   safeSetState(() {
                                     _ohangExpanded = !_ohangExpanded;
-                                    html.window.localStorage['ohangExpanded'] = _ohangExpanded.toString();
                                   });
                                 } else {
                                   appState.update(() {
@@ -277,7 +279,7 @@ return GestureDetector(
                                           ].divide(SizedBox(height: 4.0)),
                                         ),
                                       ),
-                                  if (hasSubcategories && isUnlocked)
+                                      if (hasSubcategories && isUnlocked)
                                         Icon(
                                           (category == '음양' ? _eumyangExpanded : _ohangExpanded)
                                               ? Icons.expand_less
@@ -293,7 +295,7 @@ return GestureDetector(
                                 ),
                               ),
                             ),
-                          if (hasSubcategories && category == '음양' && _eumyangExpanded && isUnlocked)
+                            if (hasSubcategories && category == '음양' && _eumyangExpanded && isUnlocked)
                               Padding(
                                 padding: EdgeInsets.only(left: 24.0, top: 4.0),
                                 child: Column(
@@ -407,16 +409,14 @@ return GestureDetector(
                                   children: List.generate(_ohangSubcategories.length, (j) {
                                     final sub = _ohangSubcategories[j];
                                     final subCategory = sub['subCategory'] as String;
-                                  final subKey = subCategory == '오행기초' ? '오행_오행기초' : '오행_$subCategory';
-final isSubCompleted = appState.isCategoryCompleted(subKey);
-                                  bool isSubUnlocked;
-if (j == 0) {
-  isSubUnlocked = true;
-} else {
-  final prevSub = _ohangSubcategories[j-1]['subCategory'] as String;
-  final prevKey = prevSub == '오행기초' ? '오행_오행기초' : '오행_$prevSub';
-  isSubUnlocked = appState.isCategoryCompleted(prevKey);
-}
+                                    final isSubCompleted = appState.isCategoryCompleted(subCategory);
+                                    bool isSubUnlocked;
+                                    if (j == 0) {
+                                      isSubUnlocked = true;
+                                    } else {
+                                      final prevSub = _ohangSubcategories[j-1]['subCategory'] as String;
+                                      isSubUnlocked = appState.isCategoryCompleted(prevSub);
+                                    }
 
                                     return Column(
                                       children: [
@@ -429,7 +429,7 @@ if (j == 0) {
                                               DailySajuChallengeWidget.routeName,
                                               queryParameters: {
                                                 'category': '오행',
-                                                'subCategory': subCategory == '오행기초' ? null : subCategory,
+                                                'subCategory': subCategory,
                                                 'questionNumber': '1',
                                                 'answeredCorrect': '0',
                                               },
