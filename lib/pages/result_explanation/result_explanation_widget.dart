@@ -116,7 +116,8 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                         children: [
                           Text(
                             '$currentQuestion / 5 문제',
-                            style: FlutterFlowTheme.of(context).labelSmall.override(
+                            style:
+                                FlutterFlowTheme.of(context).labelSmall.override(
                               font: GoogleFonts.inter(),
                               color: FlutterFlowTheme.of(context).secondaryText,
                               letterSpacing: 0.0,
@@ -125,7 +126,8 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                           SizedBox(height: 8.0),
                           LinearProgressIndicator(
                             value: currentQuestion / 5,
-                            backgroundColor: FlutterFlowTheme.of(context).alternate,
+                            backgroundColor:
+                                FlutterFlowTheme.of(context).alternate,
                             valueColor: AlwaysStoppedAnimation<Color>(
                               FlutterFlowTheme.of(context).primary,
                             ),
@@ -138,8 +140,12 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                       Container(
                         decoration: BoxDecoration(
                           color: widget.isCorrect == true
-                              ? FlutterFlowTheme.of(context).success.withOpacity(0.1)
-                              : FlutterFlowTheme.of(context).error.withOpacity(0.1),
+                              ? FlutterFlowTheme.of(context)
+                                  .success
+                                  .withOpacity(0.1)
+                              : FlutterFlowTheme.of(context)
+                                  .error
+                                  .withOpacity(0.1),
                           borderRadius: BorderRadius.circular(12.0),
                           border: Border.all(
                             color: widget.isCorrect == true
@@ -167,9 +173,14 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      widget.isCorrect == true ? '정답입니다!' : '틀렸습니다',
-                                      style: FlutterFlowTheme.of(context).titleLarge.override(
-                                        font: GoogleFonts.roboto(fontWeight: FontWeight.bold),
+                                      widget.isCorrect == true
+                                          ? '정답입니다!'
+                                          : '틀렸습니다',
+                                      style: FlutterFlowTheme.of(context)
+                                          .titleLarge
+                                          .override(
+                                        font: GoogleFonts.roboto(
+                                            fontWeight: FontWeight.bold),
                                         letterSpacing: 0.0,
                                         fontWeight: FontWeight.bold,
                                         lineHeight: 1.4,
@@ -177,7 +188,9 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                     ),
                                     Text(
                                       '아래 해설을 확인하세요.',
-                                      style: FlutterFlowTheme.of(context).bodySmall.override(
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodySmall
+                                          .override(
                                         font: GoogleFonts.inter(),
                                         letterSpacing: 0.0,
                                         lineHeight: 1.5,
@@ -193,7 +206,8 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                       SizedBox(height: 32.0),
                       Container(
                         decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).secondaryBackground,
+                          color: FlutterFlowTheme.of(context)
+                              .secondaryBackground,
                           borderRadius: BorderRadius.circular(8.0),
                           border: Border.all(
                             color: FlutterFlowTheme.of(context).alternate,
@@ -215,8 +229,11 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                   SizedBox(width: 8.0),
                                   Text(
                                     '해설',
-                                    style: FlutterFlowTheme.of(context).titleMedium.override(
-                                      font: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                                    style: FlutterFlowTheme.of(context)
+                                        .titleMedium
+                                        .override(
+                                      font: GoogleFonts.inter(
+                                          fontWeight: FontWeight.bold),
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.bold,
                                       lineHeight: 1.4,
@@ -233,7 +250,9 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                   ? CircularProgressIndicator()
                                   : Text(
                                       _explanationText ?? '해설을 불러올 수 없습니다.',
-                                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
                                         font: GoogleFonts.inter(),
                                         letterSpacing: 0.0,
                                         lineHeight: 1.5,
@@ -252,24 +271,27 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                   ),
                   child: Column(
                     children: [
-                      Container(height: 1.0, color: FlutterFlowTheme.of(context).alternate),
+                      Container(
+                          height: 1.0,
+                          color: FlutterFlowTheme.of(context).alternate),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(24.0, 32.0, 24.0, 32.0),
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            24.0, 32.0, 24.0, 32.0),
                         child: Row(
                           children: [
                             Expanded(
                               child: InkWell(
                                 onTap: () async {
                                   if (isLastQuestion) {
-                                 context.pushNamed(
-                                    QuizResultWidget.routeName,
+                                    context.pushNamed(
+                                      QuizResultWidget.routeName,
                                       queryParameters: {
                                         'category': serializeParam(
                                           widget.category ?? '음양',
                                           ParamType.String,
                                         ),
                                         'subCategory': serializeParam(
-                                          widget.subCategory ?? '오행기초',
+                                          widget.subCategory ?? '',
                                           ParamType.String,
                                         ),
                                         'correctCount': serializeParam(
@@ -279,8 +301,8 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                       }.withoutNulls,
                                     );
                                   } else {
-                                  context.pushNamed(
-                                    DailySajuChallengeWidget.routeName,
+                                    context.pushNamed(
+                                      DailySajuChallengeWidget.routeName,
                                       queryParameters: {
                                         'questionNumber': serializeParam(
                                           currentQuestion + 1,
@@ -300,7 +322,7 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                           ParamType.String,
                                         ),
                                         'subCategory': serializeParam(
-                                          widget.subCategory,
+                                          widget.subCategory ?? '',
                                           ParamType.String,
                                         ),
                                       }.withoutNulls,
@@ -313,7 +335,8 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                                   child: ButtonWidget(
                                     iconPresent: false,
                                     iconEndPresent: false,
-                                    content: isLastQuestion ? '결과 보기' : '다음 문제',
+                                    content:
+                                        isLastQuestion ? '결과 보기' : '다음 문제',
                                     variant: 'primary',
                                     size: 'large',
                                     fullWidth: true,
@@ -327,7 +350,8 @@ class _ResultExplanationWidgetState extends State<ResultExplanationWidget> {
                             FlutterFlowIconButton(
                               borderRadius: 8.0,
                               buttonSize: 44.0,
-                              fillColor: FlutterFlowTheme.of(context).secondaryBackground,
+                              fillColor: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
                               icon: Icon(
                                 Icons.share_rounded,
                                 color: FlutterFlowTheme.of(context).primaryText,
