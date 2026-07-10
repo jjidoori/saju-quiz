@@ -13,12 +13,17 @@ class FFAppState extends ChangeNotifier {
   }
 
   Future initializePersistedState() async {
-    final saved = html.window.localStorage['completedCategories'];
-    if (saved != null && saved.isNotEmpty) {
-      _completedCategories = saved.split(',');
-    } else {
-      _completedCategories = [];
-    }
+    // ===== 임시: 진행 상황 강제 초기화 (확인 후 아래 두 줄 지우고 원복) =====
+    html.window.localStorage.remove('completedCategories');
+    _completedCategories = [];
+    // =====================================================================
+
+    // final saved = html.window.localStorage['completedCategories'];
+    // if (saved != null && saved.isNotEmpty) {
+    //   _completedCategories = saved.split(',');
+    // } else {
+    //   _completedCategories = [];
+    // }
   }
 
   void update(VoidCallback callback) {
@@ -82,7 +87,6 @@ class FFAppState extends ChangeNotifier {
     }
   }
 
-  // 진행 상황 전체 초기화 (테스트용)
   void resetProgress() {
     _completedCategories = [];
     _todayQuestionIds = [];
@@ -99,7 +103,6 @@ class FFAppState extends ChangeNotifier {
     final idx = order.indexOf(category);
     if (idx == 0) return true;
     if (idx < 0) return false;
-    // 음양·오행은 하위 카테고리의 마지막 단계(응용)를 완료해야 다음이 열림
     if (order[idx - 1] == '음양') {
       return _completedCategories.contains('음양_응용');
     }
