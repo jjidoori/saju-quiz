@@ -65,3 +65,432 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
 
   @override
   void dispose() {
+    _model.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+    final appState = FFAppState();
+
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).secondaryBackground,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(24.0, 48.0, 24.0, 24.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Saju Master Journey',
+                          style: FlutterFlowTheme.of(context).labelLarge.override(
+                            font: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                            color: FlutterFlowTheme.of(context).primary,
+                            letterSpacing: 0.0,
+                            fontWeight: FontWeight.bold,
+                            lineHeight: 1.3,
+                          ),
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              'Learning Path',
+                              style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                font: GoogleFonts.roboto(fontWeight: FontWeight.bold),
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.bold,
+                                lineHeight: 1.2,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                context.goNamed(UserProfileProgressWidget.routeName);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context).primary5,
+                                  borderRadius: BorderRadius.circular(9999.0),
+                                  border: Border.all(
+                                    color: FlutterFlowTheme.of(context).primary20,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 8.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Icon(Icons.stars_rounded, color: FlutterFlowTheme.of(context).primary, size: 16.0),
+                                      Text(
+                                        'Level ${appState.userLevel}',
+                                        style: FlutterFlowTheme.of(context).labelSmall.override(
+                                          font: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                                          color: FlutterFlowTheme.of(context).primary,
+                                          letterSpacing: 0.0,
+                                          fontWeight: FontWeight.bold,
+                                          lineHeight: 1.2,
+                                        ),
+                                      ),
+                                    ].divide(SizedBox(width: 4.0)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ].divide(SizedBox(height: 8.0)),
+                    ),
+                  ),
+                  Container(height: 1.0, color: FlutterFlowTheme.of(context).alternate),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(24.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: 24.0),
+                      ...List.generate(_categories.length, (i) {
+                        final cat = _categories[i];
+                        final category = cat['category'] as String;
+                        final isCompleted = appState.isCategoryCompleted(category);
+                        final hasSubcategories = cat['hasSubcategories'] == true;
+
+                        return Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                if (hasSubcategories && category == '음양') {
+                                  safeSetState(() {
+                                    _eumyangExpanded = !_eumyangExpanded;
+                                  });
+                                } else if (hasSubcategories) {
+                                  safeSetState(() {
+                                    _ohangExpanded = !_ohangExpanded;
+                                  });
+                                } else {
+                                  appState.update(() {
+                                    appState.todayQuestionIds = [];
+                                  });
+                                  context.pushNamed(
+                                    DailySajuChallengeWidget.routeName,
+                                    queryParameters: {
+                                      'category': category,
+                                      'questionNumber': '1',
+                                      'answeredCorrect': '0',
+                                    },
+                                  );
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  border: Border.all(
+                                    color: FlutterFlowTheme.of(context).alternate,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 44.0,
+                                        height: 44.0,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context).primary20,
+                                          borderRadius: BorderRadius.circular(9999.0),
+                                        ),
+                                        child: Icon(
+                                          cat['icon'] as IconData,
+                                          color: FlutterFlowTheme.of(context).primary,
+                                          size: 20.0,
+                                        ),
+                                      ),
+                                      SizedBox(width: 16.0),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              cat['title'] as String,
+                                              style: FlutterFlowTheme.of(context).bodyLarge.override(
+                                                font: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                                                color: FlutterFlowTheme.of(context).primaryText,
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.bold,
+                                                lineHeight: 1.4,
+                                              ),
+                                            ),
+                                            Text(
+                                              cat['subtitle'] as String,
+                                              style: FlutterFlowTheme.of(context).labelSmall.override(
+                                                font: GoogleFonts.inter(),
+                                                color: FlutterFlowTheme.of(context).secondaryText,
+                                                letterSpacing: 0.0,
+                                                lineHeight: 1.3,
+                                              ),
+                                            ),
+                                          ].divide(SizedBox(height: 4.0)),
+                                        ),
+                                      ),
+                                      if (hasSubcategories)
+                                        Icon(
+                                          (category == '음양' ? _eumyangExpanded : _ohangExpanded)
+                                              ? Icons.expand_less
+                                              : Icons.expand_more,
+                                          color: FlutterFlowTheme.of(context).primary,
+                                          size: 24.0,
+                                        ),
+                                      if (isCompleted && !hasSubcategories)
+                                        Icon(Icons.check_circle_rounded,
+                                            color: FlutterFlowTheme.of(context).success, size: 24.0),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            if (hasSubcategories && category == '음양' && _eumyangExpanded)
+                              Padding(
+                                padding: EdgeInsets.only(left: 24.0, top: 4.0),
+                                child: Column(
+                                  children: List.generate(_eumyangSubcategories.length, (j) {
+                                    final sub = _eumyangSubcategories[j];
+                                    final subCategory = sub['subCategory'] as String;
+                                    final isSubCompleted = appState.isCategoryCompleted(subCategory);
+                                    return Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            appState.update(() {
+                                              appState.todayQuestionIds = [];
+                                            });
+                                            context.pushNamed(
+                                              DailySajuChallengeWidget.routeName,
+                                              queryParameters: {
+                                                'category': '음양',
+                                                'subCategory': subCategory,
+                                                'questionNumber': '1',
+                                                'answeredCorrect': '0',
+                                              },
+                                            );
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: FlutterFlowTheme.of(context).secondaryBackground,
+                                              borderRadius: BorderRadius.circular(12.0),
+                                              border: Border.all(
+                                                color: FlutterFlowTheme.of(context).alternate,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding: EdgeInsets.all(14.0),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    width: 36.0,
+                                                    height: 36.0,
+                                                    decoration: BoxDecoration(
+                                                      color: FlutterFlowTheme.of(context).primary20,
+                                                      borderRadius: BorderRadius.circular(9999.0),
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.menu_book_rounded,
+                                                      color: FlutterFlowTheme.of(context).primary,
+                                                      size: 16.0,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 12.0),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          sub['title'] as String,
+                                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                            font: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                                                            color: FlutterFlowTheme.of(context).primaryText,
+                                                            letterSpacing: 0.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          sub['subtitle'] as String,
+                                                          style: FlutterFlowTheme.of(context).labelSmall.override(
+                                                            font: GoogleFonts.inter(),
+                                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                        ),
+                                                      ].divide(SizedBox(height: 2.0)),
+                                                    ),
+                                                  ),
+                                                  if (isSubCompleted)
+                                                    Icon(Icons.check_circle_rounded,
+                                                        color: FlutterFlowTheme.of(context).success, size: 20.0),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 6.0),
+                                      ],
+                                    );
+                                  }),
+                                ),
+                              ),
+                            if (hasSubcategories && category == '오행' && _ohangExpanded)
+                              Padding(
+                                padding: EdgeInsets.only(left: 24.0, top: 4.0),
+                                child: Column(
+                                  children: List.generate(_ohangSubcategories.length, (j) {
+                                    final sub = _ohangSubcategories[j];
+                                    final subCategory = sub['subCategory'] as String;
+                                    final isSubCompleted = appState.isCategoryCompleted(subCategory);
+                                    return Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            appState.update(() {
+                                              appState.todayQuestionIds = [];
+                                            });
+                                            context.pushNamed(
+                                              DailySajuChallengeWidget.routeName,
+                                              queryParameters: {
+                                                'category': '오행',
+                                                'subCategory': subCategory,
+                                                'questionNumber': '1',
+                                                'answeredCorrect': '0',
+                                              },
+                                            );
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: FlutterFlowTheme.of(context).secondaryBackground,
+                                              borderRadius: BorderRadius.circular(12.0),
+                                              border: Border.all(
+                                                color: FlutterFlowTheme.of(context).alternate,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding: EdgeInsets.all(14.0),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    width: 36.0,
+                                                    height: 36.0,
+                                                    decoration: BoxDecoration(
+                                                      color: FlutterFlowTheme.of(context).primary20,
+                                                      borderRadius: BorderRadius.circular(9999.0),
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.menu_book_rounded,
+                                                      color: FlutterFlowTheme.of(context).primary,
+                                                      size: 16.0,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 12.0),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          sub['title'] as String,
+                                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                            font: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                                                            color: FlutterFlowTheme.of(context).primaryText,
+                                                            letterSpacing: 0.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          sub['subtitle'] as String,
+                                                          style: FlutterFlowTheme.of(context).labelSmall.override(
+                                                            font: GoogleFonts.inter(),
+                                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                        ),
+                                                      ].divide(SizedBox(height: 2.0)),
+                                                    ),
+                                                  ),
+                                                  if (isSubCompleted)
+                                                    Icon(Icons.check_circle_rounded,
+                                                        color: FlutterFlowTheme.of(context).success, size: 20.0),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        if (j < _ohangSubcategories.length - 1)
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(vertical: 3.0),
+                                            child: Container(
+                                              width: 2.0,
+                                              height: 16.0,
+                                              color: FlutterFlowTheme.of(context).alternate,
+                                            ),
+                                          ),
+                                      ],
+                                    );
+                                  }),
+                                ),
+                              ),
+                            if (i < _categories.length - 1)
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 4.0),
+                                child: Container(
+                                  width: 2.0,
+                                  height: 24.0,
+                                  color: FlutterFlowTheme.of(context).alternate,
+                                ),
+                              ),
+                          ],
+                        );
+                      }),
+                      SizedBox(height: 100.0),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            wrapWithModel(
+              model: _model.bottomNavModel,
+              updateCallback: () => safeSetState(() {}),
+              child: BottomNav2Widget(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
