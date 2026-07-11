@@ -93,7 +93,7 @@ class FFAppState extends ChangeNotifier {
     return _completedCategories.contains(category);
   }
 
-  // 테스트 모드: 모든 카테고리 잠금 해제
+  // 테스트 모드: 전체 잠금 해제
   bool isCategoryUnlocked(String category) {
     return true;
   }
