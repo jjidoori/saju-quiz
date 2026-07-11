@@ -7,8 +7,12 @@ class FFAppState extends ChangeNotifier {
   factory FFAppState() {
     return _instance;
   }
-  FFAppState._internal();
-  static void reset() {
+FFAppState._internal() {
+    _completedCategories = [];
+    try {
+      html.window.localStorage.remove('completedCategories');
+    } catch (_) {}
+  }
     _instance = FFAppState._internal();
   }
 
