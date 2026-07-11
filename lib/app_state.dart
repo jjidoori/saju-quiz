@@ -7,27 +7,23 @@ class FFAppState extends ChangeNotifier {
   factory FFAppState() {
     return _instance;
   }
-FFAppState._internal() {
+  FFAppState._internal() {
+    // 인스턴스 생성 순간 무조건 초기화
     _completedCategories = [];
     try {
       html.window.localStorage.remove('completedCategories');
     } catch (_) {}
   }
+  static void reset() {
     _instance = FFAppState._internal();
   }
 
   Future initializePersistedState() async {
-    // ===== 임시: 진행 상황 강제 초기화 (확인 후 아래 두 줄 지우고 원복) =====
-    html.window.localStorage.remove('completedCategories');
+    // 강제 초기화 유지
     _completedCategories = [];
-    // =====================================================================
-
-    // final saved = html.window.localStorage['completedCategories'];
-    // if (saved != null && saved.isNotEmpty) {
-    //   _completedCategories = saved.split(',');
-    // } else {
-    //   _completedCategories = [];
-    // }
+    try {
+      html.window.localStorage.remove('completedCategories');
+    } catch (_) {}
   }
 
   void update(VoidCallback callback) {
