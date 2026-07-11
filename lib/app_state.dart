@@ -7,23 +7,18 @@ class FFAppState extends ChangeNotifier {
   factory FFAppState() {
     return _instance;
   }
-  FFAppState._internal() {
-    // 인스턴스 생성 순간 무조건 초기화
-    _completedCategories = [];
-    try {
-      html.window.localStorage.remove('completedCategories');
-    } catch (_) {}
-  }
+  FFAppState._internal();
   static void reset() {
     _instance = FFAppState._internal();
   }
 
   Future initializePersistedState() async {
-    // 강제 초기화 유지
-    _completedCategories = [];
-    try {
-      html.window.localStorage.remove('completedCategories');
-    } catch (_) {}
+    final saved = html.window.localStorage['completedCategories'];
+    if (saved != null && saved.isNotEmpty) {
+      _completedCategories = saved.split(',');
+    } else {
+      _completedCategories = [];
+    }
   }
 
   void update(VoidCallback callback) {
@@ -98,17 +93,8 @@ class FFAppState extends ChangeNotifier {
     return _completedCategories.contains(category);
   }
 
+  // 테스트 모드: 모든 카테고리 잠금 해제
   bool isCategoryUnlocked(String category) {
-    const order = ['음양', '오행', '천간', '지지', '십이운성', '합/충/형/해/파', '지장간', '십성', '납음오행', '신살'];
-    final idx = order.indexOf(category);
-    if (idx == 0) return true;
-    if (idx < 0) return false;
-    if (order[idx - 1] == '음양') {
-      return _completedCategories.contains('음양_응용');
-    }
-    if (order[idx - 1] == '오행') {
-      return _completedCategories.contains('오행_응용');
-    }
-    return _completedCategories.contains(order[idx - 1]);
+    return true;
   }
 }
