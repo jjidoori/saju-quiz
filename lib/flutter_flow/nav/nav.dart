@@ -87,6 +87,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => AuthScreenWidget(),
         ),
         FFRoute(
+          name: SajuCardWidget.routeName,
+          path: SajuCardWidget.routePath,
+          builder: (context, params) => SajuCardWidget(),
+        ),
+        FFRoute(
           name: DailySajuChallengeWidget.routeName,
           path: DailySajuChallengeWidget.routePath,
          builder: (context, params) => DailySajuChallengeWidget(
