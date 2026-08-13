@@ -1,5 +1,6 @@
 // Export pages
 export '/pages/auth_screen/auth_screen_widget.dart' show AuthScreenWidget;
+export '/pages/saju_card/saju_card_widget.dart' show SajuCardWidget;
 export '/pages/daily_saju_challenge/daily_saju_challenge_widget.dart'
     show DailySajuChallengeWidget;
 export '/pages/element_dictionary/element_dictionary_widget.dart'
