@@ -96,54 +96,17 @@ class _WelcomeScreenWidgetState extends State<WelcomeScreenWidget> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                'SAJU MASTER',
-                                style: FlutterFlowTheme.of(context)
-                                    .labelLarge
-                                    .override(
-                                      font: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w600,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .labelLarge
-                                            .fontStyle,
-                                      ),
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelLarge
-                                          .fontStyle,
-                                      lineHeight: 1.3,
-                                    ),
+                              Image.asset(
+                                'assets/images/logo.png',
+                                width: 160.0,
+                                height: 160.0,
+                                fit: BoxFit.contain,
                               ),
                               Container(
-                                height: 4.0,
+                                height: 12.0,
                               ),
                               Text(
-                                '사주 명리',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      font: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w900,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontStyle,
-                                      ),
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      fontSize: 48.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w900,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .fontStyle,
-                                      lineHeight: 1.2,
-                                    ),
-                              ),
-                              Text(
-                                '사주팔자로 떠나는 여정',
+                                '사주로 나를 이해하는 시간',
                                 style: FlutterFlowTheme.of(context)
                                     .titleMedium
                                     .override(
@@ -304,12 +267,12 @@ Container(
                                             safeSetState(() {}),
                                         child: FeatureItemWidget(
                                           icon: Icon(
-                                            Icons.school_rounded,
+                                            Icons.auto_awesome_rounded,
                                             color: FlutterFlowTheme.of(context)
                                                 .primary,
                                             size: 18.0,
                                           ),
-                                          text: '천간(天干)의 원리를 마스터하기',
+                                          text: '매일 새로운 명리학 퀴즈로 배우기',
                                         ),
                                       ),
                                       wrapWithModel(
@@ -318,13 +281,13 @@ Container(
                                             safeSetState(() {}),
                                         child: FeatureItemWidget(
                                           icon: Icon(
-                                            Icons.auto_awesome_rounded,
+                                            Icons.school_rounded,
                                             color: FlutterFlowTheme.of(context)
                                                 .primary,
                                             size: 18.0,
                                           ),
                                           text:
-                                              '오행(五行)의 상생·상극 이해하기',
+                                              '단계별 학습으로 차근차근 실력 쌓기',
                                         ),
                                       ),
                                       wrapWithModel(
@@ -339,7 +302,7 @@ Container(
                                             size: 18.0,
                                           ),
                                           text:
-                                              '전통 명리학 퀴즈로 배우기',
+                                              '실전 상담에 바로 쓰는 명리 지식',
                                         ),
                                       ),
                                     ].divide(SizedBox(height: 16.0)),
