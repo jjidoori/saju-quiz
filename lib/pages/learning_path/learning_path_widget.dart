@@ -184,6 +184,33 @@ final List<TopCategory> _topCategories = [
 ];
 
 // ============================================================
+// 전체 학습 순서 (완전 순차 잠금용)
+// ============================================================
+
+/// _topCategories를 순서대로 펼쳐서 전체 112개 subCategory를
+/// 하나의 순서로 이어붙인 리스트. 이 순서대로 앞 단계를 다 끝내야
+/// 다음 단계가 열리는 "완전 순차" 잠금에 사용된다.
+List<String> _buildGlobalStageOrder() {
+  final order = <String>[];
+  for (final cat in _topCategories) {
+    if (cat.isGroup) {
+      for (final group in cat.subgroups!) {
+        for (final stage in group.stages) {
+          order.add(stage.subCategory);
+        }
+      }
+    } else {
+      for (final stage in cat.stages!) {
+        order.add(stage.subCategory);
+      }
+    }
+  }
+  return order;
+}
+
+final List<String> _globalStageOrder = _buildGlobalStageOrder();
+
+// ============================================================
 // 위젯
 // ============================================================
 
@@ -517,7 +544,10 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
 
   // ---------------- 실제 4단계(혹은 오행 8단계) 리스트 — 잠금 로직 적용 ----------------
   Widget _buildStageList(BuildContext context, FFAppState appState, String parentCategoryKey, List<SubStage> stages) {
-    final stageOrder = stages.map((s) => s.subCategory).toList();
+    // ⚠️ 완전 순차 학습: 카테고리 안에서만 순서를 보는 게 아니라,
+    // 전체 112개 학습 순서(_globalStageOrder) 기준으로 "바로 이전 단계"가
+    // 끝났는지 확인한다. 즉 음양을 4단계 다 끝내야 오행_기초가 열리는 식.
+    final stageOrder = _globalStageOrder;
 
     return Column(
       children: List.generate(stages.length, (j) {
