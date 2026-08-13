@@ -301,6 +301,8 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 24.0),
+                      _buildSajuCardBanner(context),
+                      const SizedBox(height: 16.0),
                       ..._topCategories.map((cat) => _buildTopCategory(context, appState, cat)),
                       const SizedBox(height: 100.0),
                     ],
@@ -313,6 +315,56 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
               updateCallback: () => safeSetState(() {}),
               child: const BottomNav2Widget(),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ---------------- 오늘의 사주카드 배너 ----------------
+  Widget _buildSajuCardBanner(BuildContext context) {
+    return InkWell(
+      onTap: () => context.pushNamed(SajuCardWidget.routeName),
+      child: Container(
+        padding: const EdgeInsets.all(18.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              FlutterFlowTheme.of(context).primary,
+              FlutterFlowTheme.of(context).primary.withOpacity(0.7),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 28.0),
+            const SizedBox(width: 14.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '오늘의 사주카드',
+                    style: FlutterFlowTheme.of(context).bodyLarge.override(
+                          font: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Text(
+                    '오늘의 일진과 오행 기운을 확인해보세요',
+                    style: FlutterFlowTheme.of(context).labelSmall.override(
+                          font: GoogleFonts.notoSansKr(),
+                          color: Colors.white.withOpacity(0.9),
+                        ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right_rounded, color: Colors.white, size: 24.0),
           ],
         ),
       ),
