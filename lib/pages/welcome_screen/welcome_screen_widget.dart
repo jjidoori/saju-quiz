@@ -143,7 +143,7 @@ class _WelcomeScreenWidgetState extends State<WelcomeScreenWidget> {
                                     ),
                               ),
                               Text(
-                                'The Path of Four Pillars',
+                                '사주팔자로 떠나는 여정',
                                 style: FlutterFlowTheme.of(context)
                                     .titleMedium
                                     .override(
@@ -309,7 +309,7 @@ Container(
                                                 .primary,
                                             size: 18.0,
                                           ),
-                                          text: 'Master the Ten Heavenly Stems',
+                                          text: '천간(天干)의 원리를 마스터하기',
                                         ),
                                       ),
                                       wrapWithModel(
@@ -324,7 +324,7 @@ Container(
                                             size: 18.0,
                                           ),
                                           text:
-                                              'Identify Five Element Harmonies',
+                                              '오행(五行)의 상생·상극 이해하기',
                                         ),
                                       ),
                                       wrapWithModel(
@@ -339,7 +339,7 @@ Container(
                                             size: 18.0,
                                           ),
                                           text:
-                                              'Traditional Korean Wisdom Quiz',
+                                              '전통 명리학 퀴즈로 배우기',
                                         ),
                                       ),
                                     ].divide(SizedBox(height: 16.0)),
@@ -377,19 +377,8 @@ Container(
                                         hoverColor: Colors.transparent,
                                         highlightColor: Colors.transparent,
                                         onTap: () async {
-                                          GoRouter.of(context).prepareAuthEvent();
-                                          final user = await authManager.signInAnonymously(context);
-                                          if (user == null) {
-                                            return;
-                                          }
-                                         context.goNamedAuth(
-  DailySajuChallengeWidget.routeName,
-  context.mounted,
-  queryParameters: {
-    'category': '음양',
-    'subCategory': '음양_일반',
-  },
-);
+                                          context.pushNamed(
+                                              AuthScreenWidget.routeName);
                                         },
                                         child: wrapWithModel(
                                           model: _model.buttonModel,
@@ -405,7 +394,7 @@ Container(
                                               size: 24.0,
                                             ),
                                             iconEndPresent: true,
-                                            content: 'Begin Learning',
+                                            content: '시작하기',
                                             variant: 'primary',
                                             size: 'large',
                                             fullWidth: false,
@@ -463,7 +452,7 @@ Container(
                                                 CrossAxisAlignment.center,
                                             children: [
                                               Text(
-                                                'Privacy',
+                                                '개인정보처리방침',
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .labelSmall
@@ -512,7 +501,7 @@ Container(
                                                 ),
                                               ),
                                               Text(
-                                                'Terms of Service',
+                                                '이용약관',
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .labelSmall
