@@ -367,65 +367,62 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
           advice = _getAdviceFor60gapcja(ilju);
         }
 
-        return InkWell(
-          onTap: () => context.pushNamed(SajuCardWidget.routeName),
-          child: Container(
-            padding: const EdgeInsets.all(18.0),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  FlutterFlowTheme.of(context).primary,
-                  FlutterFlowTheme.of(context).primary.withOpacity(0.7),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 28.0),
-                    const SizedBox(width: 14.0),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '오늘의 일진',
-                          style: FlutterFlowTheme.of(context).bodyLarge.override(
-                                font: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold),
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                        Text(
-                          ilju,
-                          style: FlutterFlowTheme.of(context).headlineSmall?.override(
-                                font: GoogleFonts.notoSansKr(),
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 14.0),
-                    Icon(Icons.chevron_right_rounded, color: Colors.white, size: 24.0),
-                  ],
-                ),
-                const SizedBox(height: 12.0),
-                Text(
-                  advice,
-                  textAlign: TextAlign.center,
-                  style: FlutterFlowTheme.of(context).labelSmall.override(
-                        font: GoogleFonts.notoSansKr(),
-                        color: Colors.white.withOpacity(0.9),
-                      ),
-                ),
+        return Container(
+          padding: const EdgeInsets.all(18.0),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                FlutterFlowTheme.of(context).primary,
+                FlutterFlowTheme.of(context).primary.withOpacity(0.7),
               ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 28.0),
+                  const SizedBox(width: 14.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        '오늘의 일진',
+                        style: FlutterFlowTheme.of(context).bodyLarge.override(
+                              font: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      Text(
+                        ilju,
+                        style: FlutterFlowTheme.of(context).headlineSmall?.override(
+                              font: GoogleFonts.notoSansKr(),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 14.0),
+                  Icon(Icons.chevron_right_rounded, color: Colors.white, size: 24.0),
+                ],
+              ),
+              const SizedBox(height: 12.0),
+              Text(
+                advice,
+                textAlign: TextAlign.center,
+                style: FlutterFlowTheme.of(context).labelSmall.override(
+                      font: GoogleFonts.notoSansKr(),
+                      color: Colors.white.withOpacity(0.9),
+                    ),
+              ),
+            ],
           ),
         );
       },
