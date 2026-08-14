@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 class SajuCardWidget extends StatefulWidget {
   const SajuCardWidget({super.key});
 
+  static const String routeName = 'SajuCard';
+  static const String routePath = 'saju-card';
+
   @override
   State<SajuCardWidget> createState() => _SajuCardWidgetState();
 }
@@ -41,7 +44,6 @@ class _SajuCardWidgetState extends State<SajuCardWidget> {
     super.dispose();
   }
 
-  /// 오늘의 일주 조언 가져오기
   String _getTodayAdvice(String ilju) {
     return dailyAdviceByIlju[ilju] ?? '오늘 하루도 균형있게 보내세요.';
   }
