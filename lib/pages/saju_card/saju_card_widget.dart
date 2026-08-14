@@ -1,17 +1,10 @@
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/utils/saju_translate.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:lunar/lunar.dart';
 import 'saju_card_model.dart';
 export 'saju_card_model.dart';
+import 'package:flutter/material.dart';
 
 class SajuCardWidget extends StatefulWidget {
   const SajuCardWidget({super.key});
-
-  static String routeName = 'SajuCard';
-  static String routePath = '/sajuCard';
 
   @override
   State<SajuCardWidget> createState() => _SajuCardWidgetState();
@@ -19,15 +12,21 @@ class SajuCardWidget extends StatefulWidget {
 
 class _SajuCardWidgetState extends State<SajuCardWidget> {
   late SajuCardModel _model;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // 오행별 카드 색상 (묘월당 오행 5색 체계)
-  static const Map<String, Color> _wuxingColor = {
-    '목': Color(0xFF1F6F5C), // 청록
-    '화': Color(0xFF7B2D3A), // 버건디
-    '토': Color(0xFFB08D57), // 황토
-    '금': Color(0xFF9CA3AF), // 실버그레이
-    '수': Color(0xFF1E3A5F), // 네이비
+  // 12개 일주별 조언 매핑
+  final Map<String, String> dailyAdviceByIlju = {
+    '갑자': '새로운 아이디어가 샘솟는 하루, 용기 있게 표현해보세요.',
+    '을축': '차분한 마음으로 기초를 다지는 날, 꾸준함이 답입니다.',
+    '병인': '활기찬 에너지가 흐르는 하루, 긍정적으로 행동하세요.',
+    '정묘': '세밀한 감정이 풍부한 날, 자신의 마음에 귀 기울이세요.',
+    '무진': '안정감 있게 중심을 잡는 날, 신뢰할 수 있는 선택을 하세요.',
+    '기사': '따뜻한 배려의 마음이 넘치는 하루, 관계를 소중히 하세요.',
+    '경오': '명확한 판단력이 돋보이는 날, 결단력 있게 나아가세요.',
+    '신미': '섬세한 손길이 필요한 하루, 디테일을 챙기세요.',
+    '임신': '흐르는 물처럼 유연한 마음의 하루, 변화를 즐기세요.',
+    '계유': '깊이 있는 생각이 나오는 날, 통찰력을 믿고 나아가세요.',
+    '갑술': '책임감이 강해지는 하루, 역할을 충실히 해내세요.',
+    '을해': '자유로운 영혼이 움직이는 날, 창의성을 펼쳐보세요.',
   };
 
   @override
@@ -42,211 +41,77 @@ class _SajuCardWidgetState extends State<SajuCardWidget> {
     super.dispose();
   }
 
+  /// 오늘의 일주 조언 가져오기
+  String _getTodayAdvice(String ilju) {
+    return dailyAdviceByIlju[ilju] ?? '오늘 하루도 균형있게 보내세요.';
+  }
+
   @override
   Widget build(BuildContext context) {
-    final theme = FlutterFlowTheme.of(context);
-
-    // 오늘 날짜 기준 사주 계산
-    final now = DateTime.now();
-    final lunar = Lunar.fromDate(now);
-    final eightChar = lunar.getEightChar();
-
-    final dayGanZhiHanja = eightChar.getDay(); // 예: 甲子
-    final dayGanZhi = SajuTranslate.ganzhi(dayGanZhiHanja);
-    final dayWuxing = SajuTranslate.wuxing(eightChar.getDayWuXing());
-    final dayNayin = SajuTranslate.nayin(eightChar.getDayNaYin());
-
-    final yearGanZhi = SajuTranslate.ganzhi(eightChar.getYear());
-    final monthGanZhi = SajuTranslate.ganzhi(eightChar.getMonth());
-
-    final cardColor = _wuxingColor[dayWuxing] ?? theme.primary;
-    final tip = SajuTranslate.wuxingTip(dayWuxing);
-
-    final weekdayNames = ['월', '화', '수', '목', '금', '토', '일'];
-    final dateLabel =
-        '${now.year}년 ${now.month}월 ${now.day}일 (${weekdayNames[now.weekday - 1]})';
-
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: theme.primaryBackground,
-        appBar: AppBar(
-          backgroundColor: theme.secondaryBackground,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_rounded, color: theme.primaryText),
-            onPressed: () => context.pop(),
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF5E6D3),
+        borderRadius: BorderRadius.circular(12.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8.0,
+            offset: const Offset(0, 2),
           ),
-          title: Text(
-            '오늘의 사주카드',
-            style: theme.titleMedium.override(
-              font: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold),
-              color: theme.primaryText,
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '오늘의 일진',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
+              color: const Color(0xFF6B4423),
             ),
           ),
-          centerTitle: true,
-        ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+          const SizedBox(height: 8.0),
+          
+          StreamBuilder<Map<String, dynamic>>(
+            stream: FirebaseFirestore.instance
+                .collection('daily_challenge')
+                .doc(DateFormat('yyyyMMdd').format(DateTime.now()))
+                .snapshots()
+                .map((doc) => doc.data() ?? {}),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Text('로딩 중...');
+              }
+
+              String ilju = snapshot.data?['ilju'] ?? '경신';
+              String advice = _getTodayAdvice(ilju);
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    dateLabel,
-                    textAlign: TextAlign.center,
-                    style: theme.bodyMedium.override(
-                      font: GoogleFonts.notoSansKr(),
-                      color: theme.secondaryText,
+                    ilju,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: const Color(0xFF8B6F47),
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 24.0),
-
-                  // 메인 카드 (일주 기준)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 40.0, horizontal: 24.0),
-                    decoration: BoxDecoration(
-                      color: cardColor,
-                      borderRadius: BorderRadius.circular(24.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: cardColor.withOpacity(0.35),
-                          blurRadius: 24.0,
-                          offset: const Offset(0, 12),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '오늘의 일진(日辰)',
-                          style: theme.labelMedium.override(
-                            font: GoogleFonts.notoSansKr(),
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                        ),
-                        const SizedBox(height: 12.0),
-                        Text(
-                          dayGanZhi,
-                          style: theme.displaySmall.override(
-                            font: GoogleFonts.notoSansKr(
-                                fontWeight: FontWeight.w900),
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 56.0,
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          '$dayGanZhiHanja  ·  $dayWuxing ($dayNayin)',
-                          style: theme.bodyMedium.override(
-                            font: GoogleFonts.notoSansKr(),
-                            color: Colors.white.withOpacity(0.9),
-                          ),
-                        ),
-                        const SizedBox(height: 24.0),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 12.0),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          child: Text(
-                            tip,
-                            textAlign: TextAlign.center,
-                            style: theme.bodyMedium.override(
-                              font: GoogleFonts.notoSansKr(),
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 24.0),
-
-                  // 년주/월주 참고 정보
-                  Container(
-                    padding: const EdgeInsets.all(20.0),
-                    decoration: BoxDecoration(
-                      color: theme.secondaryBackground,
-                      borderRadius: BorderRadius.circular(16.0),
-                      border: Border.all(color: theme.alternate),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '오늘의 년주·월주',
-                          style: theme.labelMedium.override(
-                            font: GoogleFonts.notoSansKr(
-                                fontWeight: FontWeight.w600),
-                            color: theme.primaryText,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 12.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            _buildMiniPillar(context, '년주', yearGanZhi),
-                            _buildMiniPillar(context, '월주', monthGanZhi),
-                            _buildMiniPillar(context, '일주', dayGanZhi),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
                   const SizedBox(height: 12.0),
+                  
                   Text(
-                    '※ 이 카드는 오늘 날짜의 일진을 기준으로 자동 계산됩니다.\n개인 사주는 "생년월일 맞춤 추천"에서 확인하실 수 있어요.',
-                    textAlign: TextAlign.center,
-                    style: theme.labelSmall.override(
-                      font: GoogleFonts.notoSansKr(),
-                      color: theme.secondaryText,
+                    advice,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: const Color(0xFF6B4423),
+                      height: 1.5,
                     ),
                   ),
                 ],
-              ),
-            ),
+              );
+            },
           ),
-        ),
+        ],
       ),
-    );
-  }
-
-  Widget _buildMiniPillar(BuildContext context, String label, String value) {
-    final theme = FlutterFlowTheme.of(context);
-    return Column(
-      children: [
-        Text(
-          label,
-          style: theme.labelSmall.override(
-            font: GoogleFonts.notoSansKr(),
-            color: theme.secondaryText,
-          ),
-        ),
-        const SizedBox(height: 4.0),
-        Text(
-          value,
-          style: theme.bodyLarge.override(
-            font: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold),
-            color: theme.primaryText,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
     );
   }
 }
