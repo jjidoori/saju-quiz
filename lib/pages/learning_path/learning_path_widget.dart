@@ -373,7 +373,6 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                   style: FlutterFlowTheme.of(context).labelSmall.override(
                         font: GoogleFonts.notoSansKr(),
                         color: Colors.white.withOpacity(0.9),
-                        height: 1.5,
                       ),
                 ),
               ],
