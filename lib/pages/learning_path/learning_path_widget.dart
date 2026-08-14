@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 import 'learning_path_model.dart';
 export 'learning_path_model.dart';
 
@@ -213,10 +214,57 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
     '을해': '자유로운 영혼이 움직이는 날, 창의성을 펼쳐보세요.',
   };
 
+  final List<String> _60gapcja = [
+    '갑자', '을축', '병인', '정묘', '무진', '기사', '경오', '신미', '임신', '계유',
+    '갑술', '을해', '병자', '정축', '무인', '기묘', '경진', '신사', '임오', '계미',
+    '갑신', '을유', '병술', '정해', '무자', '기축', '경인', '신묘', '임진', '계사',
+    '갑오', '을미', '병신', '정유', '무술', '기해', '경자', '신축', '임인', '계묘',
+    '갑진', '을사', '병오', '정미', '무신', '기유', '경술', '신해', '임자', '계축',
+    '갑인', '을묘', '병진', '정사', '무오', '기미', '경신', '신유', '임술', '계해',
+  ];
+
+  String _getAdviceFor60gapcja(String gapcja) {
+    final heavenlyStem = gapcja[0];
+    const Map<String, String> stemToIlju = {
+      '갑': '갑자',
+      '을': '을축',
+      '병': '병인',
+      '정': '정묘',
+      '무': '무진',
+      '기': '기사',
+      '경': '경오',
+      '신': '신미',
+      '임': '임신',
+      '계': '계유',
+    };
+    final ilju = stemToIlju[heavenlyStem] ?? '갑자';
+    return _dailyAdviceByIlju[ilju] ?? '오늘 하루도 균형있게 보내세요.';
+  }
+
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => LearningPathModel());
+    _ensureTodayChallengeExists();
+  }
+
+  Future<void> _ensureTodayChallengeExists() async {
+    final today = DateFormat('yyyyMMdd').format(DateTime.now());
+    final doc = FirebaseFirestore.instance.collection('daily_challenge').doc(today);
+
+    try {
+      final docSnapshot = await doc.get();
+      if (!docSnapshot.exists) {
+        final randomGapcja = _60gapcja[Random().nextInt(_60gapcja.length)];
+        await doc.set({
+          'ilju': randomGapcja,
+          'date': today,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+    } catch (e) {
+      print('Error ensuring daily challenge: $e');
+    }
   }
 
   @override
@@ -316,7 +364,7 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
         
         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
           ilju = snapshot.data!['ilju'] ?? '경신';
-          advice = _dailyAdviceByIlju[ilju] ?? '오늘 하루도 균형있게 보내세요.';
+          advice = _getAdviceFor60gapcja(ilju);
         }
 
         return InkWell(
@@ -335,41 +383,42 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
               borderRadius: BorderRadius.circular(16.0),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 28.0),
                     const SizedBox(width: 14.0),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '오늘의 일진',
-                            style: FlutterFlowTheme.of(context).bodyLarge.override(
-                                  font: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold),
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          Text(
-                            ilju,
-                            style: FlutterFlowTheme.of(context).headlineSmall?.override(
-                                  font: GoogleFonts.notoSansKr(),
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                        ],
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '오늘의 일진',
+                          style: FlutterFlowTheme.of(context).bodyLarge.override(
+                                font: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        Text(
+                          ilju,
+                          style: FlutterFlowTheme.of(context).headlineSmall?.override(
+                                font: GoogleFonts.notoSansKr(),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(width: 14.0),
                     Icon(Icons.chevron_right_rounded, color: Colors.white, size: 24.0),
                   ],
                 ),
                 const SizedBox(height: 12.0),
                 Text(
                   advice,
+                  textAlign: TextAlign.center,
                   style: FlutterFlowTheme.of(context).labelSmall.override(
                         font: GoogleFonts.notoSansKr(),
                         color: Colors.white.withOpacity(0.9),
@@ -396,15 +445,10 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'Saju Master Journey',
-                  style: FlutterFlowTheme.of(context).labelLarge.override(
-                        font: GoogleFonts.inter(fontWeight: FontWeight.bold),
-                        color: FlutterFlowTheme.of(context).primary,
-                        letterSpacing: 0.0,
-                        fontWeight: FontWeight.bold,
-                        lineHeight: 1.3,
-                      ),
+                Image.asset(
+                  'assets/images/logo.png',
+                  height: 60.0,
+                  fit: BoxFit.contain,
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.max,
