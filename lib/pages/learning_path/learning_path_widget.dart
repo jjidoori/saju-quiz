@@ -224,7 +224,7 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
 
 String _getCorrectIljuForDate(DateTime date) {
   final baseDate = DateTime(2026, 8, 17);
-  final baseIndex = 57;
+  final baseIndex = 59;
   
   final differenceInDays = date.difference(baseDate).inDays;
   final currentIndex = ((baseIndex + differenceInDays) % 60 + 60) % 60;
