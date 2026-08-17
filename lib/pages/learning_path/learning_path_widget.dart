@@ -222,15 +222,15 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
     '갑인', '을묘', '병진', '정사', '무오', '기미', '경신', '신유', '임술', '계해',
   ];
 
-  String _getCorrectIljuForDate(DateTime date) {
-    final baseDate = DateTime(2026, 8, 17);
-    final baseIndex = 59;
-    
-    final differenceInDays = date.difference(baseDate).inDays;
-    final currentIndex = ((baseIndex + differenceInDays) % 60 + 60) % 60;
-    
-    return _60gapcja[currentIndex];
-  }
+String _getCorrectIljuForDate(DateTime date) {
+  final baseDate = DateTime(2026, 8, 17);
+  final baseIndex = 57;
+  
+  final differenceInDays = date.difference(baseDate).inDays;
+  final currentIndex = ((baseIndex + differenceInDays) % 60 + 60) % 60;
+  
+  return _60gapcja[currentIndex];
+}
 
   String _getAdviceFor60gapcja(String gapcja) {
     final heavenlyStem = gapcja[0];
