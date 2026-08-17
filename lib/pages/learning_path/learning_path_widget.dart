@@ -223,11 +223,11 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
   ];
 
   String _getCorrectIljuForDate(DateTime date) {
-    final baseDate = DateTime(2026, 8, 17); // 계해일
-    final baseIndex = 59; // 계해의 인덱스
+    final baseDate = DateTime(2026, 8, 17);
+    final baseIndex = 59;
     
     final differenceInDays = date.difference(baseDate).inDays;
-    final currentIndex = (baseIndex + differenceInDays) % 60;
+    final currentIndex = ((baseIndex + differenceInDays) % 60 + 60) % 60;
     
     return _60gapcja[currentIndex];
   }
@@ -463,7 +463,7 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                   children: [
                     Text(
                       '나의 사주 학습 여정',
-                      style: FlutterFlowTheme.of(context).headlineLarge.override(
+                      style: FlutterFlowTheme.of(context).headlineMedium.override(
                             font: GoogleFonts.roboto(fontWeight: FontWeight.bold),
                             color: FlutterFlowTheme.of(context).primaryText,
                             letterSpacing: 0.0,
