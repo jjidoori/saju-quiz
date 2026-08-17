@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'dart:math';
 import 'learning_path_model.dart';
 export 'learning_path_model.dart';
 
@@ -223,6 +222,16 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
     '갑인', '을묘', '병진', '정사', '무오', '기미', '경신', '신유', '임술', '계해',
   ];
 
+  String _getCorrectIljuForDate(DateTime date) {
+    final baseDate = DateTime(2026, 8, 17); // 계해일
+    final baseIndex = 59; // 계해의 인덱스
+    
+    final differenceInDays = date.difference(baseDate).inDays;
+    final currentIndex = (baseIndex + differenceInDays) % 60;
+    
+    return _60gapcja[currentIndex];
+  }
+
   String _getAdviceFor60gapcja(String gapcja) {
     final heavenlyStem = gapcja[0];
     const Map<String, String> stemToIlju = {
@@ -255,9 +264,9 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
     try {
       final docSnapshot = await doc.get();
       if (!docSnapshot.exists) {
-        final randomGapcja = _60gapcja[Random().nextInt(_60gapcja.length)];
+        final correctGapcja = _getCorrectIljuForDate(DateTime.now());
         await doc.set({
-          'ilju': randomGapcja,
+          'ilju': correctGapcja,
           'date': today,
           'createdAt': FieldValue.serverTimestamp(),
         });
@@ -359,11 +368,11 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
           .snapshots()
           .map((doc) => doc.data() ?? {}),
       builder: (context, snapshot) {
-        String ilju = '경신';
+        String ilju = _getCorrectIljuForDate(DateTime.now());
         String advice = '오늘 하루도 균형있게 보내세요.';
         
         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          ilju = snapshot.data!['ilju'] ?? '경신';
+          ilju = snapshot.data!['ilju'] ?? ilju;
           advice = _getAdviceFor60gapcja(ilju);
         }
 
@@ -453,7 +462,7 @@ class _LearningPathWidgetState extends State<LearningPathWidget> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      'Learning Path',
+                      '나의 사주 학습 여정',
                       style: FlutterFlowTheme.of(context).headlineLarge.override(
                             font: GoogleFonts.roboto(fontWeight: FontWeight.bold),
                             color: FlutterFlowTheme.of(context).primaryText,
