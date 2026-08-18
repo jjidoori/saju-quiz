@@ -18,3 +18,4 @@ export '/pages/welcome_screen/welcome_screen_widget.dart'
 export '/pages/quiz_result/quiz_result_widget.dart'
     show QuizResultWidget;
 export '/pages/journey/journey_widget.dart' show JourneyWidget;
+export '/pages/practice/practice_widget.dart' show PracticeWidget;
