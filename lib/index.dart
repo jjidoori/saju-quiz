@@ -19,3 +19,4 @@ export '/pages/quiz_result/quiz_result_widget.dart'
     show QuizResultWidget;
 export '/pages/journey/journey_widget.dart' show JourneyWidget;
 export '/pages/practice/practice_widget.dart' show PracticeWidget;
+export '/pages/mastery/mastery_widget.dart' show MasteryWidget;
