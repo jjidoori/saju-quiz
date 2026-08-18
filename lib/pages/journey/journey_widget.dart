@@ -475,3 +475,6 @@ class _JourneyWidgetState extends State<JourneyWidget> {
     );
   }
 }
+        bottomNavigationBar: BottomNav2Widget(
+          selectedIndex: 1,
+        ),
