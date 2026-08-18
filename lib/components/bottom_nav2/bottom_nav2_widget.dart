@@ -7,7 +7,12 @@ import 'bottom_nav2_model.dart';
 export 'bottom_nav2_model.dart';
 
 class BottomNav2Widget extends StatefulWidget {
-  const BottomNav2Widget({super.key});
+  const BottomNav2Widget({
+    super.key,
+    required this.selectedIndex,
+  });
+
+  final int selectedIndex;
 
   @override
   State<BottomNav2Widget> createState() => _BottomNav2WidgetState();
@@ -31,147 +36,108 @@ class _BottomNav2WidgetState extends State<BottomNav2Widget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
       decoration: BoxDecoration(
         color: FlutterFlowTheme.of(context).secondaryBackground,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 8.0,
-            color: FlutterFlowTheme.of(context).primaryText.withOpacity(0.1),
-            offset: const Offset(0.0, -2.0),
+        border: Border(
+          top: BorderSide(
+            color: FlutterFlowTheme.of(context).alternate,
+            width: 1.0,
+          ),
+        ),
+      ),
+      child: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_outlined,
+              color: widget.selectedIndex == 0
+                  ? FlutterFlowTheme.of(context).primary
+                  : FlutterFlowTheme.of(context).secondaryText,
+            ),
+            activeIcon: Icon(
+              Icons.home,
+              color: FlutterFlowTheme.of(context).primary,
+            ),
+            label: '학습',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.trending_up_outlined,
+              color: widget.selectedIndex == 1
+                  ? FlutterFlowTheme.of(context).primary
+                  : FlutterFlowTheme.of(context).secondaryText,
+            ),
+            activeIcon: Icon(
+              Icons.trending_up,
+              color: FlutterFlowTheme.of(context).primary,
+            ),
+            label: '여정',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.refresh_outlined,
+              color: widget.selectedIndex == 2
+                  ? FlutterFlowTheme.of(context).primary
+                  : FlutterFlowTheme.of(context).secondaryText,
+            ),
+            activeIcon: Icon(
+              Icons.refresh,
+              color: FlutterFlowTheme.of(context).primary,
+            ),
+            label: '복습',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.star_outline,
+              color: widget.selectedIndex == 3
+                  ? FlutterFlowTheme.of(context).primary
+                  : FlutterFlowTheme.of(context).secondaryText,
+            ),
+            activeIcon: Icon(
+              Icons.star,
+              color: FlutterFlowTheme.of(context).primary,
+            ),
+            label: '마스터',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person_outline,
+              color: widget.selectedIndex == 4
+                  ? FlutterFlowTheme.of(context).primary
+                  : FlutterFlowTheme.of(context).secondaryText,
+            ),
+            activeIcon: Icon(
+              Icons.person,
+              color: FlutterFlowTheme.of(context).primary,
+            ),
+            label: '프로필',
           ),
         ],
-      ),
-      child: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            InkWell(
-              splashColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onTap: () async {
-                context.goNamed(LearningPathWidget.routeName);
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.home_rounded,
-                    color: FlutterFlowTheme.of(context).primary,
-                    size: 24.0,
-                  ),
-                  Text(
-                    'Home',
-                    style: FlutterFlowTheme.of(context).labelSmall.override(
-                          font: GoogleFonts.inter(fontWeight: FontWeight.bold),
-                          color: FlutterFlowTheme.of(context).primary,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            InkWell(
-              splashColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onTap: () async {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('준비 중입니다.')),
-                );
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.explore_rounded,
-                    color: FlutterFlowTheme.of(context).secondaryText,
-                    size: 24.0,
-                  ),
-                  Text(
-                    'Journey',
-                    style: FlutterFlowTheme.of(context).labelSmall.override(
-                          font: GoogleFonts.inter(fontWeight: FontWeight.bold),
-                          color: FlutterFlowTheme.of(context).secondaryText,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            InkWell(
-              splashColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onTap: () async {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('준비 중입니다.')),
-                );
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.favorite_rounded,
-                    color: FlutterFlowTheme.of(context).secondaryText,
-                    size: 24.0,
-                  ),
-                  Text(
-                    'Practice',
-                    style: FlutterFlowTheme.of(context).labelSmall.override(
-                          font: GoogleFonts.inter(fontWeight: FontWeight.bold),
-                          color: FlutterFlowTheme.of(context).secondaryText,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            InkWell(
-              splashColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onTap: () async {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('준비 중입니다.')),
-                );
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.star_rounded,
-                    color: FlutterFlowTheme.of(context).secondaryText,
-                    size: 24.0,
-                  ),
-                  Text(
-                    'Mastery',
-                    style: FlutterFlowTheme.of(context).labelSmall.override(
-                          font: GoogleFonts.inter(fontWeight: FontWeight.bold),
-                          color: FlutterFlowTheme.of(context).secondaryText,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        currentIndex: widget.selectedIndex,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              context.goNamed(LearningPathWidget.routeName);
+              break;
+            case 1:
+              context.goNamed(JourneyWidget.routeName);
+              break;
+            case 2:
+              context.goNamed(PracticeWidget.routeName);
+              break;
+            case 3:
+              context.goNamed(MasteryWidget.routeName);
+              break;
+            case 4:
+              context.goNamed(ProfileWidget.routeName);
+              break;
+          }
+        },
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        selectedItemColor: FlutterFlowTheme.of(context).primary,
+        unselectedItemColor: FlutterFlowTheme.of(context).secondaryText,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }
