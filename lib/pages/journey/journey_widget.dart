@@ -47,6 +47,9 @@ class _JourneyWidgetState extends State<JourneyWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        bottomNavigationBar: BottomNav2Widget(
+          selectedIndex: 1,
+        ),
         body: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance
               .collection('users')
@@ -475,6 +478,3 @@ class _JourneyWidgetState extends State<JourneyWidget> {
     );
   }
 }
-        bottomNavigationBar: BottomNav2Widget(
-          selectedIndex: 1,
-        ),
