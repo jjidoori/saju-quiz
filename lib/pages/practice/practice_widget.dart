@@ -22,6 +22,8 @@ class _PracticeWidgetState extends State<PracticeWidget> {
   late PracticeModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedTabIndex = 0;
+  int _currentQuestionIndex = 0;
+  String _selectedReviewType = 'trueFalse'; // trueFalse, dragDrop, random
 
   @override
   void initState() {
@@ -47,6 +49,9 @@ class _PracticeWidgetState extends State<PracticeWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        bottomNavigationBar: BottomNav2Widget(
+          selectedIndex: 2,
+        ),
         body: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance
               .collection('users')
@@ -91,7 +96,7 @@ class _PracticeWidgetState extends State<PracticeWidget> {
                           ),
                           const SizedBox(height: 8.0),
                           Text(
-                            '틀린 문제와 약한 영역을 집중적으로 복습하세요',
+                            '다양한 형식으로 복습하세요',
                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                                   font: GoogleFonts.inter(),
                                   color: FlutterFlowTheme.of(context).secondaryText,
@@ -434,36 +439,45 @@ class _PracticeWidgetState extends State<PracticeWidget> {
               ),
         ),
         const SizedBox(height: 12.0),
+        
+        // O/X 문제 복습
+        _buildReviewModeCard(
+          context,
+          '⭕ O/X 문제 복습',
+          '참/거짓 판단 문제로 빠르게 복습하세요',
+          () {
+            setState(() {
+              _selectedReviewType = 'trueFalse';
+            });
+            _showReviewQuestions(context, 'trueFalse');
+          },
+        ),
+        const SizedBox(height: 12.0),
+
+        // 드래그앤드롭 복습
+        _buildReviewModeCard(
+          context,
+          '🔗 연결 문제 복습',
+          '올바른 쌍을 찾아 연결하는 문제입니다',
+          () {
+            setState(() {
+              _selectedReviewType = 'dragDrop';
+            });
+            _showReviewQuestions(context, 'dragDrop');
+          },
+        ),
+        const SizedBox(height: 12.0),
+
+        // 랜덤 복습
         _buildReviewModeCard(
           context,
           '🔀 랜덤 복습',
-          '임의의 카테고리에서 무작위로 문제를 풀어보세요',
+          '모든 형식의 문제를 랜덤으로 풀어보세요',
           () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('랜덤 복습 준비 중입니다.')),
-            );
-          },
-        ),
-        const SizedBox(height: 12.0),
-        _buildReviewModeCard(
-          context,
-          '📚 카테고리별 복습',
-          '약한 카테고리를 집중적으로 복습하세요',
-          () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('카테고리 선택 창이 열립니다.')),
-            );
-          },
-        ),
-        const SizedBox(height: 12.0),
-        _buildReviewModeCard(
-          context,
-          '⏱️ 시간 제한 모드',
-          '일정 시간 내에 몇 개를 풀 수 있을지 도전해보세요',
-          () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('시간 제한 모드 준비 중입니다.')),
-            );
+            setState(() {
+              _selectedReviewType = 'random';
+            });
+            _showReviewQuestions(context, 'random');
           },
         ),
       ],
@@ -506,6 +520,19 @@ class _PracticeWidgetState extends State<PracticeWidget> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showReviewQuestions(BuildContext context, String reviewType) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(reviewType == 'trueFalse'
+            ? 'O/X 문제 복습 시작!'
+            : reviewType == 'dragDrop'
+                ? '연결 문제 복습 시작!'
+                : '랜덤 복습 시작!'),
+        duration: const Duration(seconds: 2),
       ),
     );
   }
