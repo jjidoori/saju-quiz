@@ -325,6 +325,9 @@ String _getCorrectIljuForDate(DateTime date) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
+        bottomNavigationBar: BottomNav2Widget(
+  selectedIndex: 0,
+),
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: Column(
