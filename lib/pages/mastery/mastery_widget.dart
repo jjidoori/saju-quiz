@@ -45,6 +45,9 @@ class _MasteryWidgetState extends State<MasteryWidget> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
+        bottomNavigationBar: BottomNav2Widget(
+  selectedIndex: 3,
+),
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: StreamBuilder<DocumentSnapshot>(
