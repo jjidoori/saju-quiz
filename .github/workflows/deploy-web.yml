@@ -5,19 +5,29 @@ on:
     branches: [flutterflow]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+      
+      - name: Get Flutter dependencies
+        run: flutter pub get
+      
+      - name: Build web
+        run: flutter build web --release
+      
       - name: Deploy to GitHub Pages
         run: |
-          mkdir -p gh-pages-temp
-          cp -r web/* gh-pages-temp/
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git checkout --orphan gh-pages
+          git checkout --orphan gh-pages-new
           rm -rf .
-          cp -r ../gh-pages-temp/* .
+          cp -r build/web/* .
           git add .
-          git commit -m "Deploy web files"
-          git push -f origin gh-pages
+          git commit -m "Deploy Flutter web build"
+          git push -f origin gh-pages-new:gh-pages
